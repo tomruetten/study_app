@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0a0f1e"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>CogSys Learn — TUM IN2222</title>
+  
+  <style>
+/* ─── Reset & Base ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0a0f1e;
+  --bg2:      #111827;
+  --bg3:      #1a2236;
+  --border:   rgba(255,255,255,0.08);
+  --blue:     #3b82f6;
+  --blue-dim: #1d4ed8;
+  --cyan:     #06b6d4;
+  --green:    #22c55e;
+  --yellow:   #eab308;
+  --red:      #ef4444;
+  --purple:   #a855f7;
+  --text:     #f1f5f9;
+  --text-dim: #94a3b8;
+  --text-faint: #475569;
+  --radius:   16px;
+  --radius-sm: 10px;
+  --nav-h:    68px;
+  --header-h: 56px;
+  --ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  height: 100dvh;
+  padding-bottom: var(--nav-h);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Screens ───────────────────────────────────────────────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  bottom: var(--nav-h);
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  -webkit-overflow-scrolling: touch;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+/* ─── Home Screen ───────────────────────────────────────────────────────── */
+.home-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#neuronNet {
+  width: 100%; height: 100%;
+  opacity: 0.35;
+}
+
+.home-content {
+  position: relative;
+  z-index: 1;
+  padding: 56px 24px 24px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.home-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  width: fit-content;
+  animation: fadeInDown 0.5s var(--ease) both;
+}
+
+.home-title {
+  font-size: clamp(42px, 11vw, 60px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan) 60%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInDown 0.55s 0.05s var(--ease) both;
+}
+
+.home-sub {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.6;
+  animation: fadeInDown 0.55s 0.1s var(--ease) both;
+}
+
+/* ─── Progress Overview ─────────────────────────────────────────────────── */
+.progress-overview {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  animation: fadeInDown 0.55s 0.15s var(--ease) both;
+}
+
+.progress-overview h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.po-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.po-stat { text-align: center; }
+.po-stat .val { font-size: 26px; font-weight: 800; color: var(--cyan); }
+.po-stat .lbl { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+.po-track { margin-top: 14px; }
+.po-track-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+.po-bar { height: 6px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+.po-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 999px; transition: width 1s var(--ease); }
+
+/* ─── Module Grid ───────────────────────────────────────────────────────── */
+.module-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  animation: fadeInDown 0.55s 0.2s var(--ease) both;
+}
+
+.module-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card:active { transform: scale(0.97); }
+.module-card:hover  { border-color: var(--blue); box-shadow: 0 0 20px rgba(59,130,246,0.15); }
+
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--blue));
+  border-radius: 2px 2px 0 0;
+}
+
+.mc-icon { font-size: 22px; margin-bottom: 8px; }
+.mc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); }
+.mc-name { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 2px; line-height: 1.3; }
+.mc-due { font-size: 11px; color: var(--yellow); margin-top: 6px; }
+.mc-locked { font-size: 11px; color: var(--text-faint); margin-top: 6px; font-style: italic; }
+
+.mc-progress { margin-top: 10px; }
+.mc-bar { height: 3px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+.mc-bar-fill { height: 100%; border-radius: 999px; transition: width 0.8s var(--ease); }
+
+/* ─── Buttons ───────────────────────────────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-dim), var(--blue));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary:active  { transform: scale(0.97); opacity: 0.9; }
+.btn-primary.btn-full { width: 100%; }
+
+.btn-secondary {
+  background: var(--bg3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-secondary:active { transform: scale(0.97); }
+
+.btn-back {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-icon-only {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 18px;
+  cursor: pointer;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-icon { font-size: 18px; }
+
+/* ─── Screen Header ─────────────────────────────────────────────────────── */
+.screen-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(10, 15, 30, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+}
+
+.screen-header h2 {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.header-right { width: 40px; }
+
+/* ─── Mode Pills ────────────────────────────────────────────────────────── */
+.mode-pills {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.mode-pills::-webkit-scrollbar { display: none; }
+
+.pill {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+/* ─── Topic List ────────────────────────────────────────────────────────── */
+.topic-list { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 10px; }
+
+.topic-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.2s, border-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.topic-item:active { transform: scale(0.98); }
+.topic-item:hover  { border-color: var(--blue); }
+
+.ti-icon { font-size: 24px; flex-shrink: 0; }
+.ti-body { flex: 1; }
+.ti-name { font-size: 15px; font-weight: 600; }
+.ti-meta { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+.ti-due { font-size: 11px; color: var(--yellow); margin-top: 4px; }
+.ti-arrow { color: var(--text-faint); font-size: 18px; }
+
+.ti-mini-bar { margin-top: 8px; height: 3px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+.ti-mini-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 999px; }
+
+/* ─── Progress Bar (study header) ──────────────────────────────────────── */
+.progress-bar-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.progress-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: 999px;
+  transition: width 0.4s var(--ease);
+}
+.progress-label { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+
+/* ─── Mode Containers ───────────────────────────────────────────────────── */
+.mode-container { padding: 20px 20px 32px; }
+.mode-container.hidden { display: none; }
+
+/* ─── Guided Mode ───────────────────────────────────────────────────────── */
+.card-wrap {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: slideUp 0.35s var(--ease) both;
+}
+
+.study-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(59,130,246,0.15);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,0.3);
+  margin-bottom: 14px;
+}
+
+.concept-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.concept-body {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+.concept-example {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(6,182,212,0.08);
+  border-left: 3px solid var(--cyan);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 13px;
+  color: var(--cyan);
+  line-height: 1.6;
+}
+
+.action-row {
+  display: flex;
+  gap: 12px;
+}
+.action-row .btn-secondary,
+.action-row .btn-primary { flex: 1; }
+
+/* ─── Flashcard ─────────────────────────────────────────────────────────── */
+.flip-card-scene {
+  perspective: 1000px;
+  margin-bottom: 24px;
+}
+
+.flip-card {
+  width: 100%;
+  min-height: 220px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.flip-card.flipped { transform: rotateY(180deg); }
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+.flip-card-front {
+  background: var(--bg3);
+}
+
+.flip-card-back {
+  background: linear-gradient(135deg, #0f1f3d, #162040);
+  border-color: rgba(59,130,246,0.3);
+  transform: rotateY(180deg);
+}
+
+.card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+
+.card-content {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.flip-card-back .card-content {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.card-hint {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+.sm2-row {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sm2-btn {
+  padding: 10px 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: transform 0.15s, opacity 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.sm2-btn span { font-size: 10px; font-weight: 400; opacity: 0.7; }
+.sm2-btn:active { transform: scale(0.95); }
+
+.sm2-again { background: rgba(239,68,68,0.15);  color: var(--red);    border-color: rgba(239,68,68,0.3); }
+.sm2-hard  { background: rgba(234,179,8,0.12);   color: var(--yellow); border-color: rgba(234,179,8,0.3); }
+.sm2-good  { background: rgba(59,130,246,0.15);  color: var(--blue);   border-color: rgba(59,130,246,0.3); }
+.sm2-easy  { background: rgba(34,197,94,0.12);   color: var(--green);  border-color: rgba(34,197,94,0.3); }
+
+.fc-stats {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* ─── Quiz Mode ─────────────────────────────────────────────────────────── */
+.quiz-wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.quiz-category {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.quiz-question {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+
+.quiz-opt {
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-opt:active  { transform: scale(0.98); }
+.quiz-opt.correct { background: rgba(34,197,94,0.15);  border-color: var(--green); color: var(--green); }
+.quiz-opt.wrong   { background: rgba(239,68,68,0.12);  border-color: var(--red);   color: var(--red); }
+.quiz-opt:disabled { cursor: default; }
+
+.quiz-feedback {
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  line-height: 1.6;
+  animation: slideUp 0.25s var(--ease);
+}
+.quiz-feedback.correct { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
+.quiz-feedback.wrong   { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+
+/* ─── Fill Blank Mode ───────────────────────────────────────────────────── */
+.fill-wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.fill-category {
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-faint);
+}
+
+.fill-sentence {
+  font-size: 18px; font-weight: 600; line-height: 1.6; color: var(--text);
+}
+
+.fill-sentence .blank {
+  display: inline-block;
+  min-width: 100px;
+  border-bottom: 2px solid var(--blue);
+  color: var(--blue);
+  font-style: italic;
+  padding: 0 4px;
+}
+
+.fill-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.fill-input:focus { border-color: var(--blue); }
+
+.fill-hint-row { display: flex; align-items: center; gap: 10px; }
+.btn-hint {
+  background: none; border: 1px solid var(--border); color: var(--text-dim);
+  border-radius: 999px; padding: 4px 12px; font-size: 12px; cursor: pointer;
+}
+.fill-hint-text { font-size: 13px; color: var(--cyan); }
+
+.fill-feedback {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  animation: slideUp 0.25s var(--ease);
+}
+.fill-feedback.correct { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
+.fill-feedback.wrong   { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+
+/* ─── Open Question Mode ────────────────────────────────────────────────── */
+.open-wrap { display: flex; flex-direction: column; gap: 14px; }
+
+.open-category { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); }
+
+.open-points-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(168,85,247,0.15);
+  color: var(--purple);
+  border: 1px solid rgba(168,85,247,0.3);
+  font-size: 11px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.open-question { font-size: 18px; font-weight: 700; line-height: 1.4; color: var(--text); }
+
+.open-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 14px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.open-textarea:focus { border-color: var(--blue); }
+
+.model-answer {
+  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.08));
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  animation: slideUp 0.3s var(--ease);
+}
+.model-answer strong { color: var(--cyan); }
+.model-answer .point { display: block; margin-bottom: 4px; }
+.model-answer .point::before { content: '• '; color: var(--blue); }
+
+.self-rate p { font-size: 14px; color: var(--text-dim); text-align: center; }
+.self-rate-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 10px; }
+.sr-btn {
+  padding: 12px 8px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.sr-btn:active { transform: scale(0.96); }
+.sr-no      { background: rgba(239,68,68,0.12);  color: var(--red);    border-color: rgba(239,68,68,0.3); }
+.sr-partial { background: rgba(234,179,8,0.12);  color: var(--yellow); border-color: rgba(234,179,8,0.3); }
+.sr-got     { background: rgba(34,197,94,0.12);  color: var(--green);  border-color: rgba(34,197,94,0.3); }
+
+/* ─── Stats Screen ──────────────────────────────────────────────────────── */
+.stats-content { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+
+.stat-section {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.stat-section h3 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.stat-topic-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.st-name { flex: 1; font-size: 13px; color: var(--text); }
+.st-bar  { flex: 2; height: 6px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+.st-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.8s var(--ease); }
+.st-pct  { font-size: 12px; color: var(--text-dim); width: 32px; text-align: right; }
+
+.streak-row { display: flex; gap: 4px; flex-wrap: wrap; }
+.streak-dot { width: 20px; height: 20px; border-radius: 4px; background: var(--bg); }
+.streak-dot.done { background: var(--blue); }
+.streak-dot.today { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+
+.due-list { display: flex; flex-direction: column; gap: 8px; }
+.due-item { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.due-item .due-name { color: var(--text-dim); }
+.due-item .due-count { background: rgba(234,179,8,0.15); color: var(--yellow); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+
+/* ─── Bottom Nav ────────────────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(10,15,30,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-btn.active { color: var(--blue); }
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+
+/* Math/formula styling */
+.formula {
+  display: inline-block;
+  font-family: 'Courier New', monospace;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--cyan);
+}
+
+@media (max-width: 360px) {
+  .sm2-row { grid-template-columns: repeat(2,1fr); }
+  .module-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+  <div id="app">
+    <!-- Splash / Home -->
+    <div id="screen-home" class="screen active">
+      <div class="home-bg">
+        <div class="neuron-net" id="neuronNet"></div>
+      </div>
+      <div class="home-content">
+        <div class="home-badge">TUM · IN2222</div>
+        <h1 class="home-title">Cognitive<br/>Systems</h1>
+        <p class="home-sub">Adaptive exam prep · SM-2 spaced repetition · 4 learning modes</p>
+        <div class="progress-overview" id="progressOverview"></div>
+        <div class="module-grid" id="moduleGrid"></div>
+        <button class="btn-primary btn-full" id="btnQuickStudy">
+          <span class="btn-icon">⚡</span> Quick Study Session
+        </button>
+      </div>
+    </div>
+
+    <!-- Topic Select -->
+    <div id="screen-topics" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" id="btnBackHome">←</button>
+        <h2 id="topicTitle">Topics</h2>
+        <div class="header-right"></div>
+      </div>
+      <div class="mode-pills">
+        <button class="pill active" data-mode="guided">Guided</button>
+        <button class="pill" data-mode="flashcard">Flashcards</button>
+        <button class="pill" data-mode="quiz">Quiz</button>
+        <button class="pill" data-mode="fillblank">Fill Blank</button>
+        <button class="pill" data-mode="open">Open Q</button>
+      </div>
+      <div id="topicList" class="topic-list"></div>
+    </div>
+
+    <!-- Study Screen -->
+    <div id="screen-study" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" id="btnBackTopics">←</button>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="studyProgressBar"></div>
+          </div>
+          <span class="progress-label" id="studyProgressLabel">0/0</span>
+        </div>
+        <button class="btn-icon-only" id="btnEndSession">✕</button>
+      </div>
+
+      <!-- Guided Mode -->
+      <div id="mode-guided" class="mode-container hidden">
+        <div class="card-wrap">
+          <div class="study-badge" id="guidedBadge"></div>
+          <div class="concept-title" id="guidedTitle"></div>
+          <div class="concept-body" id="guidedBody"></div>
+          <div class="concept-example" id="guidedExample"></div>
+        </div>
+        <div class="action-row">
+          <button class="btn-secondary" id="guidedPrev">← Prev</button>
+          <button class="btn-primary" id="guidedNext">Got it →</button>
+        </div>
+      </div>
+
+      <!-- Flashcard Mode -->
+      <div id="mode-flashcard" class="mode-container hidden">
+        <div class="flip-card-scene">
+          <div class="flip-card" id="flipCard">
+            <div class="flip-card-front">
+              <div class="card-label">QUESTION</div>
+              <div class="card-content" id="fcFront"></div>
+              <div class="card-hint">Tap to reveal</div>
+            </div>
+            <div class="flip-card-back">
+              <div class="card-label">ANSWER</div>
+              <div class="card-content" id="fcBack"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sm2-row" id="sm2Row">
+          <button class="sm2-btn sm2-again" data-rating="0">Again<span>1min</span></button>
+          <button class="sm2-btn sm2-hard"  data-rating="2">Hard<span>~1d</span></button>
+          <button class="sm2-btn sm2-good"  data-rating="3">Good<span>~3d</span></button>
+          <button class="sm2-btn sm2-easy"  data-rating="5">Easy<span>~7d</span></button>
+        </div>
+        <div class="fc-stats" id="fcStats"></div>
+      </div>
+
+      <!-- Quiz Mode (Multiple Choice) -->
+      <div id="mode-quiz" class="mode-container hidden">
+        <div class="quiz-wrap">
+          <div class="quiz-category" id="quizCategory"></div>
+          <div class="quiz-question" id="quizQuestion"></div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-feedback hidden" id="quizFeedback"></div>
+          <button class="btn-primary hidden" id="quizNext">Next →</button>
+        </div>
+      </div>
+
+      <!-- Fill Blank Mode -->
+      <div id="mode-fillblank" class="mode-container hidden">
+        <div class="fill-wrap">
+          <div class="fill-category" id="fillCategory"></div>
+          <div class="fill-sentence" id="fillSentence"></div>
+          <input type="text" class="fill-input" id="fillInput" placeholder="Type the missing word(s)…" autocomplete="off" autocorrect="off" spellcheck="false"/>
+          <div class="fill-hint-row">
+            <button class="btn-hint" id="fillHint">Show hint</button>
+            <span class="fill-hint-text hidden" id="fillHintText"></span>
+          </div>
+          <button class="btn-primary" id="fillCheck">Check</button>
+          <div class="fill-feedback hidden" id="fillFeedback"></div>
+          <button class="btn-primary hidden" id="fillNext">Next →</button>
+        </div>
+      </div>
+
+      <!-- Open Question Mode -->
+      <div id="mode-open" class="mode-container hidden">
+        <div class="open-wrap">
+          <div class="open-category" id="openCategory"></div>
+          <div class="open-points-badge" id="openPoints"></div>
+          <div class="open-question" id="openQuestion"></div>
+          <textarea class="open-textarea" id="openAnswer" placeholder="Write your answer here… (aim for concise, keyword-rich answers)"></textarea>
+          <button class="btn-primary" id="openReveal">Reveal Model Answer</button>
+          <div class="model-answer hidden" id="modelAnswer"></div>
+          <div class="self-rate hidden" id="selfRate">
+            <p>How did you do?</p>
+            <div class="self-rate-row">
+              <button class="sr-btn sr-no"      data-val="0">Missed it</button>
+              <button class="sr-btn sr-partial"  data-val="1">Partial</button>
+              <button class="sr-btn sr-got"      data-val="2">Got it!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Screen -->
+    <div id="screen-stats" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" id="btnBackStats">←</button>
+        <h2>Your Progress</h2>
+        <div class="header-right"></div>
+      </div>
+      <div id="statsContent" class="stats-content"></div>
+    </div>
+  </div>
+
+  <!-- Nav Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-screen="home">
+      <span class="nav-icon">🧠</span><span class="nav-label">Home</span>
+    </button>
+    <button class="nav-btn" data-screen="topics">
+      <span class="nav-icon">📚</span><span class="nav-label">Study</span>
+    </button>
+    <button class="nav-btn" data-screen="stats">
+      <span class="nav-icon">📊</span><span class="nav-label">Progress</span>
+    </button>
+  </nav>
+
+  <script>
+/**
+ * CogSys Learning Data
+ * Module: Cognitive Systems IN2222, TU Munich (Prof. Knoll)
+ * Based on: Lecture slides C01–C05, E01–E04, E09 + Past exams SS21/SS23/SS24
+ *
+ * Each topic has:
+ *   - guided: short explanation + follow-up question
+ *   - flashcards: front/back pairs (SM-2 compatible)
+ *   - quiz: multiple choice with explanation
+ *   - fillblank: sentence with ___
+ *   - open: exam-style questions with model answers
+ */
+
+const MODULES = [
+  {
+    id: 'cogsys',
+    name: 'Cognitive Systems',
+    subtitle: 'IN2222 · TU Munich',
+    icon: '🧠',
+    locked: false,
+    topics: [
+      {
+        id: 'p1',
+        name: 'Cognition & Cognitive Science',
+        icon: '💡',
+        color: '#3b82f6',
+        examWeight: 20,
+
+        guided: [
+          {
+            id: 'g_p1_1',
+            badge: 'Core Definition',
+            title: 'What is Cognition?',
+            body: 'Cognition is a system-level process that integrates many different processing modalities — learning, memory, perception, interaction. It is NOT wishing or feeling.\n\nThe key word is integration: cognition is the whole, not any single ability.',
+            example: '🔑 Exam tip: Cognition ≠ Intelligence. Intelligence is ONE special cognitive skill — a constituent of cognition, like a single instrument in an orchestra.',
+          },
+          {
+            id: 'g_p1_2',
+            badge: 'Chinese Room',
+            title: 'Searle\'s Chinese Room',
+            body: 'A person with no Chinese knowledge sits in a room. A rulebook maps every Chinese question to a correct answer. The person follows the rules and sends correct replies — but understands nothing.\n\nThis is Searle\'s argument that syntax (symbol manipulation) ≠ semantics (meaning/understanding).',
+            example: '🔑 Exam tip: The Chinese Room argues that passing the Turing Test does NOT prove understanding. It is the classic counter-argument to the Turing Test.',
+          },
+          {
+            id: 'g_p1_3',
+            badge: 'Cognitive Cycle',
+            title: 'The Cycle of Cognitive Processing',
+            body: 'Cognitive systems operate in a loop:\n\nPerception → Cognition → Action → (back to Perception)\n\nWithin Cognition: Anticipation → Assimilation → Adaptation\n\nThis cycle never stops — the system continuously updates its world model.',
+            example: '🔑 Exam tip: Memorise the full cycle with subdivisions. 1 point per stage + arrow in the exam.',
+          },
+          {
+            id: 'g_p1_4',
+            badge: 'Two Systems',
+            title: 'Cognitivist vs Emergent Systems',
+            body: 'Cognitivist: Cognition IS computation. All operations are syntactic symbol manipulations. Learning = acquiring new knowledge. Based on the computational theory of mind.\n\nEmergent: Cognition is a continuous self-organising process driven by agent-environment interaction. Embodiment is essential. Learning = acquiring new anticipatory skills.',
+            example: '🔑 Exam tip: The key contrast — cognitivist systems process symbols to reach goals; emergent systems self-organise to maintain themselves.',
+          },
+          {
+            id: 'g_p1_5',
+            badge: 'Phenomena',
+            title: 'Uncanny Valley & Proximate/Ultimate',
+            body: 'Uncanny Valley: Familiarity does NOT increase steadily with human-likeness. It rises, then drops sharply at high-but-not-perfect human-likeness, then rises again.\n\nProximate explanation: HOW is a behaviour implemented? (mechanism)\nUltimate explanation: WHY does the system exhibit it? (evolutionary purpose)',
+            example: '🔑 Bird song: Ultimate = attract mates; Proximate = singing loudly attracts potential mates.',
+          },
+        ],
+
+        flashcards: [
+          { id: 'fc_p1_1',  front: 'Define cognition vs intelligence.',                                                     back: 'Cognition = global system-level process integrating many modalities. Intelligence = ONE special cognitive skill (a synergy/constituent of a cognitive system).' },
+          { id: 'fc_p1_2',  front: 'What does the Chinese Room Argument prove?',                                             back: 'That passing the Turing Test does NOT mean a machine understands. Syntactic symbol manipulation ≠ semantic understanding.' },
+          { id: 'fc_p1_3',  front: 'Name the full cycle of cognitive processing including subdivisions.',                    back: '… → Perception → Cognition (Anticipation → Assimilation → Adaptation) → Action → Perception → …' },
+          { id: 'fc_p1_4',  front: 'Cognitivist vs Emergent systems — key difference?',                                     back: 'Cognitivist: cognition = computation, symbol operations, learning = new knowledge. Emergent: self-organising via environment interaction, embodiment essential, learning = anticipatory skills.' },
+          { id: 'fc_p1_5',  front: 'What is the Uncanny Valley?',                                                            back: 'Familiarity rises with human-likeness, then drops sharply (the "valley") at high-but-imperfect resemblance, then rises again near human-level.' },
+          { id: 'fc_p1_6',  front: 'Proximate explanation vs Ultimate explanation — what question does each answer?',        back: 'Proximate: HOW is the behaviour implemented? (mechanism). Ultimate: WHY does the system show this behaviour? (evolutionary purpose).' },
+          { id: 'fc_p1_7',  front: 'Name the two schools of thought on the Mind-Body Problem.',                              back: 'Monism: mind & body are the same substance (mental = physical states). Dualism: two different substances — decouples mind from body, basis for free will.' },
+          { id: 'fc_p1_8',  front: 'What is the Robotics Paradox?',                                                          back: 'Seemingly easy tasks (e.g. shopping) are hard for robots; seemingly hard but well-defined tasks (e.g. spot welding) are easy.' },
+          { id: 'fc_p1_9',  front: 'Name 3 of the 7 cognitive capabilities for self-reliance & adaptation.',                back: 'Self-Reliance: Goal-Directedness, Autonomy, Interaction. Adaptation: Reaction, Learning, Anomaly Detection. Perception & Action: Interpretation, Sensing, Anticipation, Action.' },
+          { id: 'fc_p1_10', front: 'Name 3 key innovations that enabled ChatGPT/LLMs.',                                      back: '1. Generative language model training. 2. Transformer architecture. 3. New training procedure for dialogues. 4. Massive scaling.' },
+          { id: 'fc_p1_11', front: 'Define a Cognitive System.',                                                              back: 'An autonomous system that perceives its environment, anticipates outcomes, learns from experience, adapts to change, and is goal-directed.' },
+          { id: 'fc_p1_12', front: 'What are the 4 components of a cognitive system?',                                       back: 'Embodiment, constraints, interaction with other agents, situatedness in environment.' },
+        ],
+
+        quiz: [
+          { id: 'qz_p1_1', category: 'P1 — Cognition', question: 'What is the key difference between cognition and intelligence?', options: ['They are synonyms', 'Intelligence is a system-level process; cognition is a subset', 'Cognition integrates many modalities; intelligence is one special cognitive skill', 'Cognition is biological; intelligence is artificial'], correct: 2, explanation: 'Cognition = global system-level integration. Intelligence is ONE constituent skill of a cognitive system.' },
+          { id: 'qz_p1_2', category: 'P1 — Cognition', question: 'What does the Chinese Room Argument demonstrate?', options: ['That computers will never speak Chinese', 'Passing the Turing Test proves understanding', 'Syntactic symbol manipulation does not equal semantic understanding', 'Rule-based systems are more intelligent than humans'], correct: 2, explanation: 'Searle: correct symbol manipulation (syntax) ≠ understanding meaning (semantics). The person in the room answers correctly but understands nothing.' },
+          { id: 'qz_p1_3', category: 'P1 — Cognition', question: 'In the cycle of cognitive processing, what are the three sub-stages of Cognition?', options: ['Learning, Memory, Action', 'Sensing, Processing, Outputting', 'Anticipation, Assimilation, Adaptation', 'Input, Transform, Output'], correct: 2, explanation: 'Cognition subdivides into: Anticipation → Assimilation → Adaptation. Know this for the diagram question.' },
+          { id: 'qz_p1_4', category: 'P1 — Cognition', question: 'Which statement about the Uncanny Valley is correct?', options: ['Familiarity always increases with human-likeness', 'There is no relationship between human-likeness and acceptance', 'Familiarity rises, drops sharply at high-but-imperfect likeness, then rises again', 'Robots should always be made more human-like'], correct: 2, explanation: 'The uncanny valley = the dip in familiarity at high-but-not-quite-human resemblance.' },
+          { id: 'qz_p1_5', category: 'P1 — Cognition', question: '"Why do birds sing?" — which explanation is the ULTIMATE one?', options: ['By singing loudly, potential mates are attracted', 'Birds use their syrinx to produce sound', 'To attract mates for reproduction', 'Songs are learned from parents during early development'], correct: 2, explanation: 'Ultimate = WHY (evolutionary purpose) = attract mates. Proximate = HOW (mechanism) = loud singing attracts mates.' },
+          { id: 'qz_p1_6', category: 'P1 — Cognition', question: 'In emergent cognitive systems, what is the role of cognition?', options: ['Goal achievement through computation', 'Syntactic symbol manipulation', 'Self-maintenance through environment interaction', 'Rational decision making'], correct: 2, explanation: 'In emergent systems, cognition = self-maintenance. The system self-organises to extend its autonomy.' },
+          { id: 'qz_p1_7', category: 'P1 — Cognition', question: 'Which is NOT a component of a cognitive system as defined in the lecture?', options: ['Embodiment', 'Situatedness in environment', 'A silicon processor', 'Interaction with other agents'], correct: 2, explanation: 'The 4 components are: embodiment, constraints, interaction with agents, situatedness. "Silicon processor" is not part of the definition.' },
+        ],
+
+        fillblank: [
+          { id: 'fb_p1_1', sentence: 'Cognition is a ___ process that integrates many different processing modalities.', blank: 'system-level', hint: 'Think about the scale — individual ability vs. whole system' },
+          { id: 'fb_p1_2', sentence: 'Intelligence is a ___ cognitive skill — a constituent of a cognitive system.', blank: 'special', hint: 'One among many' },
+          { id: 'fb_p1_3', sentence: 'The Chinese Room shows that passing the Turing Test does not prove ___.', blank: 'understanding', hint: 'The deeper concept behind correct answers' },
+          { id: 'fb_p1_4', sentence: 'The cycle: Perception → Cognition → ___ → Perception', blank: 'Action', hint: 'What comes after thinking?' },
+          { id: 'fb_p1_5', sentence: 'Cognition subdivides into: Anticipation → ___ → Adaptation', blank: 'Assimilation', hint: 'Integrating new information' },
+          { id: 'fb_p1_6', sentence: 'The Uncanny Valley: familiarity rises, then ___ at near-human likeness.', blank: 'drops', hint: 'The valley goes...' },
+          { id: 'fb_p1_7', sentence: 'Proximate explanation: HOW. Ultimate explanation: ___.', blank: 'WHY', hint: 'Evolutionary purpose' },
+          { id: 'fb_p1_8', sentence: 'In cognitivist systems, learning = acquisition of new ___. In emergent systems, learning = acquisition of new ___ skills.', blank: 'knowledge / anticipatory', hint: 'Knowledge vs skills' },
+        ],
+
+        open: [
+          { id: 'op_p1_1', points: '4 pts', question: 'Explain the difference between cognition and intelligence.', answer: '• Cognition = global process at system level (1) integrating many processing modalities (1).\n• Intelligence = a special cognitive skill (1) that is a constituent/synergy of a cognitive system (1).' },
+          { id: 'op_p1_2', points: '6 pts', question: 'Describe the Chinese Room Argument and state the central question it addresses.', answer: '• Person with no Chinese knowledge sits in room (1).\n• Rulebook maps Chinese questions to answers (1).\n• Person answers using rules like a program (1).\n• Answers are correct (1) but person understands nothing (1).\n• Central question: Does passing the Turing Test prove understanding? → No (1).' },
+          { id: 'op_p1_3', points: '4 pts', question: 'Draw the cycle of cognitive processing with all stages and subdivisions.', answer: '… → Perception → Cognition → Action → Perception → …\nCognition: Anticipation → Assimilation → Adaptation\n(1 point per correct stage + connecting arrow)' },
+          { id: 'op_p1_4', points: '6 pts', question: 'Explain the difference between cognitivist and emergent cognitive systems.', answer: '• Cognitivist: cognition = computation (1), syntactic symbol operations (1), learning = new knowledge (1).\n• Emergent: continuous self-organising process (1), driven by agent-environment interaction (1), embodiment essential (1).' },
+          { id: 'op_p1_5', points: '2 pts', question: 'Explain "birds sing" using a proximate and an ultimate explanation.', answer: '• Ultimate (WHY): attract mates for reproduction (1).\n• Proximate (HOW): by singing loudly, potential mates are attracted (1).' },
+        ],
+      },
+
+      {
+        id: 'p2',
+        name: 'Cognitive Architectures & NRP',
+        icon: '🏗️',
+        color: '#a855f7',
+        examWeight: 17,
+
+        guided: [
+          { id: 'g_p2_1', badge: '3 Types', title: 'Types of Cognitive Architectures', body: 'Three types — memorise them:\n\n1. Symbolic: cognition = symbol computation (e.g. SOAR)\n2. Emergent: cognition emerges from interaction (e.g. neural nets)\n3. Hybrid: combines symbolic and emergent approaches (e.g. ACT-R)', example: '🔑 This comes up in EVERY exam. Just name: Symbolic, Emergent, Hybrid.' },
+          { id: 'g_p2_2', badge: 'ACT-R Core', title: 'ACT-R: Modules & Buffers', body: 'ACT-R has 4 main modules:\n• Intention module (goals)\n• Declarative module (factual knowledge)\n• Visual module (seeing)\n• Manual module (action — NOT "action module"!)\n\nEach module has a buffer: exposes current state, stores exactly ONE chunk, serves as interface between modules.\n\nProduction: an if-then rule controlling behaviour.', example: '🔑 Trap: "manual" not "action". And each buffer holds exactly 1 chunk.' },
+          { id: 'g_p2_3', badge: 'ACT-R Parallel/Serial', title: 'How ACT-R Processes Information', body: 'Parallel: all modules run simultaneously and independently.\n\nSerial: only ONE production can fire per cycle. Only one chunk per buffer. This creates serial control at the top level.\n\nSo ACT-R is both: parallel modules, serial production execution.', example: '🔑 This is the elegant answer: parallel at module level, serial at production level.' },
+          { id: 'g_p2_4', badge: 'NRP', title: 'Neurorobotics Platform & Transfer Function', body: 'NRP: simulation platform coupling brain models with robots. Connects neuroscience, AI/ML, and robotics.\n\nTransfer Function (TF): connects and synchronises brain models with robot models.\n\nTools usable with TF: ROS/Gazebo, OpenSim, NEST, Neuromorphic Hardware, TensorFlow/PyTorch, physical robot.', example: '🔑 "What does the TF do?" → connects and synchronises brain ↔ robot. That is 2 points.' },
+        ],
+
+        flashcards: [
+          { id: 'fc_p2_1',  front: 'Name the 3 types of cognitive architectures.',                               back: 'Symbolic, Emergent, Hybrid.' },
+          { id: 'fc_p2_2',  front: 'Name the 4 main modules of ACT-R.',                                          back: 'Intention module, Declarative module, Visual module, Manual module. (Procedural also acceptable.)' },
+          { id: 'fc_p2_3',  front: 'What is a Buffer in ACT-R?',                                                 back: 'Exposes the current state of a module; stores exactly ONE chunk; assigned to one module; serves as interface between modules.' },
+          { id: 'fc_p2_4',  front: 'What is a Production in ACT-R?',                                             back: 'A statement of a particular contingency that controls behaviour (if-then rule).' },
+          { id: 'fc_p2_5',  front: 'How does ACT-R implement PARALLEL processing?',                              back: 'All modules operate simultaneously and independently.' },
+          { id: 'fc_p2_6',  front: 'How does ACT-R implement SERIAL processing?',                                back: 'Only ONE production can fire per cycle; only one chunk per buffer → serial control flow at the top level.' },
+          { id: 'fc_p2_7',  front: 'What does the Transfer Function (TF) do in the NRP?',                        back: 'Connects and synchronises brain models with robot models.' },
+          { id: 'fc_p2_8',  front: 'Name 4 tools usable with the NRP Transfer Function.',                        back: 'Any 4 of: ROS/Gazebo, OpenSim, NEST, Neuromorphic Hardware, TensorFlow/PyTorch, physical robot.' },
+          { id: 'fc_p2_9',  front: 'Name 2 advantages of ACT-R over a standard programming language.',           back: 'Any 2: advances understanding of human cognition; generic across domains; unified integrative model; executable implementation of cognitive theory.' },
+          { id: 'fc_p2_10', front: 'Write the ACT-R chunk type for multiplication and encode 11×3=33.',           back: '(chunk-type multiplication factor1 factor2 product)\n(add-dm (Multiply113 ISA multiplication factor1 11 factor2 3 product 33))' },
+        ],
+
+        quiz: [
+          { id: 'qz_p2_1', category: 'P2 — Architectures', question: 'Which is NOT one of the three types of cognitive architectures?', options: ['Symbolic', 'Emergent', 'Computational', 'Hybrid'], correct: 2, explanation: 'The three types are: Symbolic, Emergent, Hybrid. "Computational" is not a category.' },
+          { id: 'qz_p2_2', category: 'P2 — Architectures', question: 'How many chunks can a single ACT-R buffer store?', options: ['Unlimited', 'One per module type', 'Exactly one', 'Up to three'], correct: 2, explanation: 'A buffer stores EXACTLY ONE chunk at a time. This is a classic 1-point fact.' },
+          { id: 'qz_p2_3', category: 'P2 — Architectures', question: 'What is the role of the Transfer Function in the Neurorobotics Platform?', options: ['It trains neural networks', 'It connects and synchronises brain models with robot models', 'It converts sensor data to images', 'It translates code between programming languages'], correct: 1, explanation: 'The TF connects and synchronises brain ↔ robot. Two keywords: connects, synchronises.' },
+          { id: 'qz_p2_4', category: 'P2 — Architectures', question: 'How does ACT-R implement SERIAL processing?', options: ['Modules run one at a time', 'Only one production fires per cycle', 'Buffers process information sequentially', 'The visual module blocks others'], correct: 1, explanation: 'Serial in ACT-R means only ONE production fires per cognitive cycle. Modules themselves are parallel.' },
+          { id: 'qz_p2_5', category: 'P2 — Architectures', question: 'Which module in ACT-R handles physical actions?', options: ['Action module', 'Motor module', 'Manual module', 'Output module'], correct: 2, explanation: 'It is called the MANUAL module — a classic exam trap. Not "action" or "motor".' },
+        ],
+
+        fillblank: [
+          { id: 'fb_p2_1', sentence: 'The three types of cognitive architectures are: ___, Emergent, and Hybrid.', blank: 'Symbolic', hint: 'Computation via symbols' },
+          { id: 'fb_p2_2', sentence: 'An ACT-R buffer stores exactly ___ chunk at a time.', blank: 'one', hint: 'A very small number' },
+          { id: 'fb_p2_3', sentence: 'The Transfer Function in the NRP ___ and synchronises brain models with robot models.', blank: 'connects', hint: 'It bridges two systems' },
+          { id: 'fb_p2_4', sentence: 'In ACT-R, parallel processing is achieved by modules operating ___, while serial processing comes from only ___ production firing per cycle.', blank: 'simultaneously / one', hint: 'At the same time vs. one at a time' },
+          { id: 'fb_p2_5', sentence: 'A production in ACT-R is a statement of a particular ___ that controls behaviour.', blank: 'contingency', hint: 'An if-then condition' },
+        ],
+
+        open: [
+          { id: 'op_p2_1', points: '3 pts', question: 'Name the three types of cognitive architectures.', answer: '• Symbolic (1), Emergent (1), Hybrid (1).' },
+          { id: 'op_p2_2', points: '4 pts', question: 'Name the four main modules of ACT-R.', answer: '• Intention module (1), Declarative module (1), Visual module (1), Manual module (1). [Procedural also accepted]' },
+          { id: 'op_p2_3', points: '4 pts', question: 'Explain how ACT-R implements parallel and serial information processing.', answer: '• Parallel: modules operate simultaneously and independently (2).\n• Serial: only one production fires per cycle / one chunk per buffer → serial control (2).' },
+          { id: 'op_p2_4', points: '6 pts', question: 'Describe the role of the Transfer Function in the NRP and name 4 tools it can interface with.', answer: '• TF connects and synchronises brain models with robot models (2).\n• 4 of: ROS/Gazebo, OpenSim, NEST, Neuromorphic Hardware, TF/PyTorch, physical robot (1 each, max 4).' },
+        ],
+      },
+
+      {
+        id: 'p3',
+        name: 'Human Brain',
+        icon: '🔬',
+        color: '#22c55e',
+        examWeight: 16,
+
+        guided: [
+          { id: 'g_p3_1', badge: 'Neuron Basics', title: 'The 3 Parts of a Biological Neuron', body: 'Every biological neuron has 3 main components:\n\n• Soma (cell body): contains the nucleus; generates action potentials\n• Dendrites: receive signals from pre-synaptic neurons\n• Axon: conducts signals from soma to post-synaptic neurons\n\nThink: Receive (dendrites) → Process (soma) → Send (axon)', example: '🔑 This is a guaranteed exam question — draw it, label it, describe each part.' },
+          { id: 'g_p3_2', badge: 'Action Potential', title: 'Phases of the Action Potential', body: 'The membrane potential changes in 4 phases:\n\n1. Resting potential — baseline\n2. Depolarisation — potential rises to the spike\n3. Hyperpolarisation/Repolarisation — falls below resting\n4. Refractory period — recovery\n\nKey property: all-or-none event — same shape regardless of stimulus strength.', example: '🔑 The exam shows a graph and asks you to label A, B, C, D. Know the order and names.' },
+          { id: 'g_p3_3', badge: 'Brain Anatomy', title: 'The 4 Lobes of the Cerebrum', body: 'Four lobes, each with key functions:\n\n• Frontal lobe: motion planning, action control, short-term memory\n• Parietal lobe: body image, somatic sensation\n• Temporal lobe: hearing, emotion, learning, memory\n• Occipital lobe: vision\n\nMnemonic: "Front Plans, Parietal Feels, Temporal Hears, Occipital Sees"', example: '🔑 Also know: dorsal stream ("where/how") vs ventral stream ("what") — comes up every exam.' },
+          { id: 'g_p3_4', badge: 'Visual Streams', title: 'Dorsal & Ventral Visual Streams', body: 'Two visual processing pathways from the occipital cortex:\n\n• Dorsal stream: "Where?" (spatial location) and "How?" (motor actions). Projects to parietal lobe.\n\n• Ventral stream: "What?" (object identity). Projects to temporal lobe.\n\nDiscovery: Hubel & Wiesel (1961) found simple cells (orientation/location sensitive) and complex cells in visual cortex.', example: '🔑 Dorsal = WHERE/HOW. Ventral = WHAT. Easy to confuse — make a flashcard now.' },
+        ],
+
+        flashcards: [
+          { id: 'fc_p3_1',  front: 'Name the 3 main components of a biological neuron and their roles.',           back: 'Soma: cell body, nucleus, generates APs. Dendrites: receive signals. Axon: conducts signals to post-synaptic neurons.' },
+          { id: 'fc_p3_2',  front: 'Name the 4 phases of the action potential in order.',                          back: '1. Resting potential. 2. Depolarisation (spike). 3. Repolarisation/Hyperpolarisation. 4. Refractory period.' },
+          { id: 'fc_p3_3',  front: 'What is the "10% brain myth" — is it true?',                                   back: 'FALSE. Every part is used, but NOT all at once (different functions not needed simultaneously). If all fired together → epileptic state.' },
+          { id: 'fc_p3_4',  front: 'Name the 4 lobes and one function each.',                                      back: 'Frontal: motion planning. Parietal: somatic sensation. Temporal: hearing/memory. Occipital: vision.' },
+          { id: 'fc_p3_5',  front: 'Dorsal stream vs Ventral stream — what does each process?',                    back: 'Dorsal: WHERE? / HOW? (spatial location, motor actions). Ventral: WHAT? (object identity).' },
+          { id: 'fc_p3_6',  front: 'What are the 2 subsystems of the vertebrate nervous system?',                  back: 'CNS: brain + spinal cord; central processing. PNS: connects sensory organs/muscles/organs to CNS.' },
+          { id: 'fc_p3_7',  front: 'What are the 2 phases of the refractory period?',                              back: 'Absolute: firing impossible (Na⁺ channels blocked). Relative: firing possible but needs stronger activation.' },
+          { id: 'fc_p3_8',  front: 'What is the resting membrane potential?',                                      back: 'Voltage between inside/outside of neuron at equilibrium between chemical gradient and voltage gradient.' },
+          { id: 'fc_p3_9',  front: 'What does the myelin sheath do?',                                              back: 'Increases membrane resistance → increases conduction velocity of the axon.' },
+          { id: 'fc_p3_10', front: 'Name the 4 sections of the brainstem.',                                        back: 'Diencephalon, Midbrain, Pons, Medulla Oblongata.' },
+          { id: 'fc_p3_11', front: 'Function of hippocampus vs amygdala?',                                         back: 'Hippocampus: formation of episodic long-term memories. Amygdala: analyses motivational/emotional significance of stimuli.' },
+          { id: 'fc_p3_12', front: 'What did Hubel & Wiesel discover in 1961?',                                    back: 'Simple cells and complex cells in the visual cortex. Simple cells respond to correctly oriented and correctly localised basic shapes (edges/lines).' },
+        ],
+
+        quiz: [
+          { id: 'qz_p3_1', category: 'P3 — Brain', question: 'Which component of a neuron RECEIVES signals from other neurons?', options: ['Axon', 'Soma', 'Dendrites', 'Myelin sheath'], correct: 2, explanation: 'Dendrites receive incoming signals. Axon sends signals outward. Soma processes and generates action potentials.' },
+          { id: 'qz_p3_2', category: 'P3 — Brain', question: 'What is an action potential?', options: ['A continuous graded signal', 'An all-or-none spike event', 'The resting state of a neuron', 'The chemical signal at a synapse'], correct: 1, explanation: 'All-or-none event — once threshold is crossed, the spike always has the same shape/amplitude.' },
+          { id: 'qz_p3_3', category: 'P3 — Brain', question: 'Is "Only 10% of the brain is used" true?', options: ['Yes — most is unused reserve', 'Yes — only during sleep is more used', 'No — all parts are used, but not simultaneously', 'No — 30% is unused'], correct: 2, explanation: 'Every part is used, but not all at once. If all fired simultaneously, this would cause epilepsy.' },
+          { id: 'qz_p3_4', category: 'P3 — Brain', question: 'Which visual stream answers "WHERE is the object?"', options: ['Ventral stream', 'Dorsal stream', 'Both equally', 'Neither — that is parietal only'], correct: 1, explanation: 'Dorsal = WHERE/HOW. Ventral = WHAT. Classic exam question.' },
+          { id: 'qz_p3_5', category: 'P3 — Brain', question: 'During the ABSOLUTE refractory period, what happens?', options: ['Firing requires more current than usual', 'Firing is completely impossible', 'The neuron fires spontaneously', 'EF increases'], correct: 1, explanation: 'Absolute: Na⁺ channels are blocked → firing impossible. Relative: possible but needs stronger activation.' },
+          { id: 'qz_p3_6', category: 'P3 — Brain', question: 'Which lobe primarily processes VISION?', options: ['Frontal', 'Parietal', 'Temporal', 'Occipital'], correct: 3, explanation: 'Occipital lobe = vision. Frontal = planning. Parietal = sensation. Temporal = hearing/memory.' },
+        ],
+
+        fillblank: [
+          { id: 'fb_p3_1', sentence: 'The three main components of a neuron are: soma, ___, and axon.', blank: 'dendrites', hint: 'They branch out like a tree' },
+          { id: 'fb_p3_2', sentence: 'The action potential is an "all-or-___" event.', blank: 'none', hint: 'It either fires completely or...' },
+          { id: 'fb_p3_3', sentence: 'The dorsal visual stream answers "___ is the object?" and the ventral stream answers "___ is it?"', blank: 'WHERE / WHAT', hint: 'Location vs identity' },
+          { id: 'fb_p3_4', sentence: 'The ___ lobe is primarily responsible for vision.', blank: 'occipital', hint: 'At the back of the head' },
+          { id: 'fb_p3_5', sentence: 'The ___ stores exactly one chunk and serves as interface between ACT-R modules.', blank: 'buffer', hint: 'Named after its function' },
+          { id: 'fb_p3_6', sentence: 'The myelin sheath increases membrane resistance, which increases conduction ___ of the axon.', blank: 'velocity', hint: 'How fast the signal travels' },
+        ],
+
+        open: [
+          { id: 'op_p3_1', points: '6 pts', question: 'Name the three main components of a biological neuron and briefly describe each.', answer: '• Soma (1): cell body containing nucleus (1).\n• Dendrites (1): receive signals from pre-synaptic neuron (1).\n• Axon (1): conducts signals to post-synaptic neurons (1).' },
+          { id: 'op_p3_2', points: '4 pts', question: 'Name the two streams of visual processing and outline the information each computes.', answer: '• Dorsal stream (1): WHERE? spatial location, HOW? motor actions (1).\n• Ventral stream (1): WHAT? object identity (1).' },
+          { id: 'op_p3_3', points: '4 pts', question: 'Name the four lobes of the cerebrum and one function each.', answer: '• Frontal: motion planning/action control (1).\n• Parietal: body image/somatic sensation (1).\n• Temporal: hearing/memory (1).\n• Occipital: vision (1).' },
+          { id: 'op_p3_4', points: '2 pts', question: 'Explain the refractory period and its two phases.', answer: '• Phase after hyperpolarisation — neuron regenerates AP (1).\n• Absolute: firing impossible, Na⁺ blocked. Relative: firing possible, stronger activation needed (1).' },
+        ],
+      },
+
+      {
+        id: 'p4',
+        name: 'Biological Neurons & SNNs',
+        icon: '⚡',
+        color: '#eab308',
+        examWeight: 24,
+
+        guided: [
+          { id: 'g_p4_1', badge: 'LIF Neuron', title: 'The LIF Model & Its ODE', body: 'The Leaky Integrate-and-Fire model:\n\nC·dv/dt = I(t) − v(t)/R\n\nC = membrane capacitance, R = membrane resistance, I(t) = input current.\n\nFires when v reaches threshold v_thresh, then resets to v_reset.\n\nTwo captured features: (1) Integration of input over time, (2) Leak/forgetting via −v/R term.', example: '🔑 You WILL solve this ODE. Solution for I=const, v(0)=0: v(t) = IR(1 − e^(−t/RC)). Time constant τ = RC.' },
+          { id: 'g_p4_2', badge: 'Solving the ODE', title: 'Step-by-Step ODE Solution', body: 'Given: C·dv/dt = I − v/R, v(0)=0\n\nStep 1: Rearrange → dv/dt = I/C − v/(RC)\nStep 2: Steady state (dv/dt=0): v_∞ = I·R\nStep 3: General solution: v(t) = v_∞ + (v(0)−v_∞)·e^(−t/τ)\nStep 4: With v(0)=0: v(t) = I·R·(1 − e^(−t/RC))\nTime constant τ = RC', example: '🔑 Show every step! The exam awards partial marks for the working. τ = RC is always 1 point.' },
+          { id: 'g_p4_3', badge: 'Encoding', title: 'Rate Coding vs Time-to-First-Spike', body: 'Two main encoding schemes:\n\n• Rate coding: information = average spike rate in a time window (e.g. muscle excitation). Advantage: robust against noise.\n\n• Time-to-first-spike: information = time of first spike after reference point. Advantage: very fast, few spikes needed.', example: '🔑 Both come up every exam — name + advantage for each.' },
+          { id: 'g_p4_4', badge: 'Hebbian Learning', title: '"Neurons that fire together, wire together"', body: 'Hebbian Learning:\n• Weight change depends on pre- AND post-synaptic activity\n• Correlated neurons strengthen their connection\n• Unsupervised learning\n\nProblem — Saturation: Without limiting weight growth, positive feedback drives weights to infinity (diverges).\n\nOja\'s Rule: Hebb + normalisation → weights stay bounded, converge to first principal component.', example: '🔑 "Fire together, wire together" is the phrase they test. Saturation problem = unbounded growth without normalisation.' },
+        ],
+
+        flashcards: [
+          { id: 'fc_p4_1',  front: 'Write the LIF neuron ODE.',                                                     back: 'C·dv/dt = I(t) − v(t)/R\nC=membrane capacitance, R=membrane resistance, I(t)=input current.' },
+          { id: 'fc_p4_2',  front: 'Solve the LIF ODE for I=const, v(0)=0. State the time constant.',               back: 'v(t) = IR(1 − e^(−t/RC))\nTime constant τ = RC' },
+          { id: 'fc_p4_3',  front: 'Name the 2 features of neural processing captured by the LIF model.',           back: '1. Integration of input current over time ("integrate").\n2. Leak/forgetting via −v/R ("leaky").' },
+          { id: 'fc_p4_4',  front: 'Rate coding vs Time-to-first-spike — definition and advantage of each.',         back: 'Rate coding: info = average spike rate in window. Advantage: robust against noise.\nTime-to-first-spike: info = time of first spike. Advantage: very fast, few spikes.' },
+          { id: 'fc_p4_5',  front: 'State the basic principle of Hebbian Learning.',                                  back: '"Neurons that fire together, wire together." Weight change depends on pre- AND post-synaptic activity. Correlated neurons strengthen their connection. Unsupervised.' },
+          { id: 'fc_p4_6',  front: 'What is the saturation problem in Hebbian Learning?',                             back: 'Without limiting weight growth: positive feedback drives weights to infinity (diverges). Weights grow unboundedly because strengthened synapses → more activity → further strengthening.' },
+          { id: 'fc_p4_7',  front: 'What does Oja\'s Rule add to Hebbian Learning?',                                 back: 'Built-in normalisation/saturation → prevents unbounded weight growth. Weight vector converges to first principal component; norm stays bounded (||w||→1).' },
+          { id: 'fc_p4_8',  front: 'Name 3 Hebb-based learning rules.',                                              back: 'Any 3: Covariance rule, Correlation rule, BCM theory, Oja\'s Rule, STDP.' },
+          { id: 'fc_p4_9',  front: 'Describe the Hodgkin-Huxley model.',                                             back: 'Biologically accurate model. Components: membrane capacitance as capacitor; ion currents (leak, K⁺, Na⁺); Nernst potential as batteries; nonlinear resistors for ion channel dynamics.' },
+          { id: 'fc_p4_10', front: 'Analog vs Spiking neuron — name 2 differences.',                                 back: 'Analog: activation function, continuous values, no temporal dynamics, low bio plausibility.\nSpiking: dynamical system, digital spikes, temporal dynamics, high bio plausibility.' },
+          { id: 'fc_p4_11', front: 'Name the 2 types of neuroplasticity.',                                           back: 'Functional: changes function/weights of neurons. Structural: creates/deletes synapses.' },
+          { id: 'fc_p4_12', front: 'Name the 5 levels of modelling neuron dynamics (detailed → abstract).',          back: 'Detailed compartmental → Reduced compartmental → Single-compartment → Cascade model → Black-box model.' },
+        ],
+
+        quiz: [
+          { id: 'qz_p4_1', category: 'P4 — SNNs', question: 'In the LIF ODE C·dv/dt = I(t) − v(t)/R, what does the −v/R term model?', options: ['Ion channel gating', 'The spike threshold', 'Membrane leak (forgetting)', 'Post-synaptic potential'], correct: 2, explanation: 'The −v/R term is the "leaky" part — it causes the potential to decay toward 0 in absence of input (membrane leak).' },
+          { id: 'qz_p4_2', category: 'P4 — SNNs', question: 'What is the time constant τ in the LIF model?', options: ['τ = C/R', 'τ = R/C', 'τ = RC', 'τ = 1/(RC)'], correct: 2, explanation: 'τ = RC. It determines how quickly the potential approaches its steady-state value.' },
+          { id: 'qz_p4_3', category: 'P4 — SNNs', question: 'What is the main advantage of rate coding over time-to-first-spike coding?', options: ['Faster', 'Uses fewer spikes', 'More robust against noise and timing imprecisions', 'More biologically accurate'], correct: 2, explanation: 'Rate coding averages over a window → robust to noise. Time-to-first-spike is faster but more sensitive to timing errors.' },
+          { id: 'qz_p4_4', category: 'P4 — SNNs', question: 'What problem does Oja\'s Rule solve?', options: ['The XOR problem', 'Unbounded weight growth in Hebbian Learning', 'Overfitting in deep networks', 'The vanishing gradient problem'], correct: 1, explanation: 'Oja\'s Rule adds normalisation to Hebbian Learning → weights stay bounded and converge to first principal component.' },
+          { id: 'qz_p4_5', category: 'P4 — SNNs', question: 'Hebbian Learning is which type of learning?', options: ['Supervised', 'Reinforcement', 'Unsupervised', 'Semi-supervised'], correct: 2, explanation: 'Hebbian Learning is unsupervised — no teacher signal, just correlation between pre- and post-synaptic activity.' },
+          { id: 'qz_p4_6', category: 'P4 — SNNs', question: 'What is structural plasticity?', options: ['Changing synaptic weight strengths', 'Physical changes to the brain structure due to injury', 'Creating and deleting synapses', 'Changing the firing threshold'], correct: 2, explanation: 'Structural plasticity = creating/deleting synapses. Functional plasticity = changing weights.' },
+          { id: 'qz_p4_7', category: 'P4 — SNNs', question: 'For constant I and v(0)=0, the LIF solution is:', options: ['v(t) = IR·e^(−t/RC)', 'v(t) = IR·(1 − e^(t/RC))', 'v(t) = IR·(1 − e^(−t/RC))', 'v(t) = I/C·t'], correct: 2, explanation: 'v(t) = IR(1 − e^(−t/RC)). It starts at 0 and rises exponentially toward the steady-state IR.' },
+        ],
+
+        fillblank: [
+          { id: 'fb_p4_1', sentence: 'The LIF ODE is: C·dv/dt = I(t) − ___.', blank: 'v(t)/R', hint: 'The leak term' },
+          { id: 'fb_p4_2', sentence: 'For constant I and v(0)=0, the solution is: v(t) = IR·(1 − e^(−t/___)).', blank: 'RC', hint: 'Time constant τ = ?' },
+          { id: 'fb_p4_3', sentence: '"Neurons that fire together, ___ together."', blank: 'wire', hint: 'Strengthening connections' },
+          { id: 'fb_p4_4', sentence: 'Rate coding encodes information in the average spike ___ within a time window.', blank: 'rate', hint: 'How often it fires' },
+          { id: 'fb_p4_5', sentence: 'Oja\'s Rule prevents unbounded weight growth by adding ___ to Hebbian learning.', blank: 'normalisation', hint: 'Keeping weights within bounds' },
+          { id: 'fb_p4_6', sentence: '___ plasticity creates and deletes synapses; ___ plasticity changes their weights.', blank: 'Structural / Functional', hint: 'Structure changes vs. strength changes' },
+        ],
+
+        open: [
+          { id: 'op_p4_1', points: '2 pts', question: 'Name two essential features of neural processing captured by the LIF model.', answer: '• Integration of input current over time (1).\n• Leak/forgetting via −v/R term (1).' },
+          { id: 'op_p4_2', points: '8 pts', question: 'Solve the LIF ODE C·dv/dt = I(t)−v(t)/R for constant I, v(0)=0, t₀=0. Show your working and state the time constant.', answer: 'Rearrange: dv/dt = I/C − v/(RC) (1).\nFirst-order linear ODE (1).\nSteady state v∞ = IR (1).\nGeneral: v(t) = v∞ + (v(0)−v∞)·e^(−t/τ) (2).\nWith v(0)=0: v(t) = IR(1 − e^(−t/RC)) (2).\nTime constant τ = RC (1).' },
+          { id: 'op_p4_3', points: '4 pts', question: 'Name and describe the two main encoding schemes for spiking neural networks, with one advantage each.', answer: '• Rate coding (1): info = average spike rate in time window (1). Advantage: robust against noise (0.5).\n• Time-to-first-spike (1): info = time of first spike (1). Advantage: very fast (0.5).' },
+          { id: 'op_p4_4', points: '4 pts', question: 'State the basic principle of Hebbian Learning and explain the saturation problem.', answer: '• Weight change depends on pre- AND post-synaptic activity (1).\n• "Neurons that fire together, wire together" (1).\n• Saturation: without limiting growth, weights diverge (1) via positive feedback loop (1).' },
+        ],
+      },
+
+      {
+        id: 'p5',
+        name: 'Machine Learning',
+        icon: '📈',
+        color: '#06b6d4',
+        examWeight: 18,
+
+        guided: [
+          { id: 'g_p5_1', badge: 'Overfitting', title: 'Overfitting & How to Prevent It', body: 'Overfitting: model learns noise instead of pattern → good training error, bad test error.\n\n3 prevention methods (know at least 3):\n• Regularisation (L2/Dropout)\n• More training data\n• Dataset augmentation\n• Early stopping\n• Simpler model', example: '🔑 This is in EVERY exam, always 4 points. Name the problem + 3 methods.' },
+          { id: 'g_p5_2', badge: '3 Paradigms', title: 'The Three Learning Paradigms', body: 'Supervised: learns input→output mapping from explicit labels. Data: (x,y) pairs.\n\nUnsupervised: learns statistical regularities. Data: x only.\n\nReinforcement: learns action selection to maximise reward via environment interaction.\n\nBonus: Semi-supervised = mixed labelled/unlabelled data.', example: '🔑 For each paradigm: know name + description + data type. 1 point each component.' },
+          { id: 'g_p5_3', badge: 'Cross-Validation', title: 'k-fold Cross-Validation', body: 'How it works:\n1. Partition dataset into k folds\n2. Train k times — each time, one different fold is the validation set\n3. Overall performance = average of k validation scores\n\nWhy use it? Better estimate of generalisation than a single train/test split.', example: '🔑 3 points for: partition into k folds + different fold each time + average performance.' },
+          { id: 'g_p5_4', badge: 'Occam\'s Razor', title: 'Model Selection & Occam\'s Razor', body: 'Occam\'s Razor: of two competing explanations, prefer the simpler one.\n\nIn ML: given equal performance, choose the model with the FEWEST parameters.\n\nDiscriminative model: classifies → P(y|x)\nGenerative model: generates data → P(x|y) or P(x,y)', example: '🔑 SVM vs least-squares: SVM maximises margin → more robust to outliers. Least-squares is sensitive to outliers.' },
+        ],
+
+        flashcards: [
+          { id: 'fc_p5_1',  front: 'Define overfitting and name 3 ways to prevent it.',                             back: 'Model learns noise, high test error. Prevent: regularisation/dropout, more data, augmentation, early stopping, simpler model.' },
+          { id: 'fc_p5_2',  front: 'Name and describe the 3 main learning paradigms.',                              back: 'Supervised: x→y from labels. Unsupervised: statistical regularities, x only. Reinforcement: action selection to maximise reward via environment.' },
+          { id: 'fc_p5_3',  front: 'Describe k-fold cross-validation.',                                             back: 'Split into k folds; train k times, each with different validation fold; overall = average of k performances.' },
+          { id: 'fc_p5_4',  front: 'State Occam\'s Razor and its ML application.',                                  back: 'Prefer the simpler of two explanations. In ML: choose the model with fewest parameters given equal performance.' },
+          { id: 'fc_p5_5',  front: 'Discriminative vs Generative model — definition and probability.',              back: 'Discriminative: classifies P(y|x). Generative: generates data P(x|y) or P(x,y).' },
+          { id: 'fc_p5_6',  front: 'Problem with least-squares classification? How do SVMs fix it?',               back: 'Least-squares: sensitive to outliers (hyperplane distorted). SVM: maximises margin between classes → robust to outliers.' },
+          { id: 'fc_p5_7',  front: 'Why can a single perceptron NOT solve XOR?',                                    back: 'XOR is not linearly separable. A perceptron with linear activation can only classify linearly separable classes.' },
+          { id: 'fc_p5_8',  front: 'What is max-pooling?',                                                           back: 'A kernel slides over the feature map; maps all inputs to the maximum value. Achieves downsampling and translation invariance.' },
+          { id: 'fc_p5_9',  front: 'Regression vs Classification — difference?',                                    back: 'Regression: predicts a continuous output. Classification: assigns input to discrete class.' },
+          { id: 'fc_p5_10', front: 'Output formula of a general analog neuron.',                                     back: 'y = A(w₁x₁ + w₂x₂ + … + wₙxₙ + b)\nA = activation function, b = bias.' },
+        ],
+
+        quiz: [
+          { id: 'qz_p5_1', category: 'P5 — ML', question: 'A model performs well on training data but badly on test data. What is this called?', options: ['Underfitting', 'Overfitting', 'Regularisation', 'Variance collapse'], correct: 1, explanation: 'Overfitting = learning noise/training data too specifically → poor generalisation.' },
+          { id: 'qz_p5_2', category: 'P5 — ML', question: 'Which learning paradigm uses only unlabelled input data x?', options: ['Supervised', 'Reinforcement', 'Unsupervised', 'Semi-supervised'], correct: 2, explanation: 'Unsupervised: no labels, learns statistical regularities from x alone.' },
+          { id: 'qz_p5_3', category: 'P5 — ML', question: 'In k-fold cross-validation, how is overall performance measured?', options: ['Best single fold result', 'Worst fold result', 'Average of all k fold results', 'First fold result only'], correct: 2, explanation: 'Average of all k validation performances gives a robust estimate.' },
+          { id: 'qz_p5_4', category: 'P5 — ML', question: 'A discriminative model learns:', options: ['P(x)', 'P(y)', 'P(y|x)', 'P(x|y)'], correct: 2, explanation: 'Discriminative = learns the posterior P(y|x) to classify. Generative = P(x|y) to generate.' },
+          { id: 'qz_p5_5', category: 'P5 — ML', question: 'Occam\'s Razor in ML says: of two equally performing models, prefer the one with...', options: ['More parameters', 'Fewer parameters', 'A deeper architecture', 'Higher validation accuracy'], correct: 1, explanation: 'Fewer parameters = simpler model = Occam\'s Razor. Complexity should not be added without benefit.' },
+          { id: 'qz_p5_6', category: 'P5 — ML', question: 'Why does a single perceptron fail to solve XOR?', options: ['It has too many parameters', 'XOR is not linearly separable', 'It requires reinforcement learning', 'The activation function is too complex'], correct: 1, explanation: 'XOR cannot be separated by a single linear decision boundary. Need at least one hidden layer.' },
+        ],
+
+        fillblank: [
+          { id: 'fb_p5_1', sentence: 'A model that performs well on training data but poorly on test data is suffering from ___.', blank: 'overfitting', hint: 'Learning too much noise' },
+          { id: 'fb_p5_2', sentence: 'In supervised learning, the dataset consists of ___ pairs.', blank: '(x, y)', hint: 'Input and label' },
+          { id: 'fb_p5_3', sentence: 'In k-fold cross-validation, overall performance = ___ of k validation scores.', blank: 'average', hint: 'Combine all results' },
+          { id: 'fb_p5_4', sentence: 'A discriminative model relies on the conditional probability P(___|___).',  blank: 'y | x', hint: 'Given input, predict label' },
+          { id: 'fb_p5_5', sentence: 'SVMs address the outlier sensitivity of least-squares by maximising the ___ between classes.', blank: 'margin', hint: 'Distance to the boundary' },
+          { id: 'fb_p5_6', sentence: 'Occam\'s Razor in ML: choose the model with the ___ parameters when performance is equal.', blank: 'fewest', hint: 'Simpler is better' },
+        ],
+
+        open: [
+          { id: 'op_p5_1', points: '4 pts', question: 'A model performs well on training but poorly on test data. Name the problem and 3 methods to avoid it.', answer: '• Overfitting (1).\n• Any 3: regularisation/dropout, more data, augmentation, early stopping, simpler model (3).' },
+          { id: 'op_p5_2', points: '6 pts', question: 'Name and describe the three main learning paradigms.', answer: '• Supervised (1): learns x→y from labelled pairs (1).\n• Unsupervised (1): learns statistical regularities from x only (1).\n• Reinforcement (1): action selection to maximise reward via environment interaction (1).' },
+          { id: 'op_p5_3', points: '4 pts', question: 'Describe k-fold cross-validation and how overall performance is measured.', answer: '• Partition into k folds (1).\n• Each iteration uses a different fold as validation (1).\n• Overall performance = average of k validation results (2).' },
+          { id: 'op_p5_4', points: '4 pts', question: 'Three models with 1000, 2000, and 2500 params have similar test performance. Which to choose and why?', answer: '• Choose the 1000-parameter model (1).\n• Occam\'s Razor (1): of two competing theories, prefer the simpler (1).\n• In ML: fewest parameters given equal performance (1).' },
+        ],
+      },
+
+      {
+        id: 'p6',
+        name: 'Reinforcement Learning',
+        icon: '🎮',
+        color: '#ef4444',
+        examWeight: 24,
+
+        guided: [
+          { id: 'g_p6_1', badge: 'Core Concepts', title: 'Return, Policy & Value Functions', body: 'Return G_t: discounted sum of future rewards\nG_t = R_{t+1} + γR_{t+2} + γ²R_{t+3} + …\n\nPolicy π(a|s): strategy mapping states to action probabilities.\n\nState-value function: v_π(s) = E_π[G_t | S_t=s]\nAction-value function: q_π(s,a) = E_π[G_t | S_t=s, A_t=a]', example: '🔑 Know BOTH formulas cold. The exam asks you to write them out, name them, and explain their use.' },
+          { id: 'g_p6_2', badge: 'Bellman Eq.', title: 'Bellman Equations', body: 'Bellman equation (v_π):\nv_π(s) = Σ_a π(a|s) Σ_{s\'} p(s\',r|s,a)[r + γv_π(s\')]\n\nBellman optimality equation (v*):\nv*(s) = max_a Σ_{s\'} p(s\',r|s,a)[r + γv*(s\')]\n\nAlgorithms that solve this: Value Iteration (DP), Q-Learning (TD)', example: '🔑 The key difference: v_π sums over policy π; v* takes max over actions. Backup diagrams use this difference.' },
+          { id: 'g_p6_3', badge: 'Exploration', title: 'ε-greedy & GPI', body: 'Problem without exploration: greedy policy converges to sub-optimal solution (not all state-action pairs visited).\n\nε-greedy solution:\nπ(a*|s) = 1 − ε + ε/|A|\nπ(a≠a*|s) = ε/|A|\n\nGeneralized Policy Iteration (GPI): iteratively alternate\n1. Policy Evaluation: find V for current π\n2. Policy Improvement: update π greedily from V', example: '🔑 ε-greedy formula is tested numerically. Know how to calculate probability for non-optimal action: ε·(|A|−1)/|A|.' },
+          { id: 'g_p6_4', badge: 'Algorithms', title: 'SARSA vs Q-Learning from Code', body: 'Both are Temporal Difference methods. Difference:\n\nSARSA (on-policy): uses the ACTUAL next action taken\ntarget = r + γ·Q(s\', a\')\n\nQ-Learning (off-policy): uses the MAXIMUM next action\ntarget = r + γ·max_a Q(s\', a)\n\nThe exam shows Python code — you identify which one.', example: '🔑 Key: if code uses next_action → SARSA (on-policy). If code uses max/argmax over next state → Q-Learning (off-policy).' },
+          { id: 'g_p6_5', badge: 'Bootstrapping', title: 'On-policy vs Off-policy & Bootstrapping', body: 'Behavior policy b(a|s): used to sample from environment.\nTarget policy π(a|s): used for improvement.\n\nOn-policy: b = π (e.g. SARSA)\nOff-policy: b ≠ π (e.g. Q-Learning)\nAdvantage of off-policy: separates exploration from improvement.\nCondition: π(a|s)>0 wherever b(a|s)>0\n\nBootstrapping: propagating values via Bellman recursion.\nDP: bootstraps ✓ | TD: bootstraps ✓ | Monte Carlo: NO ✗', example: '🔑 Monte Carlo does NOT bootstrap — it waits for complete episodes. DP and TD both update from estimates.' },
+        ],
+
+        flashcards: [
+          { id: 'fc_p6_1',  front: 'Write the state-value and action-value function formulas.',                    back: 'v_π(s) = E_π[G_t | S_t=s]\nq_π(s,a) = E_π[G_t | S_t=s, A_t=a]' },
+          { id: 'fc_p6_2',  front: 'What is the return G_t?',                                                       back: 'G_t = R_{t+1} + γR_{t+2} + γ²R_{t+3} + …\n(discounted sum of future rewards)' },
+          { id: 'fc_p6_3',  front: 'Write the Bellman equation for v_π(s).',                                        back: 'v_π(s) = Σ_a π(a|s) Σ_{s\',r} p(s\',r|s,a)[r + γv_π(s\')]' },
+          { id: 'fc_p6_4',  front: 'Write the Bellman optimality equation for v*(s).',                              back: 'v*(s) = max_a Σ_{s\',r} p(s\',r|s,a)[r + γv*(s\')]' },
+          { id: 'fc_p6_5',  front: 'Describe Generalized Policy Iteration (GPI) and its 2 steps.',                 back: 'Iterative alternation until convergence:\n1. Policy Evaluation: find V for current π.\n2. Policy Improvement: update π greedily from V.' },
+          { id: 'fc_p6_6',  front: 'What is the ε-greedy formula?',                                                 back: 'π(a*|s) = 1 − ε + ε/|A|\nπ(a≠a*|s) = ε/|A|\nProbability of non-optimal action: ε·(|A|−1)/|A|' },
+          { id: 'fc_p6_7',  front: 'On-policy vs Off-policy — define, example each.',                               back: 'On-policy: behavior = target policy (e.g. SARSA).\nOff-policy: behavior ≠ target policy (e.g. Q-Learning).' },
+          { id: 'fc_p6_8',  front: 'Advantage of off-policy learning?',                                             back: 'Separates optimal target policy from exploratory behavior policy → better exploration handling. On-policy only learns a near-optimal, still-exploring policy.' },
+          { id: 'fc_p6_9',  front: 'Which paradigms bootstrap? Which does NOT?',                                    back: 'Dynamic Programming: YES. Temporal Difference: YES. Monte Carlo: NO.' },
+          { id: 'fc_p6_10', front: 'SARSA vs Q-Learning — how to identify from code?',                             back: 'SARSA: target = r + γ·Q(s\', next_action) — uses actual next action → on-policy TD.\nQ-Learning: target = r + γ·max Q(s\', a) — uses max → off-policy TD.' },
+          { id: 'fc_p6_11', front: 'What is the validity condition for off-policy learning?',                        back: 'π(a|s) > 0 wherever b(a|s) > 0 (coverage condition).' },
+          { id: 'fc_p6_12', front: 'Why use a linear output activation in a DQN?',                                  back: 'Q-function estimation is a REGRESSION task (not classification) → linear activation is appropriate for regression.' },
+        ],
+
+        quiz: [
+          { id: 'qz_p6_1', category: 'P6 — RL', question: 'The return G_t is defined as:', options: ['The immediate reward R_t', 'The sum of all past rewards', 'The discounted sum of future rewards', 'The current state value'], correct: 2, explanation: 'G_t = R_{t+1} + γR_{t+2} + γ²R_{t+3} + … — discounted future rewards from time t.' },
+          { id: 'qz_p6_2', category: 'P6 — RL', question: 'Which of these bootstraps during training?', options: ['Monte Carlo', 'Temporal Difference', 'Both', 'Neither'], correct: 1, explanation: 'TD bootstraps (updates from estimates). Monte Carlo waits for complete episodes and does NOT bootstrap.' },
+          { id: 'qz_p6_3', category: 'P6 — RL', question: 'SARSA is on-policy because:', options: ['It uses a replay buffer', 'The behavior and target policy are the same', 'It maximises over next actions', 'It uses a neural network'], correct: 1, explanation: 'On-policy: behavior policy = target policy. SARSA uses the actual next action taken (behavior) for the update.' },
+          { id: 'qz_p6_4', category: 'P6 — RL', question: 'In ε-greedy with |A|=4 actions and ε=0.4, what is the probability of choosing a NON-optimal action?', options: ['0.4', '0.1', '0.3', '0.133'], correct: 2, explanation: 'P(non-optimal) = ε·(|A|−1)/|A| = 0.4 × 3/4 = 0.3. Each non-optimal gets ε/|A| = 0.1.' },
+          { id: 'qz_p6_5', category: 'P6 — RL', question: 'The Bellman optimality equation v*(s) uses which operator instead of summing over π?', options: ['Average over all policies', 'Sum over all actions', 'Max over all actions', 'Min over all actions'], correct: 2, explanation: 'v*(s) = max_a (…) — takes the maximum over actions rather than averaging with a policy.' },
+          { id: 'qz_p6_6', category: 'P6 — RL', question: 'A code snippet uses `target = reward + gamma * model.predict(next_state)[0][next_action]`. What algorithm is this?', options: ['Q-Learning (off-policy TD)', 'SARSA (on-policy TD)', 'Monte Carlo', 'Dynamic Programming'], correct: 1, explanation: 'Using next_action (the actual next action taken) → SARSA, on-policy TD. Q-Learning would use max/argmax.' },
+          { id: 'qz_p6_7', category: 'P6 — RL', question: 'Why is a linear output activation used in DQN?', options: ['Linear functions train faster', 'The Q-function estimation is a regression problem', 'It prevents overfitting', 'Non-linear functions diverge in RL'], correct: 1, explanation: 'Q-value estimation is regression (continuous output), not classification → linear activation appropriate.' },
+        ],
+
+        fillblank: [
+          { id: 'fb_p6_1', sentence: 'The state-value function: v_π(s) = E_π[___ | S_t = s]', blank: 'G_t', hint: 'Expected discounted sum of...' },
+          { id: 'fb_p6_2', sentence: 'The Bellman optimality equation uses ___ over actions instead of summing over policy.', blank: 'max', hint: 'The optimal choice' },
+          { id: 'fb_p6_3', sentence: 'GPI alternates between Policy ___ and Policy ___.', blank: 'Evaluation / Improvement', hint: 'First compute V, then update π' },
+          { id: 'fb_p6_4', sentence: 'ε-greedy probability for optimal action: ___ − ε + ε/|A|', blank: '1', hint: 'Starts from certainty' },
+          { id: 'fb_p6_5', sentence: 'SARSA uses ___ in the target; Q-Learning uses ___.', blank: 'next_action / max', hint: 'Actual vs optimal' },
+          { id: 'fb_p6_6', sentence: 'Bootstrapping: propagating values using the recursive ___ equation.', blank: 'Bellman', hint: 'Named after the mathematician' },
+          { id: 'fb_p6_7', sentence: 'Monte Carlo does ___ bootstrap; Dynamic Programming ___ bootstrap.', blank: 'not / does', hint: 'Complete episodes vs. incremental' },
+        ],
+
+        open: [
+          { id: 'op_p6_1', points: '6 pts', question: 'Give a brief explanation of: (i) return, (ii) action policy, (iii) state-value function.', answer: '• Return G_t: discounted sum of future rewards G_t = R_{t+1}+γR_{t+2}+… (2).\n• Policy: strategy mapping states to action probabilities π(a|s) (2).\n• State-value function: expected return from state s under π, v_π(s)=E_π[G_t|S_t=s] (2).' },
+          { id: 'op_p6_2', points: '4 pts', question: 'Write the Bellman equation for v_π(s) and the Bellman optimality equation for v*(s).', answer: 'v_π(s) = Σ_a π(a|s) Σ_{s\',r} p(s\',r|s,a)[r + γv_π(s\')] (2).\nv*(s) = max_a Σ_{s\',r} p(s\',r|s,a)[r + γv*(s\')] (2).' },
+          { id: 'op_p6_3', points: '4 pts', question: 'Explain GPI and describe the two alternating steps.', answer: '• GPI = iterative alternation until convergence (1).\n• Policy Evaluation: find V for current π (1.5).\n• Policy Improvement: update π greedily from V (1.5).' },
+          { id: 'op_p6_4', points: '4 pts', question: 'Explain bootstrapping in RL. State which paradigms bootstrap and which do not.', answer: '• Bootstrapping: propagating values between states via Bellman recursion (2).\n• DP: bootstraps. TD: bootstraps. Monte Carlo: does NOT (2).' },
+          { id: 'op_p6_5', points: '6 pts', question: 'Explain on-policy vs off-policy learning, the advantage of off-policy, and the validity condition.', answer: '• On-policy: behavior = target policy, e.g. SARSA (1).\n• Off-policy: behavior ≠ target, e.g. Q-Learning (1).\n• Advantage: separates optimal target from exploratory behavior → better exploration (2).\n• Condition: π(a|s)>0 wherever b(a|s)>0 (coverage) (2).' },
+        ],
+      },
+    ],
+  },
+];
+
+// ── Flat lookup helpers ──────────────────────────────────────────────────────
+
+const DATA = (() => {
+  const allCards = {};
+  const allTopics = {};
+
+  MODULES.forEach(mod => {
+    mod.topics.forEach(topic => {
+      allTopics[topic.id] = topic;
+      ['flashcards','quiz','fillblank','open','guided'].forEach(type => {
+        (topic[type] || []).forEach(item => {
+          allCards[item.id] = { ...item, topicId: topic.id, type };
+        });
+      });
+    });
+  });
+
+  function getAllFlashcardIds() {
+    return Object.values(allCards)
+      .filter(c => c.type === 'flashcard' || c.type === 'flashcards')
+      .map(c => c.id);
+  }
+
+  function getTopicFlashcardIds(topicId) {
+    const topic = allTopics[topicId];
+    if (!topic) return [];
+    return (topic.flashcards || []).map(c => c.id);
+  }
+
+  function getItem(id) { return allCards[id] || null; }
+  function getTopic(id) { return allTopics[id] || null; }
+
+  return { allCards, allTopics, getAllFlashcardIds, getTopicFlashcardIds, getItem, getTopic };
+})();
+
+</script>
+  <script>
+/**
+ * SM-2 Spaced Repetition Algorithm
+ * Based on SuperMemo SM-2 by Piotr Wozniak (1987)
+ *
+ * Rating scale:
+ *   0 = complete blackout / again
+ *   1 = incorrect, but correct answer easy to recall
+ *   2 = hard — correct with serious difficulty
+ *   3 = good — correct with some hesitation
+ *   4 = easy — correct after brief hesitation
+ *   5 = perfect — immediate correct response
+ */
+
+const SM2 = (() => {
+
+  const STORAGE_KEY = 'cogsys_sm2_v2';
+
+  function load() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch { return {}; }
+  }
+
+  function save(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+  }
+
+  /**
+   * Returns a card state object, creating a fresh one if not found.
+   * cardId: unique string identifier for the card
+   */
+  function getCard(cardId) {
+    const data = load();
+    if (!data[cardId]) {
+      data[cardId] = {
+        id: cardId,
+        interval: 1,       // days until next review
+        repetition: 0,     // number of times reviewed successfully
+        ef: 2.5,           // easiness factor
+        nextReview: 0,     // timestamp ms — 0 = new, due now
+        lastReview: null,
+        totalReviews: 0,
+        correctStreak: 0,
+      };
+      save(data);
+    }
+    return data[cardId];
+  }
+
+  /**
+   * Apply a rating (0-5) to a card and return the updated card.
+   */
+  function review(cardId, rating) {
+    const data = load();
+    let card = data[cardId] || getCard(cardId);
+
+    const now = Date.now();
+    card.lastReview = now;
+    card.totalReviews += 1;
+
+    if (rating < 3) {
+      // Failed — reset repetition, keep ef, short interval
+      card.repetition = 0;
+      card.interval = 1;
+      card.correctStreak = 0;
+    } else {
+      // Passed
+      card.correctStreak += 1;
+      if (card.repetition === 0) {
+        card.interval = 1;
+      } else if (card.repetition === 1) {
+        card.interval = 6;
+      } else {
+        card.interval = Math.round(card.interval * card.ef);
+      }
+      card.repetition += 1;
+
+      // Update EF: EF' = EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02))
+      const q = rating;
+      card.ef = card.ef + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
+      if (card.ef < 1.3) card.ef = 1.3;
+    }
+
+    // Cap interval at 365 days
+    card.interval = Math.min(card.interval, 365);
+
+    // Schedule next review
+    card.nextReview = now + card.interval * 24 * 60 * 60 * 1000;
+
+    data[cardId] = card;
+    save(data);
+    return card;
+  }
+
+  /**
+   * Returns true if card is due now (or new).
+   */
+  function isDue(cardId) {
+    const card = getCard(cardId);
+    return Date.now() >= card.nextReview;
+  }
+
+  /**
+   * Format next review interval nicely.
+   */
+  function formatInterval(cardId) {
+    const card = getCard(cardId);
+    if (!card.lastReview) return 'New';
+    const days = card.interval;
+    if (days < 1) return 'Today';
+    if (days === 1) return '1 day';
+    if (days < 7) return `${days} days`;
+    if (days < 30) return `${Math.round(days/7)} wk`;
+    return `${Math.round(days/30)} mo`;
+  }
+
+  /**
+   * Get all due cards from a list of card IDs.
+   */
+  function getDueCards(cardIds) {
+    return cardIds.filter(id => isDue(id));
+  }
+
+  /**
+   * Get stats for a set of card IDs.
+   */
+  function getStats(cardIds) {
+    const data = load();
+    let newCards = 0, due = 0, learned = 0, totalReviews = 0;
+    const now = Date.now();
+
+    cardIds.forEach(id => {
+      const card = data[id];
+      if (!card || card.totalReviews === 0) {
+        newCards++;
+      } else if (now >= card.nextReview) {
+        due++;
+      } else {
+        learned++;
+      }
+      if (card) totalReviews += card.totalReviews || 0;
+    });
+
+    return { newCards, due, learned, totalReviews, total: cardIds.length };
+  }
+
+  /**
+   * Sort card IDs: due first (sorted by most overdue), then new.
+   */
+  function sortForStudy(cardIds) {
+    const data = load();
+    const now = Date.now();
+
+    return [...cardIds].sort((a, b) => {
+      const ca = data[a];
+      const cb = data[b];
+      const aNew = !ca || ca.totalReviews === 0;
+      const bNew = !cb || cb.totalReviews === 0;
+
+      if (aNew && bNew) return 0;
+      if (aNew) return 1;   // new cards after due
+      if (bNew) return -1;
+
+      const aDue = now - ca.nextReview;
+      const bDue = now - cb.nextReview;
+      return bDue - aDue; // most overdue first
+    });
+  }
+
+  /**
+   * Reset all SM2 data (for debugging).
+   */
+  function resetAll() {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  /**
+   * Get overall progress across all known cards.
+   */
+  function getAllStats() {
+    const data = load();
+    const allIds = Object.keys(data);
+    return getStats(allIds);
+  }
+
+  return { getCard, review, isDue, formatInterval, getDueCards, getStats, sortForStudy, resetAll, getAllStats };
+})();
+
+</script>
+  <script>
+/**
+ * CogSys PWA — Main App Controller
+ * Handles: navigation, all 4 study modes, SM-2 integration, progress tracking
+ */
+
+// ── App State ────────────────────────────────────────────────────────────────
+const State = {
+  activeScreen: 'home',
+  activeModule: null,
+  activeTopic: null,
+  activeMode: 'guided',
+  sessionItems: [],
+  sessionIndex: 0,
+  sessionCorrect: 0,
+  cardFlipped: false,
+};
+
+// ── Storage helpers ──────────────────────────────────────────────────────────
+const Store = {
+  KEY: 'cogsys_progress_v2',
+  STREAK_KEY: 'cogsys_streak_v2',
+
+  load() {
+    try { return JSON.parse(localStorage.getItem(this.KEY) || '{}'); } catch { return {}; }
+  },
+  save(data) {
+    try { localStorage.setItem(this.KEY, JSON.stringify(data)); } catch {}
+  },
+  markResult(itemId, correct) {
+    const d = this.load();
+    if (!d[itemId]) d[itemId] = { seen: 0, correct: 0, lastSeen: null };
+    d[itemId].seen += 1;
+    if (correct) d[itemId].correct += 1;
+    d[itemId].lastSeen = Date.now();
+    this.save(d);
+  },
+  getAccuracy(itemId) {
+    const d = this.load();
+    const s = d[itemId];
+    if (!s || s.seen === 0) return null;
+    return Math.round((s.correct / s.seen) * 100);
+  },
+  getTopicProgress(topicId) {
+    const topic = DATA.getTopic(topicId);
+    if (!topic) return 0;
+    const allIds = [
+      ...(topic.flashcards||[]).map(c=>c.id),
+      ...(topic.quiz||[]).map(c=>c.id),
+      ...(topic.fillblank||[]).map(c=>c.id),
+      ...(topic.open||[]).map(c=>c.id),
+    ];
+    if (allIds.length === 0) return 0;
+    const d = this.load();
+    const seen = allIds.filter(id => d[id] && d[id].seen > 0).length;
+    return Math.round((seen / allIds.length) * 100);
+  },
+  updateStreak() {
+    try {
+      const today = new Date().toDateString();
+      let s = JSON.parse(localStorage.getItem(this.STREAK_KEY) || '{"dates":[],"last":null}');
+      if (s.last !== today) {
+        s.dates.push(today);
+        if (s.dates.length > 30) s.dates = s.dates.slice(-30);
+        s.last = today;
+        localStorage.setItem(this.STREAK_KEY, JSON.stringify(s));
+      }
+    } catch {}
+  },
+  getStreak() {
+    try {
+      return JSON.parse(localStorage.getItem(this.STREAK_KEY) || '{"dates":[],"last":null}');
+    } catch { return { dates: [], last: null }; }
+  }
+};
+
+// ── Screen Navigation ────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('screen-' + id);
+  if (el) el.classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.screen === id);
+  });
+
+  State.activeScreen = id;
+
+  if (id === 'home')  renderHome();
+  if (id === 'stats') renderStats();
+  if (id === 'topics' && !State.activeTopic) renderTopicList();
+}
+
+// ── Home Screen ──────────────────────────────────────────────────────────────
+function renderHome() {
+  renderProgressOverview();
+  renderModuleGrid();
+  drawNeuronNet();
+}
+
+function renderProgressOverview() {
+  const el = document.getElementById('progressOverview');
+  const mod = MODULES[0];
+  const allFcIds = DATA.getAllFlashcardIds();
+  const sm2stats = SM2.getStats(allFcIds);
+  const totalItems = mod.topics.reduce((s,t) => s + (t.flashcards||[]).length + (t.quiz||[]).length, 0);
+  const d = Store.load();
+  const seenCount = Object.keys(d).length;
+  const masteredCount = Object.values(d).filter(x => x.seen >= 3 && (x.correct/x.seen) >= 0.8).length;
+  const overallPct = Math.round((seenCount / Math.max(totalItems,1)) * 100);
+
+  el.innerHTML = `
+    <h3>Overall Progress</h3>
+    <div class="po-row">
+      <div class="po-stat"><div class="val">${seenCount}</div><div class="lbl">Studied</div></div>
+      <div class="po-stat"><div class="val">${masteredCount}</div><div class="lbl">Mastered</div></div>
+      <div class="po-stat"><div class="val">${sm2stats.due}</div><div class="lbl">Due today</div></div>
+    </div>
+    <div class="po-track">
+      <div class="po-track-label"><span>Cards studied</span><span>${overallPct}%</span></div>
+      <div class="po-bar"><div class="po-bar-fill" style="width:${overallPct}%"></div></div>
+    </div>
+  `;
+}
+
+function renderModuleGrid() {
+  const el = document.getElementById('moduleGrid');
+  const accents = ['#3b82f6','#a855f7','#22c55e','#ef4444'];
+  el.innerHTML = MODULES[0].topics.map((t,i) => {
+    const prog = Store.getTopicProgress(t.id);
+    const fcIds = (t.flashcards||[]).map(c=>c.id);
+    const due = SM2.getDueCards(fcIds).length;
+    return `
+      <div class="module-card" data-topic="${t.id}" style="--card-accent:${accents[i%4]}">
+        <div class="mc-icon">${t.icon}</div>
+        <div class="mc-label">P${i+1}</div>
+        <div class="mc-name">${t.name}</div>
+        ${due > 0 ? `<div class="mc-due">⚡ ${due} card${due>1?'s':''} due</div>` : ''}
+        <div class="mc-progress">
+          <div class="mc-bar"><div class="mc-bar-fill" style="width:${prog}%;background:${accents[i%4]}"></div></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  el.querySelectorAll('.module-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const topic = DATA.getTopic(card.dataset.topic);
+      if (!topic) return;
+      State.activeTopic = topic;
+      State.activeModule = MODULES[0];
+      document.getElementById('topicTitle').textContent = topic.name;
+      renderTopicList();
+      showScreen('topics');
+    });
+  });
+}
+
+// ── Neuron Net Canvas ────────────────────────────────────────────────────────
+function drawNeuronNet() {
+  const canvas = document.getElementById('neuronNet');
+  if (!canvas || canvas.tagName !== 'CANVAS') {
+    // Replace div with canvas
+    const c = document.createElement('canvas');
+    c.id = 'neuronNet';
+    c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+    canvas.replaceWith(c);
+    animateNeuronNet(c);
+  }
+}
+
+function animateNeuronNet(canvas) {
+  const ctx = canvas.getContext('2d');
+  let nodes = [];
+  let w, h;
+
+  function resize() {
+    w = canvas.width  = canvas.offsetWidth  || window.innerWidth;
+    h = canvas.height = canvas.offsetHeight || window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); initNodes(); });
+
+  function initNodes() {
+    const count = Math.floor((w * h) / 18000);
+    nodes = Array.from({length: Math.min(count, 40)}, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+      r: 2 + Math.random() * 2,
+      pulse: Math.random() * Math.PI * 2,
+    }));
+  }
+  initNodes();
+
+  let raf;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const t = Date.now() / 1000;
+
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > w) n.vx *= -1;
+      if (n.y < 0 || n.y > h) n.vy *= -1;
+      n.pulse += 0.02;
+    });
+
+    // Draw edges
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i+1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${0.15 * (1 - dist/150)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      const pulse = 0.5 + 0.5 * Math.sin(n.pulse);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(6,182,212,${0.3 + 0.4 * pulse})`;
+      ctx.fill();
+    });
+
+    raf = requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Pause when off-screen
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else draw();
+  });
+}
+
+// ── Topic List Screen ────────────────────────────────────────────────────────
+function renderTopicList() {
+  const el = document.getElementById('topicList');
+  const topics = MODULES[0].topics;
+
+  el.innerHTML = topics.map(t => {
+    const prog = Store.getTopicProgress(t.id);
+    const fcIds = (t.flashcards||[]).map(c=>c.id);
+    const sm2 = SM2.getStats(fcIds);
+    const dueText = sm2.due > 0 ? `<div class="ti-due">⚡ ${sm2.due} cards due</div>` : '';
+    return `
+      <div class="topic-item" data-topic="${t.id}">
+        <div class="ti-icon">${t.icon}</div>
+        <div class="ti-body">
+          <div class="ti-name">${t.name}</div>
+          <div class="ti-meta">${(t.flashcards||[]).length} cards · ${(t.quiz||[]).length} quizzes · ~${t.examWeight}% of exam</div>
+          ${dueText}
+          <div class="ti-mini-bar"><div class="ti-mini-fill" style="width:${prog}%"></div></div>
+        </div>
+        <div class="ti-arrow">›</div>
+      </div>
+    `;
+  }).join('');
+
+  el.querySelectorAll('.topic-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const topic = DATA.getTopic(item.dataset.topic);
+      if (!topic) return;
+      State.activeTopic = topic;
+      startStudySession();
+    });
+  });
+}
+
+// ── Mode Pills ───────────────────────────────────────────────────────────────
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    State.activeMode = pill.dataset.mode;
+  });
+});
+
+// ── Start Study Session ──────────────────────────────────────────────────────
+function startStudySession() {
+  const topic = State.activeTopic;
+  if (!topic) return;
+
+  const mode = State.activeMode;
+  let items = [];
+
+  if (mode === 'guided') {
+    items = topic.guided || [];
+  } else if (mode === 'flashcard') {
+    const ids = SM2.sortForStudy((topic.flashcards||[]).map(c=>c.id));
+    items = ids.map(id => DATA.getItem(id)).filter(Boolean);
+    if (items.length === 0) items = topic.flashcards || [];
+  } else if (mode === 'quiz') {
+    items = shuffleArray([...(topic.quiz||[])]);
+  } else if (mode === 'fillblank') {
+    items = shuffleArray([...(topic.fillblank||[])]);
+  } else if (mode === 'open') {
+    items = topic.open || [];
+  }
+
+  if (items.length === 0) {
+    alert('No content available for this mode yet. Try another mode!');
+    return;
+  }
+
+  State.sessionItems = items;
+  State.sessionIndex = 0;
+  State.sessionCorrect = 0;
+  State.cardFlipped = false;
+
+  Store.updateStreak();
+  showScreen('study');
+  renderStudyItem();
+}
+
+function updateStudyProgress() {
+  const total = State.sessionItems.length;
+  const current = State.sessionIndex;
+  const pct = total > 0 ? (current / total) * 100 : 0;
+  document.getElementById('studyProgressBar').style.width = pct + '%';
+  document.getElementById('studyProgressLabel').textContent = `${current}/${total}`;
+}
+
+function renderStudyItem() {
+  const mode = State.activeMode;
+  updateStudyProgress();
+
+  // Hide all mode containers
+  document.querySelectorAll('.mode-container').forEach(c => c.classList.add('hidden'));
+
+  if (State.sessionIndex >= State.sessionItems.length) {
+    showSessionComplete();
+    return;
+  }
+
+  const item = State.sessionItems[State.sessionIndex];
+
+  if (mode === 'guided')    renderGuided(item);
+  if (mode === 'flashcard') renderFlashcard(item);
+  if (mode === 'quiz')      renderQuiz(item);
+  if (mode === 'fillblank') renderFillBlank(item);
+  if (mode === 'open')      renderOpenQuestion(item);
+}
+
+// ── Guided Mode ──────────────────────────────────────────────────────────────
+function renderGuided(item) {
+  const el = document.getElementById('mode-guided');
+  el.classList.remove('hidden');
+
+  document.getElementById('guidedBadge').textContent = item.badge || '';
+  document.getElementById('guidedTitle').textContent = item.title || '';
+  document.getElementById('guidedBody').textContent = item.body || '';
+  document.getElementById('guidedExample').textContent = item.example || '';
+  document.getElementById('guidedExample').style.display = item.example ? '' : 'none';
+
+  const isLast = State.sessionIndex >= State.sessionItems.length - 1;
+  document.getElementById('guidedNext').textContent = isLast ? 'Finish ✓' : 'Got it →';
+  document.getElementById('guidedPrev').disabled = State.sessionIndex === 0;
+
+  Store.markResult(item.id, true);
+}
+
+document.getElementById('guidedNext').addEventListener('click', () => {
+  State.sessionIndex++;
+  renderStudyItem();
+});
+document.getElementById('guidedPrev').addEventListener('click', () => {
+  if (State.sessionIndex > 0) { State.sessionIndex--; renderStudyItem(); }
+});
+
+// ── Flashcard Mode ───────────────────────────────────────────────────────────
+function renderFlashcard(item) {
+  const el = document.getElementById('mode-flashcard');
+  el.classList.remove('hidden');
+
+  State.cardFlipped = false;
+  const card = document.getElementById('flipCard');
+  card.classList.remove('flipped');
+
+  document.getElementById('fcFront').innerHTML = formatCardText(item.front);
+  document.getElementById('fcBack').innerHTML  = formatCardText(item.back);
+
+  const sm2 = SM2.getCard(item.id);
+  document.getElementById('fcStats').textContent =
+    `Reviews: ${sm2.totalReviews} · Interval: ${SM2.formatInterval(item.id)} · EF: ${sm2.ef.toFixed(2)}`;
+
+  // Hide rating buttons until flipped
+  document.getElementById('sm2Row').style.opacity = '0.3';
+  document.getElementById('sm2Row').style.pointerEvents = 'none';
+}
+
+document.getElementById('flipCard').addEventListener('click', () => {
+  if (!State.cardFlipped) {
+    State.cardFlipped = true;
+    document.getElementById('flipCard').classList.add('flipped');
+    document.getElementById('sm2Row').style.opacity = '1';
+    document.getElementById('sm2Row').style.pointerEvents = 'all';
+  }
+});
+
+document.getElementById('sm2Row').addEventListener('click', e => {
+  const btn = e.target.closest('.sm2-btn');
+  if (!btn) return;
+  const rating = parseInt(btn.dataset.rating);
+  const item = State.sessionItems[State.sessionIndex];
+  SM2.review(item.id, rating);
+  Store.markResult(item.id, rating >= 3);
+  State.sessionIndex++;
+  renderStudyItem();
+});
+
+// ── Quiz Mode ────────────────────────────────────────────────────────────────
+function renderQuiz(item) {
+  const el = document.getElementById('mode-quiz');
+  el.classList.remove('hidden');
+
+  document.getElementById('quizCategory').textContent = item.category || '';
+  document.getElementById('quizQuestion').innerHTML = formatCardText(item.question);
+
+  const optEl = document.getElementById('quizOptions');
+  const shuffled = item.options.map((opt, i) => ({ opt, i }));
+  // Don't shuffle to keep correct index stable
+  optEl.innerHTML = shuffled.map(({opt, i}) =>
+    `<button class="quiz-opt" data-idx="${i}">${opt}</button>`
+  ).join('');
+
+  document.getElementById('quizFeedback').classList.add('hidden');
+  document.getElementById('quizNext').classList.add('hidden');
+
+  optEl.querySelectorAll('.quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => handleQuizAnswer(parseInt(btn.dataset.idx), item));
+  });
+}
+
+function handleQuizAnswer(chosen, item) {
+  const optEls = document.querySelectorAll('.quiz-opt');
+  optEls.forEach(b => { b.disabled = true; });
+
+  const correct = chosen === item.correct;
+  optEls[chosen].classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) optEls[item.correct].classList.add('correct');
+
+  const fb = document.getElementById('quizFeedback');
+  fb.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+  fb.textContent = (correct ? '✓ Correct! ' : '✗ Incorrect. ') + (item.explanation || '');
+  fb.classList.remove('hidden');
+
+  document.getElementById('quizNext').classList.remove('hidden');
+  Store.markResult(item.id, correct);
+  if (correct) State.sessionCorrect++;
+}
+
+document.getElementById('quizNext').addEventListener('click', () => {
+  State.sessionIndex++;
+  renderStudyItem();
+});
+
+// ── Fill Blank Mode ──────────────────────────────────────────────────────────
+function renderFillBlank(item) {
+  const el = document.getElementById('mode-fillblank');
+  el.classList.remove('hidden');
+
+  document.getElementById('fillCategory').textContent = State.activeTopic?.name || '';
+
+  // Mark blank in sentence
+  const parts = item.sentence.split('___');
+  const display = parts.join('<span class="blank">___</span>');
+  document.getElementById('fillSentence').innerHTML = display;
+
+  const input = document.getElementById('fillInput');
+  input.value = '';
+  input.focus();
+
+  document.getElementById('fillHintText').classList.add('hidden');
+  document.getElementById('fillHintText').textContent = item.hint || '';
+  document.getElementById('fillFeedback').classList.add('hidden');
+  document.getElementById('fillFeedback').classList.remove('correct','wrong');
+  document.getElementById('fillNext').classList.add('hidden');
+}
+
+document.getElementById('fillHint').addEventListener('click', () => {
+  document.getElementById('fillHintText').classList.remove('hidden');
+});
+
+document.getElementById('fillCheck').addEventListener('click', () => checkFillBlank());
+document.getElementById('fillInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkFillBlank();
+});
+
+function checkFillBlank() {
+  const item = State.sessionItems[State.sessionIndex];
+  const userAnswer = document.getElementById('fillInput').value.trim().toLowerCase();
+  const correct = item.blank.toLowerCase();
+
+  // Accept partial match — any correct word/phrase in the answer
+  const correctParts = correct.split('/').map(p => p.trim());
+  const isCorrect = correctParts.some(part =>
+    userAnswer === part ||
+    userAnswer.includes(part) ||
+    part.includes(userAnswer)
+  );
+
+  const fb = document.getElementById('fillFeedback');
+  fb.className = 'fill-feedback ' + (isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = isCorrect
+    ? `✓ Correct! The answer is: <strong>${item.blank}</strong>`
+    : `✗ Not quite. The correct answer is: <strong>${item.blank}</strong>`;
+  fb.classList.remove('hidden');
+
+  document.getElementById('fillNext').classList.remove('hidden');
+  Store.markResult(item.id, isCorrect);
+  if (isCorrect) State.sessionCorrect++;
+}
+
+document.getElementById('fillNext').addEventListener('click', () => {
+  State.sessionIndex++;
+  renderStudyItem();
+});
+
+// ── Open Question Mode ───────────────────────────────────────────────────────
+function renderOpenQuestion(item) {
+  const el = document.getElementById('mode-open');
+  el.classList.remove('hidden');
+
+  document.getElementById('openCategory').textContent = State.activeTopic?.name || '';
+  document.getElementById('openPoints').textContent = item.points || '';
+  document.getElementById('openQuestion').innerHTML = formatCardText(item.question);
+
+  const ta = document.getElementById('openAnswer');
+  ta.value = '';
+
+  document.getElementById('modelAnswer').classList.add('hidden');
+  document.getElementById('selfRate').classList.add('hidden');
+  document.getElementById('openReveal').classList.remove('hidden');
+
+  // Format model answer with bullet points
+  const formatted = (item.answer || '').split('\n').map(line => {
+    if (line.startsWith('•')) return `<span class="point">${line.slice(1).trim()}</span>`;
+    return `<span>${line}</span>`;
+  }).join('');
+  document.getElementById('modelAnswer').innerHTML = formatted;
+}
+
+document.getElementById('openReveal').addEventListener('click', () => {
+  document.getElementById('modelAnswer').classList.remove('hidden');
+  document.getElementById('selfRate').classList.remove('hidden');
+  document.getElementById('openReveal').classList.add('hidden');
+});
+
+document.getElementById('selfRate').addEventListener('click', e => {
+  const btn = e.target.closest('.sr-btn');
+  if (!btn) return;
+  const val = parseInt(btn.dataset.val);
+  const item = State.sessionItems[State.sessionIndex];
+  const correct = val >= 1;
+  Store.markResult(item.id, correct);
+  // Map self-rating to SM-2 rating for flashcard-like cards
+  const sm2rating = val === 0 ? 0 : val === 1 ? 2 : 4;
+  SM2.review(item.id, sm2rating);
+  if (correct) State.sessionCorrect++;
+  State.sessionIndex++;
+  renderStudyItem();
+});
+
+// ── Session Complete ─────────────────────────────────────────────────────────
+function showSessionComplete() {
+  const total = State.sessionItems.length;
+  const correct = State.sessionCorrect;
+  const pct = total > 0 ? Math.round((correct/total)*100) : 0;
+
+  document.querySelectorAll('.mode-container').forEach(c => c.classList.add('hidden'));
+
+  const el = document.createElement('div');
+  el.className = 'mode-container';
+  el.style.textAlign = 'center';
+  el.style.paddingTop = '40px';
+
+  const emoji = pct >= 80 ? '🎉' : pct >= 50 ? '💪' : '📚';
+  const msg = pct >= 80 ? 'Excellent work!' : pct >= 50 ? 'Good progress!' : 'Keep studying!';
+
+  el.innerHTML = `
+    <div style="font-size:56px;margin-bottom:16px;">${emoji}</div>
+    <div style="font-size:24px;font-weight:800;margin-bottom:8px;">${msg}</div>
+    <div style="font-size:15px;color:var(--text-dim);margin-bottom:32px;">
+      ${State.activeMode !== 'guided' && State.activeMode !== 'open'
+        ? `${correct} / ${total} correct (${pct}%)`
+        : `${total} items completed`}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:320px;margin:0 auto;">
+      <button class="btn-primary" id="btnStudyAgain">Study Again</button>
+      <button class="btn-secondary" id="btnBackToTopics">Back to Topics</button>
+    </div>
+  `;
+
+  document.getElementById('screen-study').appendChild(el);
+
+  document.getElementById('btnStudyAgain').addEventListener('click', () => {
+    el.remove();
+    startStudySession();
+  });
+  document.getElementById('btnBackToTopics').addEventListener('click', () => {
+    el.remove();
+    showScreen('topics');
+  });
+
+  updateStudyProgress();
+  document.getElementById('studyProgressBar').style.width = '100%';
+}
+
+// ── Stats Screen ─────────────────────────────────────────────────────────────
+function renderStats() {
+  const el = document.getElementById('statsContent');
+  const topics = MODULES[0].topics;
+  const streak = Store.getStreak();
+
+  // Per-topic progress
+  const topicRows = topics.map(t => {
+    const prog = Store.getTopicProgress(t.id);
+    return `
+      <div class="stat-topic-row">
+        <div class="st-name">${t.icon} ${t.name}</div>
+        <div class="st-bar"><div class="st-fill" style="width:${prog}%"></div></div>
+        <div class="st-pct">${prog}%</div>
+      </div>
+    `;
+  }).join('');
+
+  // SM-2 stats per topic
+  const sm2Rows = topics.map(t => {
+    const ids = (t.flashcards||[]).map(c=>c.id);
+    const stats = SM2.getStats(ids);
+    return `
+      <div class="due-item">
+        <div class="due-name">${t.icon} ${t.name}</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="font-size:11px;color:var(--text-dim);">${stats.learned} learned</span>
+          ${stats.due > 0 ? `<span class="due-count">${stats.due} due</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Streak dots (last 14 days)
+  const today = new Date().toDateString();
+  const last14 = Array.from({length:14}, (_,i) => {
+    const d = new Date(); d.setDate(d.getDate() - (13-i));
+    return d.toDateString();
+  });
+  const dots = last14.map(d => {
+    const done = streak.dates.includes(d);
+    const isToday = d === today;
+    return `<div class="streak-dot ${done ? (isToday ? 'today' : 'done') : ''}"></div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="stat-section">
+      <h3>Study Streak (last 14 days)</h3>
+      <div class="streak-row">${dots}</div>
+      <div style="margin-top:10px;font-size:13px;color:var(--text-dim);">
+        ${streak.dates.length} days studied total
+      </div>
+    </div>
+    <div class="stat-section">
+      <h3>Topic Progress</h3>
+      ${topicRows}
+    </div>
+    <div class="stat-section">
+      <h3>Flashcard SM-2 Status</h3>
+      <div class="due-list">${sm2Rows}</div>
+    </div>
+    <div class="stat-section">
+      <h3>Reset Data</h3>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Clear all progress and start fresh.</p>
+      <button class="btn-secondary" id="btnReset" style="width:100%">Reset All Progress</button>
+    </div>
+  `;
+
+  document.getElementById('btnReset').addEventListener('click', () => {
+    if (confirm('Reset ALL progress? This cannot be undone.')) {
+      SM2.resetAll();
+      localStorage.removeItem(Store.KEY);
+      localStorage.removeItem(Store.STREAK_KEY);
+      renderStats();
+      renderHome();
+    }
+  });
+}
+
+// ── Navigation Wiring ────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.screen === 'topics') {
+      State.activeTopic = null;
+      renderTopicList();
+    }
+    showScreen(btn.dataset.screen);
+  });
+});
+
+document.getElementById('btnBackHome').addEventListener('click', () => showScreen('home'));
+document.getElementById('btnBackTopics').addEventListener('click', () => showScreen('topics'));
+document.getElementById('btnBackStats').addEventListener('click', () => showScreen('home'));
+document.getElementById('btnEndSession').addEventListener('click', () => showScreen('topics'));
+
+document.getElementById('btnQuickStudy').addEventListener('click', () => {
+  // Pick the topic with most due cards
+  let bestTopic = MODULES[0].topics[0];
+  let maxDue = 0;
+  MODULES[0].topics.forEach(t => {
+    const ids = (t.flashcards||[]).map(c=>c.id);
+    const due = SM2.getDueCards(ids).length;
+    if (due > maxDue) { maxDue = due; bestTopic = t; }
+  });
+  State.activeTopic = bestTopic;
+  State.activeMode = maxDue > 0 ? 'flashcard' : 'guided';
+  startStudySession();
+});
+
+// ── Utilities ────────────────────────────────────────────────────────────────
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function formatCardText(text) {
+  if (!text) return '';
+  return text
+    .replace(/\n/g, '<br>')
+    .replace(/`([^`]+)`/g, '<span style="font-family:monospace;background:rgba(59,130,246,0.15);padding:1px 5px;border-radius:4px;font-size:0.9em">$1</span>');
+}
+
+// ── Service Worker Registration ──────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+showScreen('home');
+
+</script>
+</body>
+</html>
