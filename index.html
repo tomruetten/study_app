@@ -495,8 +495,34 @@ body::before {
   padding: 16px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
 }
+.basics-intro-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.basics-intro-copy { min-width: 0; }
 .basics-intro-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
 .basics-intro-sub { font-size: 12.5px; color: var(--text-dim); margin-top: 3px; }
+
+.basics-lang-toggle {
+  flex-shrink: 0;
+  display: flex;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 2px;
+  background: var(--glass-thin);
+}
+.blt-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.blt-btn.active { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: #04101c; }
 .basics-search {
   width: 100%;
   margin-top: 12px;
@@ -2191,142 +2217,142 @@ const MODULES = [
      * Bewusst auf das Prüfungsrelevante beschränkt — kein Ersatz für die Folien.
      */
     basics: [
-      { group: 'Fusion — die Grundlagen', icon: '⚛️', items: [
-        { term: 'Kernfusion', text: 'Zwei leichte Kerne verschmelzen zu einem schwereren; die dabei fehlende Masse (Massendefekt) wird nach ΔE = Δm·c² als Energie frei.' },
-        { term: 'Bindungsenergie', text: 'Ergebnis des Wettstreits zwischen anziehender starker Kernkraft und abstoßender Coulomb-Kraft — pro Nukleon maximal bei A ≈ 56 (Eisen/Nickel).' },
-        { term: 'Warum Fusion Energie liefert', text: 'Energie wird frei, wenn das Produkt eine höhere Gesamt-Bindungsenergie hat als die Ausgangskerne — deshalb lohnt Fusion links und Spaltung rechts von A ≈ 56.' },
-        { term: 'D-T-Reaktion', text: 'D + T → ⁴He (3,52 MeV) + n (14,1 MeV) = 17,59 MeV; wegen niedriger Zündtemperatur, großem Wirkungsquerschnitt und hoher Ausbeute die einzig praktikable Reaktion.' },
-        { term: 'Coulomb-Barriere & Tunneleffekt', text: 'Die gleichnamig geladenen Kerne stoßen sich ab; Fusion gelingt trotzdem deutlich unterhalb der klassischen Barriere, weil die Kerne quantenmechanisch hindurchtunneln.' },
-        { term: 'Wirkungsquerschnitt σ', text: 'Maß für die Wahrscheinlichkeit, dass zwei Kerne reagieren (Einheit barn = 10⁻²⁸ m²).' },
-        { term: 'Reaktivität ⟨σv⟩', text: 'σ mal Geschwindigkeit, gemittelt über die Maxwell-Verteilung — die eigentliche Kenngröße der Reaktionsrate r = n₁n₂⟨σv⟩.' },
-        { term: 'Tritium', text: 'Radioaktives Wasserstoffisotop mit 12,3 Jahren Halbwertszeit — auf der Erde praktisch nicht vorhanden und deshalb im Reaktor aus Lithium zu erbrüten.' },
-        { term: 'Vorteil der Fusion', text: 'CO₂-frei, und die Brennstoffe Deuterium und Lithium sind in Erdkruste und Meerwasser reichlich vorhanden.' },
+      { group: 'Fusion — die Grundlagen', groupEn: 'Fusion — The Basics', icon: '⚛️', items: [
+        { term: 'Kernfusion', termEn: 'Nuclear Fusion', text: 'Zwei leichte Kerne verschmelzen zu einem schwereren; die dabei fehlende Masse (Massendefekt) wird nach ΔE = Δm·c² als Energie frei.', textEn: 'Two light nuclei merge into a heavier one; the missing mass (mass defect) is released as energy according to ΔE = Δm·c².' },
+        { term: 'Bindungsenergie', termEn: 'Binding Energy', text: 'Ergebnis des Wettstreits zwischen anziehender starker Kernkraft und abstoßender Coulomb-Kraft — pro Nukleon maximal bei A ≈ 56 (Eisen/Nickel).', textEn: 'Result of the contest between the attractive strong nuclear force and the repulsive Coulomb force — per nucleon, maximum at A ≈ 56 (iron/nickel).' },
+        { term: 'Warum Fusion Energie liefert', termEn: 'Why Fusion Releases Energy', text: 'Energie wird frei, wenn das Produkt eine höhere Gesamt-Bindungsenergie hat als die Ausgangskerne — deshalb lohnt Fusion links und Spaltung rechts von A ≈ 56.', textEn: 'Energy is released when the product has a higher total binding energy than the starting nuclei — that is why fusion pays off left of A ≈ 56, and fission pays off to the right.' },
+        { term: 'D-T-Reaktion', termEn: 'D-T Reaction', text: 'D + T → ⁴He (3,52 MeV) + n (14,1 MeV) = 17,59 MeV; wegen niedriger Zündtemperatur, großem Wirkungsquerschnitt und hoher Ausbeute die einzig praktikable Reaktion.', textEn: 'D + T → ⁴He (3.52 MeV) + n (14.1 MeV) = 17.59 MeV; the only practical reaction thanks to its low ignition temperature, large cross section, and high yield.' },
+        { term: 'Coulomb-Barriere & Tunneleffekt', termEn: 'Coulomb Barrier & Tunnel Effect', text: 'Die gleichnamig geladenen Kerne stoßen sich ab; Fusion gelingt trotzdem deutlich unterhalb der klassischen Barriere, weil die Kerne quantenmechanisch hindurchtunneln.', textEn: 'Like-charged nuclei repel each other; fusion still succeeds well below the classical barrier because the nuclei quantum-mechanically tunnel through it.' },
+        { term: 'Wirkungsquerschnitt σ', termEn: 'Cross Section σ', text: 'Maß für die Wahrscheinlichkeit, dass zwei Kerne reagieren (Einheit barn = 10⁻²⁸ m²).', textEn: 'Measure of the probability that two nuclei react (unit: barn = 10⁻²⁸ m²).' },
+        { term: 'Reaktivität ⟨σv⟩', termEn: 'Reactivity ⟨σv⟩', text: 'σ mal Geschwindigkeit, gemittelt über die Maxwell-Verteilung — die eigentliche Kenngröße der Reaktionsrate r = n₁n₂⟨σv⟩.', textEn: 'Cross section times velocity, averaged over the Maxwellian distribution — the actual figure of merit behind the reaction rate r = n₁n₂⟨σv⟩.' },
+        { term: 'Tritium', termEn: 'Tritium', text: 'Radioaktives Wasserstoffisotop mit 12,3 Jahren Halbwertszeit — auf der Erde praktisch nicht vorhanden und deshalb im Reaktor aus Lithium zu erbrüten.', textEn: 'Radioactive hydrogen isotope with a 12.3-year half-life — virtually absent on Earth, so it has to be bred inside the reactor from lithium.' },
+        { term: 'Vorteil der Fusion', termEn: 'Advantage of Fusion', text: 'CO₂-frei, und die Brennstoffe Deuterium und Lithium sind in Erdkruste und Meerwasser reichlich vorhanden.', textEn: 'CO₂-free, and the fuels deuterium and lithium are abundant in the Earth\'s crust and seawater.' },
       ]},
 
-      { group: 'Plasma & Kennzahlen', icon: '🌪️', items: [
-        { term: 'Plasma', text: 'Quasineutrales Gas geladener Teilchen mit kollektivem Verhalten — im einfachsten Bild vollständig durch Dichte n und Temperatur T beschrieben.' },
-        { term: 'Kollektives Verhalten', text: 'Anders als im neutralen Gas wirken die Teilchen über weitreichende elektromagnetische Felder auch auf weit entfernte Bereiche.' },
-        { term: 'Debye-Länge λD', text: 'Länge, über die eine eingebrachte Ladung im Plasma abgeschirmt wird; erst wenn λD ≪ Systemgröße L gilt, verhält sich das Gas wie ein Plasma.' },
-        { term: 'Larmorradius ρ = m·v⊥/(q·B)', text: 'Radius der Gyration um eine Feldlinie — Ionen kreisen wegen ihrer größeren Masse deutlich weiter als Elektronen.' },
-        { term: 'Energieeinschlusszeit τE = E/PL', text: 'Verhältnis von gespeicherter Plasmaenergie zu Verlustleistung — das Maß dafür, wie gut das Plasma seine Energie hält.' },
-        { term: 'Zündung (Ignition)', text: 'Die Alphateilchen-Heizung allein deckt die Verluste, die externe Heizung kann abgeschaltet werden.' },
-        { term: 'Lawson-Kriterium', text: 'n·τE > 1,5·10²⁰ m⁻³s bei optimalen T = 30 keV — die Zündbedingung für D-T.' },
-        { term: 'Tripelprodukt n·T·τE', text: '> 3·10²¹ m⁻³·keV·s: die Gütezahl, mit der man misst, wie weit ein Gerät noch von der Zündung entfernt ist.' },
-        { term: 'Fusionsverstärkung Q', text: 'Fusionsleistung / externe Heizleistung; Q = 1 ist Break-even, Q ≈ 10 gilt als wirtschaftliches Minimum, bei Zündung geht Q → ∞.' },
-        { term: 'Beta β', text: 'Kinetischer Teilchendruck geteilt durch magnetischen Druck — hoch ist wirtschaftlich (kleinerer, billigerer Magnet), im Tokamak aber durch Stabilitätsgrenzen limitiert.' },
-        { term: 'Sicherheitsfaktor q = 2π/ι', text: 'Zahl der toroidalen Umläufe einer Feldlinie pro poloidalem Umlauf — höheres q ist MHD-stabiler, verschlechtert aber den Einschluss.' },
-        { term: 'Plasmawiderstand', text: 'Fällt mit steigender Temperatur (∝ T^-3/2) — anders als im Metall; genau deshalb reicht ohmsche Heizung allein nicht bis zur Fusionstemperatur.' },
-        { term: 'Bremsstrahlung', text: 'Strahlungsverlust durch Elektronen, die im Coulomb-Feld der Ionen abgebremst werden — wächst stark mit Zeff.' },
-        { term: 'Hoch-Z-Verunreinigungen', text: 'Aus der Wand gesputterte schwere Ionen (Fe, Cr, Ni) treiben über Zeff die Strahlungsverluste hoch und müssen unbedingt ferngehalten werden.' },
-        { term: 'Runaway-Elektronen', text: 'Bei sinkender Stoßrate auf relativistische Energien beschleunigte Elektronen, die aus dem Einschluss ausbrechen und die erste Wand beschädigen.' },
+      { group: 'Plasma & Kennzahlen', groupEn: 'Plasma & Key Parameters', icon: '🌪️', items: [
+        { term: 'Plasma', termEn: 'Plasma', text: 'Quasineutrales Gas geladener Teilchen mit kollektivem Verhalten — im einfachsten Bild vollständig durch Dichte n und Temperatur T beschrieben.', textEn: 'Quasi-neutral gas of charged particles showing collective behaviour — in the simplest picture fully described by density n and temperature T.' },
+        { term: 'Kollektives Verhalten', termEn: 'Collective Behaviour', text: 'Anders als im neutralen Gas wirken die Teilchen über weitreichende elektromagnetische Felder auch auf weit entfernte Bereiche.', textEn: 'Unlike in a neutral gas, particles interact through long-range electromagnetic fields that reach into distant regions too.' },
+        { term: 'Debye-Länge λD', termEn: 'Debye Length λD', text: 'Länge, über die eine eingebrachte Ladung im Plasma abgeschirmt wird; erst wenn λD ≪ Systemgröße L gilt, verhält sich das Gas wie ein Plasma.', textEn: 'Length over which an inserted charge is screened inside the plasma; only once λD ≪ system size L does the gas actually behave like a plasma.' },
+        { term: 'Larmorradius ρ = m·v⊥/(q·B)', termEn: 'Larmor Radius ρ = m·v⊥/(q·B)', text: 'Radius der Gyration um eine Feldlinie — Ionen kreisen wegen ihrer größeren Masse deutlich weiter als Elektronen.', textEn: 'Radius of the gyration around a field line — ions orbit at a much larger radius than electrons because of their greater mass.' },
+        { term: 'Energieeinschlusszeit τE = E/PL', termEn: 'Energy Confinement Time τE = E/PL', text: 'Verhältnis von gespeicherter Plasmaenergie zu Verlustleistung — das Maß dafür, wie gut das Plasma seine Energie hält.', textEn: 'Ratio of stored plasma energy to power loss — the measure of how well the plasma holds onto its energy.' },
+        { term: 'Zündung (Ignition)', termEn: 'Ignition', text: 'Die Alphateilchen-Heizung allein deckt die Verluste, die externe Heizung kann abgeschaltet werden.', textEn: 'Alpha-particle heating alone covers the losses, so the external heating can be switched off.' },
+        { term: 'Lawson-Kriterium', termEn: 'Lawson Criterion', text: 'n·τE > 1,5·10²⁰ m⁻³s bei optimalen T = 30 keV — die Zündbedingung für D-T.', textEn: 'n·τE > 1.5·10²⁰ m⁻³s at the optimal T = 30 keV — the ignition condition for D-T.' },
+        { term: 'Tripelprodukt n·T·τE', termEn: 'Triple Product n·T·τE', text: '> 3·10²¹ m⁻³·keV·s: die Gütezahl, mit der man misst, wie weit ein Gerät noch von der Zündung entfernt ist.', textEn: '> 3·10²¹ m⁻³·keV·s: the figure of merit that measures how far a device still is from ignition.' },
+        { term: 'Fusionsverstärkung Q', termEn: 'Fusion Gain Q', text: 'Fusionsleistung / externe Heizleistung; Q = 1 ist Break-even, Q ≈ 10 gilt als wirtschaftliches Minimum, bei Zündung geht Q → ∞.', textEn: 'Fusion power divided by external heating power; Q = 1 is breakeven, Q ≈ 10 counts as the economic minimum, and Q → ∞ at ignition.' },
+        { term: 'Beta β', termEn: 'Beta β', text: 'Kinetischer Teilchendruck geteilt durch magnetischen Druck — hoch ist wirtschaftlich (kleinerer, billigerer Magnet), im Tokamak aber durch Stabilitätsgrenzen limitiert.', textEn: 'Kinetic particle pressure divided by magnetic pressure — high β is economically desirable (smaller, cheaper magnet) but limited by stability constraints in a tokamak.' },
+        { term: 'Sicherheitsfaktor q = 2π/ι', termEn: 'Safety Factor q = 2π/ι', text: 'Zahl der toroidalen Umläufe einer Feldlinie pro poloidalem Umlauf — höheres q ist MHD-stabiler, verschlechtert aber den Einschluss.', textEn: 'Number of toroidal turns a field line makes per poloidal turn — higher q is more MHD-stable but worsens confinement.' },
+        { term: 'Plasmawiderstand', termEn: 'Plasma Resistivity', text: 'Fällt mit steigender Temperatur (∝ T^-3/2) — anders als im Metall; genau deshalb reicht ohmsche Heizung allein nicht bis zur Fusionstemperatur.', textEn: 'Falls as temperature rises (∝ T^-3/2) — unlike in a metal; exactly why ohmic heating alone cannot reach fusion temperature.' },
+        { term: 'Bremsstrahlung', termEn: 'Bremsstrahlung', text: 'Strahlungsverlust durch Elektronen, die im Coulomb-Feld der Ionen abgebremst werden — wächst stark mit Zeff.', textEn: 'Radiative loss from electrons decelerated in the Coulomb field of the ions — grows strongly with Zeff.' },
+        { term: 'Hoch-Z-Verunreinigungen', termEn: 'High-Z Impurities', text: 'Aus der Wand gesputterte schwere Ionen (Fe, Cr, Ni) treiben über Zeff die Strahlungsverluste hoch und müssen unbedingt ferngehalten werden.', textEn: 'Heavy ions sputtered from the wall (Fe, Cr, Ni) drive up radiative losses via Zeff and must be kept out at all costs.' },
+        { term: 'Runaway-Elektronen', termEn: 'Runaway Electrons', text: 'Bei sinkender Stoßrate auf relativistische Energien beschleunigte Elektronen, die aus dem Einschluss ausbrechen und die erste Wand beschädigen.', textEn: 'Electrons accelerated to relativistic energies as the collision rate falls, breaking out of confinement and damaging the first wall.' },
       ]},
 
-      { group: 'Einschluss-Konzepte', icon: '🧭', items: [
-        { term: 'Magnetischer Einschluss', text: 'Geladene Teilchen gyrieren um die Feldlinien, laufen aber frei entlang — deshalb muss das Feld in sich geschlossen sein.' },
-        { term: 'Warum ein reines Toroidalfeld nicht reicht', text: 'Krümmung und 1/R-Ungleichförmigkeit erzeugen Driften; die Ladungstrennung baut ein E-Feld auf, dessen E×B-Drift alles nach außen an die Wand schiebt.' },
-        { term: 'Poloidalfeld', text: 'Verdrillt die Feldlinien zu Helices, sodass ein Teilchen oben und unten vorbeikommt und sich keine dauerhafte Ladungstrennung aufbauen kann.' },
-        { term: 'Tokamak', text: 'Toroidalfeld aus Spulen plus Poloidalfeld aus dem im Plasma induzierten Strom; weil der Solenoidstrom sättigt, ist er prinzipbedingt gepulst.' },
-        { term: 'Stellarator', text: 'Beide Feldkomponenten kommen aus externen (helikalen bzw. modularen) Spulen — kein Plasmastrom nötig, deshalb echter Dauerbetrieb möglich.' },
-        { term: 'Trägheitseinschluss (ICF)', text: 'Ein Pellet wird so schnell komprimiert und geheizt, dass es fusioniert, bevor es auseinanderfliegt — die eigene Trägheit ist der Einschluss.' },
-        { term: 'Hohlraum', text: 'Beim indirekten Antrieb heizt der Laser die Innenwand einer kleinen Kapsel, deren Röntgenstrahlung dann das Pellet implodiert.' },
-        { term: 'Magnetspiegel', text: 'Bei erhaltenem μ wächst v⊥ und v∥ schrumpft, wenn B ansteigt — erreicht v∥ null, wird das Teilchen zurückreflektiert.' },
+      { group: 'Einschluss-Konzepte', groupEn: 'Confinement Concepts', icon: '🧭', items: [
+        { term: 'Magnetischer Einschluss', termEn: 'Magnetic Confinement', text: 'Geladene Teilchen gyrieren um die Feldlinien, laufen aber frei entlang — deshalb muss das Feld in sich geschlossen sein.', textEn: 'Charged particles gyrate around field lines but move freely along them — so the field must form a closed loop.' },
+        { term: 'Warum ein reines Toroidalfeld nicht reicht', termEn: 'Why a Pure Toroidal Field Is Not Enough', text: 'Krümmung und 1/R-Ungleichförmigkeit erzeugen Driften; die Ladungstrennung baut ein E-Feld auf, dessen E×B-Drift alles nach außen an die Wand schiebt.', textEn: 'Curvature and the 1/R non-uniformity create drifts; the resulting charge separation builds up an E-field whose E×B drift pushes everything outward to the wall.' },
+        { term: 'Poloidalfeld', termEn: 'Poloidal Field', text: 'Verdrillt die Feldlinien zu Helices, sodass ein Teilchen oben und unten vorbeikommt und sich keine dauerhafte Ladungstrennung aufbauen kann.', textEn: 'Twists the field lines into helices so a particle passes both the top and the bottom, preventing any lasting charge separation from building up.' },
+        { term: 'Tokamak', termEn: 'Tokamak', text: 'Toroidalfeld aus Spulen plus Poloidalfeld aus dem im Plasma induzierten Strom; weil der Solenoidstrom sättigt, ist er prinzipbedingt gepulst.', textEn: 'Toroidal field from coils plus a poloidal field from the current induced in the plasma; because the solenoid current saturates, it is inherently pulsed.' },
+        { term: 'Stellarator', termEn: 'Stellarator', text: 'Beide Feldkomponenten kommen aus externen (helikalen bzw. modularen) Spulen — kein Plasmastrom nötig, deshalb echter Dauerbetrieb möglich.', textEn: 'Both field components come from external (helical or modular) coils — no plasma current needed, so genuine steady-state operation is possible.' },
+        { term: 'Trägheitseinschluss (ICF)', termEn: 'Inertial Confinement (ICF)', text: 'Ein Pellet wird so schnell komprimiert und geheizt, dass es fusioniert, bevor es auseinanderfliegt — die eigene Trägheit ist der Einschluss.', textEn: 'A pellet is compressed and heated so fast that it fuses before it can fly apart — its own inertia is the confinement.' },
+        { term: 'Hohlraum', termEn: 'Hohlraum', text: 'Beim indirekten Antrieb heizt der Laser die Innenwand einer kleinen Kapsel, deren Röntgenstrahlung dann das Pellet implodiert.', textEn: 'In indirect drive, the laser heats the inner wall of a small capsule, whose X-rays then implode the pellet.' },
+        { term: 'Magnetspiegel', termEn: 'Magnetic Mirror', text: 'Bei erhaltenem μ wächst v⊥ und v∥ schrumpft, wenn B ansteigt — erreicht v∥ null, wird das Teilchen zurückreflektiert.', textEn: 'With μ conserved, v⊥ grows and v∥ shrinks as B increases — once v∥ reaches zero, the particle is reflected back.' },
       ]},
 
-      { group: 'Magnetsystem', icon: '🧲', items: [
-        { term: 'Toroidalfeldspule (TF)', text: 'Dauerhaft bestromt, erzeugt das toroidale Hauptfeld für den Einschluss und muss riesige zentripetale und Out-of-plane-Kräfte aushalten.' },
-        { term: 'Zentralsolenoid (CS)', text: 'Die Primärwicklung des Transformators: Ihr Stromanstieg induziert den Plasmastrom und heizt das Plasma zugleich ohmisch.' },
-        { term: 'Poloidalfeldspulen (PF)', text: 'Sorgen für vertikale Stabilität, Formgebung und Positionsregelung des Plasmaquerschnitts.' },
-        { term: 'Supraleitung', text: 'Unterhalb Tc verschwindet der Widerstand vollständig, ein einmal eingeprägter Strom fließt ohne Stromquelle weiter.' },
-        { term: 'Meissner-Effekt', text: 'Unterhalb Tc verdrängt der Supraleiter das Magnetfeld aus seinem Inneren; es dringt nur wenige 100 nm ein.' },
-        { term: 'Typ I vs. Typ II', text: 'Typ I (reine Metalle) verliert die Supraleitung abrupt bei einem einzigen Bc; Typ II (Legierungen, Keramiken) geht graduell über und erreicht höhere Tc und Bc.' },
-        { term: 'Kritische Fläche', text: 'Supraleitung existiert nur innerhalb der drei Grenzen Tc, Bc und Jc — wird eine überschritten, wird der Leiter normalleitend.' },
-        { term: 'Quench', text: 'Plötzlicher Rückfall in den normalleitenden Zustand: Die gespeicherte Magnetenergie wird schlagartig frei und heizt Leiter und Kühlmittel — Schutzsystem zwingend.' },
-        { term: 'NbTi vs. Nb₃Sn', text: 'NbTi bis etwa 6-7 T (ITER: PF-Spulen), Nb₃Sn bis etwa 14 T (TF-Spulen und CS) — dafür teurer und mit Wärmebehandlung.' },
-        { term: 'CICC (Cable-in-Conduit)', text: 'Viele supraleitende Litzen in einem tragenden Mantel, der zugleich als Kühlkanal dient — der Leitertyp der ITER-Magnete.' },
-        { term: 'Warum überhaupt supraleitend', text: 'Nur so bekommt man die für das Tripelprodukt nötigen hohen Felder bei vertretbarem Bauraum und ohne Joulesche Verluste.' },
+      { group: 'Magnetsystem', groupEn: 'Magnet System', icon: '🧲', items: [
+        { term: 'Toroidalfeldspule (TF)', termEn: 'Toroidal Field Coil (TF)', text: 'Dauerhaft bestromt, erzeugt das toroidale Hauptfeld für den Einschluss und muss riesige zentripetale und Out-of-plane-Kräfte aushalten.', textEn: 'Permanently energized, it produces the main toroidal confinement field and must withstand huge centripetal and out-of-plane forces.' },
+        { term: 'Zentralsolenoid (CS)', termEn: 'Central Solenoid (CS)', text: 'Die Primärwicklung des Transformators: Ihr Stromanstieg induziert den Plasmastrom und heizt das Plasma zugleich ohmisch.', textEn: 'The transformer\'s primary winding: its rising current induces the plasma current and ohmically heats the plasma at the same time.' },
+        { term: 'Poloidalfeldspulen (PF)', termEn: 'Poloidal Field Coils (PF)', text: 'Sorgen für vertikale Stabilität, Formgebung und Positionsregelung des Plasmaquerschnitts.', textEn: 'Provide vertical stability, shaping, and position control of the plasma cross-section.' },
+        { term: 'Supraleitung', termEn: 'Superconductivity', text: 'Unterhalb Tc verschwindet der Widerstand vollständig, ein einmal eingeprägter Strom fließt ohne Stromquelle weiter.', textEn: 'Below Tc, resistance vanishes entirely; a current once induced keeps flowing without any power source.' },
+        { term: 'Meissner-Effekt', termEn: 'Meissner Effect', text: 'Unterhalb Tc verdrängt der Supraleiter das Magnetfeld aus seinem Inneren; es dringt nur wenige 100 nm ein.', textEn: 'Below Tc, the superconductor expels the magnetic field from its interior; it penetrates only a few hundred nm.' },
+        { term: 'Typ I vs. Typ II', termEn: 'Type I vs. Type II', text: 'Typ I (reine Metalle) verliert die Supraleitung abrupt bei einem einzigen Bc; Typ II (Legierungen, Keramiken) geht graduell über und erreicht höhere Tc und Bc.', textEn: 'Type I (pure metals) loses superconductivity abruptly at a single Bc; Type II (alloys, ceramics) transitions gradually and reaches higher Tc and Bc.' },
+        { term: 'Kritische Fläche', termEn: 'Critical Surface', text: 'Supraleitung existiert nur innerhalb der drei Grenzen Tc, Bc und Jc — wird eine überschritten, wird der Leiter normalleitend.', textEn: 'Superconductivity exists only within the three limits Tc, Bc, and Jc — exceed any one of them and the conductor goes normal.' },
+        { term: 'Quench', termEn: 'Quench', text: 'Plötzlicher Rückfall in den normalleitenden Zustand: Die gespeicherte Magnetenergie wird schlagartig frei und heizt Leiter und Kühlmittel — Schutzsystem zwingend.', textEn: 'Sudden collapse back into the resistive state: the stored magnet energy is released all at once and heats conductor and coolant — a protection system is essential.' },
+        { term: 'NbTi vs. Nb₃Sn', termEn: 'NbTi vs. Nb₃Sn', text: 'NbTi bis etwa 6-7 T (ITER: PF-Spulen), Nb₃Sn bis etwa 14 T (TF-Spulen und CS) — dafür teurer und mit Wärmebehandlung.', textEn: 'NbTi up to about 6-7 T (ITER: PF coils), Nb₃Sn up to about 14 T (TF coils and CS) — but more expensive and requiring heat treatment.' },
+        { term: 'CICC (Cable-in-Conduit)', termEn: 'CICC (Cable-in-Conduit Conductor)', text: 'Viele supraleitende Litzen in einem tragenden Mantel, der zugleich als Kühlkanal dient — der Leitertyp der ITER-Magnete.', textEn: 'Many superconducting strands inside a load-bearing jacket that doubles as the cooling channel — the conductor type used in the ITER magnets.' },
+        { term: 'Warum überhaupt supraleitend', termEn: 'Why Superconducting at All', text: 'Nur so bekommt man die für das Tripelprodukt nötigen hohen Felder bei vertretbarem Bauraum und ohne Joulesche Verluste.', textEn: 'It is the only way to get the high fields the triple product needs, in a reasonable footprint and without any Joule losses.' },
       ]},
 
-      { group: 'In-Vessel-Komponenten', icon: '🛡️', items: [
-        { term: 'In-Vessel Components', text: 'Sammelbegriff für alles, was innerhalb des Vakuumgefäßes sitzt; die beiden Hauptsysteme sind Shielding Blanket System und Divertor.' },
-        { term: 'Plasma Facing Component (PFC)', text: 'Aufbau immer gleich: plasmaseitige Panzerung (armour), darunter die Wärmesenke (heat sink), dahinter Stützstruktur und Kühlrohre.' },
-        { term: 'Erste Wand / Blanket', text: 'Umschließt fast die ganze Plasmaoberfläche, schirmt Gefäß und Magnete gegen Wärme und Neutronen ab und hält Verunreinigungen klein.' },
-        { term: 'Beryllium', text: 'Panzerung der ersten Wand — niedrige Ordnungszahl, erzeugt also selbst bei Erosion nur wenig Zeff im Plasma.' },
-        { term: 'Wolfram', text: 'Panzerung der Divertor-Targets — höchster Schmelzpunkt aller Metalle und damit der beste Werkstoff für die extremen Wärmeflüsse.' },
-        { term: 'CuCrZr', text: 'Standard-Wärmesenke unter der Panzerung: hohe Wärmeleitfähigkeit bei gleichzeitig guter Warmfestigkeit und Duktilität.' },
-        { term: 'Modularität des Blankets', text: 'Einzelne Module (bei ITER ≈ 4,5 t) lassen sich per Fernhantierung durch die Ports tauschen, ohne die Maschine zu zerlegen.' },
-        { term: 'Divertor', text: 'Sitzt am Boden des Gefäßes, führt Leistung und Helium-Asche ab, begrenzt die Verunreinigung des Kernplasmas und schirmt die Wände ab.' },
-        { term: 'Divertor-Wärmefluss', text: 'Die vertikalen Targets müssen etwa 10 MW/m² stationär und bis 20 MW/m² bei langsamen Transienten aushalten (erste Wand: ~5 MW/m²).' },
-        { term: 'Erosion / Sputtering', text: 'Abgetragenes Wandmaterial erhöht Zeff und die Strahlungsverluste, verdünnt den Brennstoff und bindet über Ko-Deposition Tritium.' },
+      { group: 'In-Vessel-Komponenten', groupEn: 'In-Vessel Components', icon: '🛡️', items: [
+        { term: 'In-Vessel Components', termEn: 'In-Vessel Components', text: 'Sammelbegriff für alles, was innerhalb des Vakuumgefäßes sitzt; die beiden Hauptsysteme sind Shielding Blanket System und Divertor.', textEn: 'Umbrella term for everything sitting inside the vacuum vessel; the two main systems are the Shielding Blanket System and the Divertor.' },
+        { term: 'Plasma Facing Component (PFC)', termEn: 'Plasma Facing Component (PFC)', text: 'Aufbau immer gleich: plasmaseitige Panzerung (armour), darunter die Wärmesenke (heat sink), dahinter Stützstruktur und Kühlrohre.', textEn: 'Always the same build: plasma-side armour, a heat sink underneath it, then a support structure and cooling pipes.' },
+        { term: 'Erste Wand / Blanket', termEn: 'First Wall / Blanket', text: 'Umschließt fast die ganze Plasmaoberfläche, schirmt Gefäß und Magnete gegen Wärme und Neutronen ab und hält Verunreinigungen klein.', textEn: 'Encloses almost the entire plasma surface, shields the vessel and magnets from heat and neutrons, and keeps impurities low.' },
+        { term: 'Beryllium', termEn: 'Beryllium', text: 'Panzerung der ersten Wand — niedrige Ordnungszahl, erzeugt also selbst bei Erosion nur wenig Zeff im Plasma.', textEn: 'Armour of the first wall — low atomic number, so even if eroded it only contributes little Zeff to the plasma.' },
+        { term: 'Wolfram', termEn: 'Tungsten', text: 'Panzerung der Divertor-Targets — höchster Schmelzpunkt aller Metalle und damit der beste Werkstoff für die extremen Wärmeflüsse.', textEn: 'Armour of the divertor targets — the highest melting point of any metal, and therefore the best material for the extreme heat fluxes.' },
+        { term: 'CuCrZr', termEn: 'CuCrZr', text: 'Standard-Wärmesenke unter der Panzerung: hohe Wärmeleitfähigkeit bei gleichzeitig guter Warmfestigkeit und Duktilität.', textEn: 'Standard heat sink under the armour: high thermal conductivity combined with good strength at temperature and ductility.' },
+        { term: 'Modularität des Blankets', termEn: 'Blanket Modularity', text: 'Einzelne Module (bei ITER ≈ 4,5 t) lassen sich per Fernhantierung durch die Ports tauschen, ohne die Maschine zu zerlegen.', textEn: 'Individual modules (about 4.5 t at ITER) can be swapped out through the ports by remote handling, without disassembling the machine.' },
+        { term: 'Divertor', termEn: 'Divertor', text: 'Sitzt am Boden des Gefäßes, führt Leistung und Helium-Asche ab, begrenzt die Verunreinigung des Kernplasmas und schirmt die Wände ab.', textEn: 'Sits at the bottom of the vessel, exhausts power and helium ash, limits contamination of the core plasma, and shields the walls.' },
+        { term: 'Divertor-Wärmefluss', termEn: 'Divertor Heat Flux', text: 'Die vertikalen Targets müssen etwa 10 MW/m² stationär und bis 20 MW/m² bei langsamen Transienten aushalten (erste Wand: ~5 MW/m²).', textEn: 'The vertical targets must withstand about 10 MW/m² in steady state and up to 20 MW/m² during slow transients (first wall: ~5 MW/m²).' },
+        { term: 'Erosion / Sputtering', termEn: 'Erosion / Sputtering', text: 'Abgetragenes Wandmaterial erhöht Zeff und die Strahlungsverluste, verdünnt den Brennstoff und bindet über Ko-Deposition Tritium.', textEn: 'Eroded wall material raises Zeff and radiative losses, dilutes the fuel, and traps tritium through codeposition.' },
       ]},
 
-      { group: 'Vakuumgefäß & Kryostat', icon: '🔩', items: [
-        { term: 'Vakuumgefäß (VV)', text: 'Hermetisch geschweißter, doppelwandiger Stahlbehälter: erste Sicherheitsbarriere, UHV-Umgebung für das Plasma und mechanischer Träger der In-Vessel-Teile.' },
-        { term: 'Ports', text: 'Die 44 Öffnungen des ITER-Gefäßes geben Zugang für Fernhantierung, Diagnostik, Heizsysteme und das Abpumpen.' },
-        { term: 'Werkstoff SS 316L(N)-IG', text: 'Hauptmaterial von Gefäßkörper und doppelwandigen Ports — fest, korrosionsbeständig, gut fertigbar und vergleichsweise günstig.' },
-        { term: 'Kobalt-Limit', text: 'Kobalt hat einen großen Neutroneneinfangquerschnitt und aktiviert stark zu Gammastrahlern, deshalb im Stahl auf < 500 ppm begrenzt.' },
-        { term: 'Vollständig geschweißt', text: 'Das ITER-Gefäß wird als nukleare Sicherheitsanforderung durchgehend geschweißt — Schraub-/Dichtungsflansche wären Leckpfade.' },
-        { term: 'Kryostat', text: 'Große Vakuumkammer, die Gefäß und sämtliche Magnete umschließt; sie unterbindet konvektive Wärme zur kalten Masse und ist die zweite Barriere.' },
-        { term: 'Drücke', text: 'Kryostat 10⁻⁷…10⁻⁸ mbar, Plasmakammer 10⁻⁹ mbar oder besser (UHV).' },
-        { term: 'Bälge (bellows)', text: 'Nehmen zwischen Kryostat und Vakuumgefäß die thermische Dehnung und Schrumpfung auf, damit keine Spannungen entstehen.' },
-        { term: 'Kryopumpe', text: 'Friert Gasmoleküle an heliumkalten Flächen aus; nur so bleibt die Entladung bei langen Pulsen sauber (Helium-Asche, unverbrannter Brennstoff).' },
+      { group: 'Vakuumgefäß & Kryostat', groupEn: 'Vacuum Vessel & Cryostat', icon: '🔩', items: [
+        { term: 'Vakuumgefäß (VV)', termEn: 'Vacuum Vessel (VV)', text: 'Hermetisch geschweißter, doppelwandiger Stahlbehälter: erste Sicherheitsbarriere, UHV-Umgebung für das Plasma und mechanischer Träger der In-Vessel-Teile.', textEn: 'Hermetically welded, double-walled steel container: first safety barrier, UHV environment for the plasma, and mechanical support for the in-vessel parts.' },
+        { term: 'Ports', termEn: 'Ports', text: 'Die 44 Öffnungen des ITER-Gefäßes geben Zugang für Fernhantierung, Diagnostik, Heizsysteme und das Abpumpen.', textEn: 'The 44 openings in the ITER vessel give access for remote handling, diagnostics, heating systems, and pumping.' },
+        { term: 'Werkstoff SS 316L(N)-IG', termEn: 'Material SS 316L(N)-IG', text: 'Hauptmaterial von Gefäßkörper und doppelwandigen Ports — fest, korrosionsbeständig, gut fertigbar und vergleichsweise günstig.', textEn: 'Main material of the vessel body and the double-walled ports — strong, corrosion-resistant, easy to fabricate, and comparatively cheap.' },
+        { term: 'Kobalt-Limit', termEn: 'Cobalt Limit', text: 'Kobalt hat einen großen Neutroneneinfangquerschnitt und aktiviert stark zu Gammastrahlern, deshalb im Stahl auf < 500 ppm begrenzt.', textEn: 'Cobalt has a large neutron capture cross section and activates strongly into gamma emitters, so it is capped in the steel at < 500 ppm.' },
+        { term: 'Vollständig geschweißt', termEn: 'Fully Welded', text: 'Das ITER-Gefäß wird als nukleare Sicherheitsanforderung durchgehend geschweißt — Schraub-/Dichtungsflansche wären Leckpfade.', textEn: 'The ITER vessel is welded throughout as a nuclear safety requirement — bolted/gasketed flanges would be leak paths.' },
+        { term: 'Kryostat', termEn: 'Cryostat', text: 'Große Vakuumkammer, die Gefäß und sämtliche Magnete umschließt; sie unterbindet konvektive Wärme zur kalten Masse und ist die zweite Barriere.', textEn: 'Large vacuum chamber enclosing the vessel and all the magnets; it blocks convective heat to the cold mass and is the second barrier.' },
+        { term: 'Drücke', termEn: 'Pressures', text: 'Kryostat 10⁻⁷…10⁻⁸ mbar, Plasmakammer 10⁻⁹ mbar oder besser (UHV).', textEn: 'Cryostat 10⁻⁷…10⁻⁸ mbar, plasma chamber 10⁻⁹ mbar or better (UHV).' },
+        { term: 'Bälge (bellows)', termEn: 'Bellows', text: 'Nehmen zwischen Kryostat und Vakuumgefäß die thermische Dehnung und Schrumpfung auf, damit keine Spannungen entstehen.', textEn: 'Take up the thermal expansion and contraction between cryostat and vacuum vessel so no stresses build up.' },
+        { term: 'Kryopumpe', termEn: 'Cryopump', text: 'Friert Gasmoleküle an heliumkalten Flächen aus; nur so bleibt die Entladung bei langen Pulsen sauber (Helium-Asche, unverbrannter Brennstoff).', textEn: 'Freezes gas molecules onto helium-cold surfaces; the only way to keep the discharge clean during long pulses (helium ash, unburnt fuel).' },
       ]},
 
-      { group: 'Brennstoffkreislauf & Blanket', icon: '♻️', items: [
-        { term: 'Geschlossener Brennstoffkreislauf', text: 'Abgas absaugen, Wasserstoffisotope trennen, unverbranntes D und T wieder einspeisen — nichts vom wertvollen Brennstoff wird verworfen.' },
-        { term: 'Tritium-Brüten', text: 'Fusionsneutronen werden im lithiumhaltigen Blanket eingefangen und erzeugen neues Tritium — die einzige Quelle für den Brennstoff.' },
-        { term: 'Die vier Blanket-Funktionen', text: 'Tritium brüten, Leistung auskoppeln, physikalische Plasmagrenze bilden und Strahlung abschirmen.' },
-        { term: 'Brutreaktionen', text: 'n + ⁶Li → ⁴He + T + 4,78 MeV (exotherm, langsame Neutronen) und n + ⁷Li → ⁴He + T + n − 2,5 MeV (endotherm, gibt ein Neutron zurück).' },
-        { term: 'Neutronenmultiplikator', text: 'Beryllium oder Blei vervielfachen die Neutronen; Be ist günstig, reagiert aber mit Wasser und Luft und bindet Tritium.' },
-        { term: 'TBR (Tritium Breeding Ratio)', text: 'Erbrütetes geteilt durch verbranntes Tritium — muss über 1 liegen, ausgelegt wird typisch auf 1,02-1,05.' },
-        { term: 'HCPB-Blanket', text: 'Heliumgekühltes Feststoffkonzept: keramische Brüter-Pebbles und Beryllid-Multiplikator-Pebbles in einer RAFM-Stahlstruktur.' },
+      { group: 'Brennstoffkreislauf & Blanket', groupEn: 'Fuel Cycle & Blanket', icon: '♻️', items: [
+        { term: 'Geschlossener Brennstoffkreislauf', termEn: 'Closed Fuel Cycle', text: 'Abgas absaugen, Wasserstoffisotope trennen, unverbranntes D und T wieder einspeisen — nichts vom wertvollen Brennstoff wird verworfen.', textEn: 'Extract the exhaust gas, separate the hydrogen isotopes, reinject unburnt D and T — none of the valuable fuel is discarded.' },
+        { term: 'Tritium-Brüten', termEn: 'Tritium Breeding', text: 'Fusionsneutronen werden im lithiumhaltigen Blanket eingefangen und erzeugen neues Tritium — die einzige Quelle für den Brennstoff.', textEn: 'Fusion neutrons are captured in the lithium-bearing blanket and produce new tritium — the only source of this fuel.' },
+        { term: 'Die vier Blanket-Funktionen', termEn: 'The Four Blanket Functions', text: 'Tritium brüten, Leistung auskoppeln, physikalische Plasmagrenze bilden und Strahlung abschirmen.', textEn: 'Breed tritium, extract power, form the physical plasma boundary, and shield against radiation.' },
+        { term: 'Brutreaktionen', termEn: 'Breeding Reactions', text: 'n + ⁶Li → ⁴He + T + 4,78 MeV (exotherm, langsame Neutronen) und n + ⁷Li → ⁴He + T + n − 2,5 MeV (endotherm, gibt ein Neutron zurück).', textEn: 'n + ⁶Li → ⁴He + T + 4.78 MeV (exothermic, slow neutrons) and n + ⁷Li → ⁴He + T + n − 2.5 MeV (endothermic, gives back a neutron).' },
+        { term: 'Neutronenmultiplikator', termEn: 'Neutron Multiplier', text: 'Beryllium oder Blei vervielfachen die Neutronen; Be ist günstig, reagiert aber mit Wasser und Luft und bindet Tritium.', textEn: 'Beryllium or lead multiply the neutrons; Be is cheap but reacts with water and air and traps tritium.' },
+        { term: 'TBR (Tritium Breeding Ratio)', termEn: 'TBR (Tritium Breeding Ratio)', text: 'Erbrütetes geteilt durch verbranntes Tritium — muss über 1 liegen, ausgelegt wird typisch auf 1,02-1,05.', textEn: 'Tritium bred divided by tritium burnt — must exceed 1, typically designed for 1.02-1.05.' },
+        { term: 'HCPB-Blanket', termEn: 'HCPB Blanket', text: 'Heliumgekühltes Feststoffkonzept: keramische Brüter-Pebbles und Beryllid-Multiplikator-Pebbles in einer RAFM-Stahlstruktur.', textEn: 'Helium-cooled solid-breeder concept: ceramic breeder pebbles and beryllide multiplier pebbles inside a RAFM steel structure.' },
       ]},
 
-      { group: 'Heizsysteme & Stromtrieb', icon: '🔥', items: [
-        { term: 'Ohmsche Heizung', text: 'Der Plasmastrom heizt über den Plasmawiderstand — versagt bei hoher Temperatur, weil der Widerstand mit T^-3/2 einbricht.' },
-        { term: 'NBI (Neutralinjektion)', text: 'Ionen werden beschleunigt und vor dem Eintritt neutralisiert, weil geladene Teilchen vom Magnetfeld abgelenkt würden.' },
-        { term: 'Negative Ionen', text: 'Oberhalb ~100 keV unverzichtbar: Die Neutralisationsausbeute positiver Ionen fällt auf null, die negativer bleibt bei etwa 60 %.' },
-        { term: 'Cäsium in der Ionenquelle', text: 'Senkt die Austrittsarbeit der Oberfläche und steigert so die Ausbeute an negativen Ionen.' },
-        { term: 'Shine-through', text: 'Der nicht absorbierte Strahlanteil fliegt durch das Plasma hindurch und trifft die gegenüberliegende Wand.' },
-        { term: 'RF-Heizung', text: 'Drei Frequenzbereiche: Elektron-Zyklotron (ECRH), Ion-Zyklotron (ICRH) und Lower Hybrid — geheizt wird dort, wo die eingestrahlte Frequenz der lokalen Zyklotronfrequenz entspricht.' },
-        { term: 'ECRH & Gyrotron', text: 'Millimeterwellen aus dem Gyrotron werden zu nahezu 100 % in einem einzigen Durchgang absorbiert — daher sehr lokal und gut steuerbar.' },
-        { term: 'Bootstrap-Strom', text: 'Nicht-induktiver Plasmastrom, den der Druckgradient selbst antreibt — ein Baustein für den Dauerbetrieb.' },
+      { group: 'Heizsysteme & Stromtrieb', groupEn: 'Heating Systems & Current Drive', icon: '🔥', items: [
+        { term: 'Ohmsche Heizung', termEn: 'Ohmic Heating', text: 'Der Plasmastrom heizt über den Plasmawiderstand — versagt bei hoher Temperatur, weil der Widerstand mit T^-3/2 einbricht.', textEn: 'The plasma current heats via the plasma\'s own resistance — fails at high temperature because resistivity collapses as T^-3/2.' },
+        { term: 'NBI (Neutralinjektion)', termEn: 'NBI (Neutral Beam Injection)', text: 'Ionen werden beschleunigt und vor dem Eintritt neutralisiert, weil geladene Teilchen vom Magnetfeld abgelenkt würden.', textEn: 'Ions are accelerated and then neutralized before entering, because charged particles would be deflected by the magnetic field.' },
+        { term: 'Negative Ionen', termEn: 'Negative Ions', text: 'Oberhalb ~100 keV unverzichtbar: Die Neutralisationsausbeute positiver Ionen fällt auf null, die negativer bleibt bei etwa 60 %.', textEn: 'Essential above ~100 keV: the neutralization yield of positive ions falls to zero, while that of negative ions stays around 60%.' },
+        { term: 'Cäsium in der Ionenquelle', termEn: 'Caesium in the Ion Source', text: 'Senkt die Austrittsarbeit der Oberfläche und steigert so die Ausbeute an negativen Ionen.', textEn: 'Lowers the surface work function and thereby boosts the yield of negative ions.' },
+        { term: 'Shine-through', termEn: 'Shine-Through', text: 'Der nicht absorbierte Strahlanteil fliegt durch das Plasma hindurch und trifft die gegenüberliegende Wand.', textEn: 'The unabsorbed part of the beam flies straight through the plasma and hits the opposite wall.' },
+        { term: 'RF-Heizung', termEn: 'RF Heating', text: 'Drei Frequenzbereiche: Elektron-Zyklotron (ECRH), Ion-Zyklotron (ICRH) und Lower Hybrid — geheizt wird dort, wo die eingestrahlte Frequenz der lokalen Zyklotronfrequenz entspricht.', textEn: 'Three frequency ranges: electron cyclotron (ECRH), ion cyclotron (ICRH), and lower hybrid — heating occurs wherever the launched frequency matches the local cyclotron frequency.' },
+        { term: 'ECRH & Gyrotron', termEn: 'ECRH & Gyrotron', text: 'Millimeterwellen aus dem Gyrotron werden zu nahezu 100 % in einem einzigen Durchgang absorbiert — daher sehr lokal und gut steuerbar.', textEn: 'Millimetre waves from the gyrotron are absorbed almost 100% in a single pass — hence very localized and well controllable.' },
+        { term: 'Bootstrap-Strom', termEn: 'Bootstrap Current', text: 'Nicht-induktiver Plasmastrom, den der Druckgradient selbst antreibt — ein Baustein für den Dauerbetrieb.', textEn: 'Non-inductive plasma current driven by the pressure gradient itself — a building block for steady-state operation.' },
       ]},
 
-      { group: 'Kryotechnik', icon: '❄️', items: [
-        { term: 'Kryotechnik', text: 'Physik und Technik unterhalb von etwa 120 K; in der Fusion vor allem für supraleitende Magnete und Kryopumpen.' },
-        { term: 'Helium', text: 'Einziges Kühlmittel unter etwa 5 K, weil es als einziger Stoff unterhalb ~25 bar überhaupt nicht fest wird.' },
-        { term: 'Supraflüssiges He II', text: 'Quantenzustand unterhalb 2,17 K mit verschwindender Viskosität und nahezu perfektem Wärmetransport.' },
-        { term: 'Joule-Thomson-Effekt', text: 'Temperaturänderung eines realen Gases beim Drosseln durch eine Blende; Helium erwärmt sich dabei bei 300 K, weil seine Inversionstemperatur nur ~40 K beträgt.' },
-        { term: 'Claude-Prozess', text: 'Kombination aus Brayton-Entspannungsmaschine und JT-Drosselung — das Verfahren zur Heliumverflüssigung.' },
-        { term: 'Kälteanlage vs. Verflüssiger', text: 'Die Kälteanlage kühlt isotherm auf Siedetemperatur, der Verflüssiger liefert flüssiges Produkt als Ausgang.' },
-        { term: 'MLI (Vielschichtisolation)', text: 'N reflektierende Folien senken den Strahlungsaustausch im Idealfall um den Faktor N+1.' },
-        { term: 'Thermische Schilde (VVTS/CTS/PTS)', text: 'Fangen die Wärmestrahlung warmer Strukturen ab, bevor sie die kalte Masse erreicht — aktiv mit billigem Stickstoff bei ~80 K gekühlt.' },
+      { group: 'Kryotechnik', groupEn: 'Cryogenics', icon: '❄️', items: [
+        { term: 'Kryotechnik', termEn: 'Cryogenics', text: 'Physik und Technik unterhalb von etwa 120 K; in der Fusion vor allem für supraleitende Magnete und Kryopumpen.', textEn: 'Physics and technology below about 120 K; in fusion, used above all for superconducting magnets and cryopumps.' },
+        { term: 'Helium', termEn: 'Helium', text: 'Einziges Kühlmittel unter etwa 5 K, weil es als einziger Stoff unterhalb ~25 bar überhaupt nicht fest wird.', textEn: 'The only coolant below about 5 K, because it is the one substance that never solidifies below ~25 bar.' },
+        { term: 'Supraflüssiges He II', termEn: 'Superfluid He II', text: 'Quantenzustand unterhalb 2,17 K mit verschwindender Viskosität und nahezu perfektem Wärmetransport.', textEn: 'Quantum state below 2.17 K with vanishing viscosity and near-perfect heat transport.' },
+        { term: 'Joule-Thomson-Effekt', termEn: 'Joule-Thomson Effect', text: 'Temperaturänderung eines realen Gases beim Drosseln durch eine Blende; Helium erwärmt sich dabei bei 300 K, weil seine Inversionstemperatur nur ~40 K beträgt.', textEn: 'Temperature change of a real gas when throttled through an orifice; helium actually warms up at 300 K because its inversion temperature is only ~40 K.' },
+        { term: 'Claude-Prozess', termEn: 'Claude Process', text: 'Kombination aus Brayton-Entspannungsmaschine und JT-Drosselung — das Verfahren zur Heliumverflüssigung.', textEn: 'Combination of a Brayton expansion engine and JT throttling — the process used to liquefy helium.' },
+        { term: 'Kälteanlage vs. Verflüssiger', termEn: 'Refrigerator vs. Liquefier', text: 'Die Kälteanlage kühlt isotherm auf Siedetemperatur, der Verflüssiger liefert flüssiges Produkt als Ausgang.', textEn: 'The refrigerator cools isothermally at the boiling temperature, the liquefier delivers liquid product as its output.' },
+        { term: 'MLI (Vielschichtisolation)', termEn: 'MLI (Multi-Layer Insulation)', text: 'N reflektierende Folien senken den Strahlungsaustausch im Idealfall um den Faktor N+1.', textEn: 'N reflective foils reduce the radiative exchange, ideally by a factor of N+1.' },
+        { term: 'Thermische Schilde (VVTS/CTS/PTS)', termEn: 'Thermal Shields (VVTS/CTS/PTS)', text: 'Fangen die Wärmestrahlung warmer Strukturen ab, bevor sie die kalte Masse erreicht — aktiv mit billigem Stickstoff bei ~80 K gekühlt.', textEn: 'Intercept the radiated heat of warm structures before it reaches the cold mass — actively cooled with cheap nitrogen at ~80 K.' },
       ]},
 
-      { group: 'Betrieb & Instabilitäten', icon: '📈', items: [
-        { term: 'Entladungszyklus', text: 'Ramp-up (Stromaufbau) → Flat-top (Brennphase) → Ramp-down; die Dauer begrenzt der verfügbare Fluss des Zentralsolenoids.' },
-        { term: 'Separatrix', text: 'Letzte geschlossene Flussfläche zwischen eingeschlossenem Plasma und Scrape-off-Layer, sobald die Divertor-Konfiguration gefahren wird.' },
-        { term: 'X-Punkt (Null-Punkt)', text: 'Kreuzungspunkt der Separatrix — einer unten bei Single-Null, ein zweiter oben bei Double-Null.' },
-        { term: 'L-Mode / H-Mode', text: 'Oberhalb einer Heizleistungsschwelle springt der Einschluss sprunghaft um fast den Faktor 2 in die H-Mode (1982 an ASDEX entdeckt).' },
-        { term: 'ELMs', text: 'Edge Localized Modes — die typischen Randinstabilitäten der H-Mode, auf die die Skalierung IPB98(y,2) zugeschnitten ist.' },
-        { term: 'Elongation κ = b/a', text: 'Vertikale Streckung des Querschnitts: erlaubt höhere Plasmaströme ohne größeren Hauptradius, macht das Plasma aber vertikal instabil.' },
-        { term: 'Kink-Instabilität', text: 'Stromgetriebene Mode, bei der die Plasmasäule seitlich aus ihrer Mittellinie auswandert und die Auslenkung sich selbst verstärkt.' },
-        { term: 'Disruption', text: 'Plötzlicher Verlust des Einschlusses in vier Phasen: Pre-Precursor → Precursor → Thermal Quench → Current Quench.' },
-        { term: 'VDE', text: 'Vertical Displacement Event — das gestreckte Plasma wandert unkontrolliert vertikal aus, oft nach Reglerausfall oder als Folge einer Disruption.' },
-        { term: 'Halo-Strom', text: 'Der Anteil des Plasmastroms, der sich bei einer VDE über die leitenden In-Vessel-Strukturen schließt und dort große Kräfte erzeugt.' },
+      { group: 'Betrieb & Instabilitäten', groupEn: 'Operation & Instabilities', icon: '📈', items: [
+        { term: 'Entladungszyklus', termEn: 'Discharge Cycle', text: 'Ramp-up (Stromaufbau) → Flat-top (Brennphase) → Ramp-down; die Dauer begrenzt der verfügbare Fluss des Zentralsolenoids.', textEn: 'Ramp-up (current build-up) → flat-top (burn phase) → ramp-down; its duration is limited by the available flux of the central solenoid.' },
+        { term: 'Separatrix', termEn: 'Separatrix', text: 'Letzte geschlossene Flussfläche zwischen eingeschlossenem Plasma und Scrape-off-Layer, sobald die Divertor-Konfiguration gefahren wird.', textEn: 'Last closed flux surface between the confined plasma and the scrape-off layer, once the divertor configuration is established.' },
+        { term: 'X-Punkt (Null-Punkt)', termEn: 'X-Point (Null Point)', text: 'Kreuzungspunkt der Separatrix — einer unten bei Single-Null, ein zweiter oben bei Double-Null.', textEn: 'Crossing point of the separatrix — one at the bottom for single-null, a second at the top for double-null.' },
+        { term: 'L-Mode / H-Mode', termEn: 'L-Mode / H-Mode', text: 'Oberhalb einer Heizleistungsschwelle springt der Einschluss sprunghaft um fast den Faktor 2 in die H-Mode (1982 an ASDEX entdeckt).', textEn: 'Above a heating-power threshold, confinement jumps by nearly a factor of 2 into H-mode (discovered on ASDEX in 1982).' },
+        { term: 'ELMs', termEn: 'ELMs', text: 'Edge Localized Modes — die typischen Randinstabilitäten der H-Mode, auf die die Skalierung IPB98(y,2) zugeschnitten ist.', textEn: 'Edge Localized Modes — the typical edge instabilities of H-mode, which the IPB98(y,2) scaling is tailored to.' },
+        { term: 'Elongation κ = b/a', termEn: 'Elongation κ = b/a', text: 'Vertikale Streckung des Querschnitts: erlaubt höhere Plasmaströme ohne größeren Hauptradius, macht das Plasma aber vertikal instabil.', textEn: 'Vertical stretching of the cross-section: allows higher plasma currents without a larger major radius, but makes the plasma vertically unstable.' },
+        { term: 'Kink-Instabilität', termEn: 'Kink Instability', text: 'Stromgetriebene Mode, bei der die Plasmasäule seitlich aus ihrer Mittellinie auswandert und die Auslenkung sich selbst verstärkt.', textEn: 'Current-driven mode in which the plasma column drifts sideways off its centreline, and the displacement reinforces itself.' },
+        { term: 'Disruption', termEn: 'Disruption', text: 'Plötzlicher Verlust des Einschlusses in vier Phasen: Pre-Precursor → Precursor → Thermal Quench → Current Quench.', textEn: 'Sudden loss of confinement in four phases: pre-precursor → precursor → thermal quench → current quench.' },
+        { term: 'VDE', termEn: 'VDE', text: 'Vertical Displacement Event — das gestreckte Plasma wandert unkontrolliert vertikal aus, oft nach Reglerausfall oder als Folge einer Disruption.', textEn: 'Vertical Displacement Event — the elongated plasma drifts vertically out of control, often after a control failure or as the consequence of a disruption.' },
+        { term: 'Halo-Strom', termEn: 'Halo Current', text: 'Der Anteil des Plasmastroms, der sich bei einer VDE über die leitenden In-Vessel-Strukturen schließt und dort große Kräfte erzeugt.', textEn: 'The share of the plasma current that closes through the conductive in-vessel structures during a VDE, generating large forces there.' },
       ]},
 
-      { group: 'Montage & Inbetriebnahme', icon: '🏗️', items: [
-        { term: 'Sondertransporte', text: 'Fertigungs- und Montageort fallen fast nie zusammen: Für ITER rund 250 nächtliche Konvois von Marseille nach Cadarache, der schwerste ~800 t.' },
-        { term: 'Eingangsprüfung', text: 'Vor dem Einbau wird geprüft, ob der Transport das Bauteil beschädigt hat: Verpackung, Logger, Sichtprüfung, Druck-/Durchfluss-/Lecktest, Elektro- und Maßprüfung.' },
-        { term: 'Schock- und Kippindikatoren', text: 'Sind sie ausgelöst, hat das Paket einen Stoß oder eine Fehlbehandlung erlebt.' },
-        { term: 'Sichtprüfung', text: 'Gesucht wird nach Öl, Schneidflüssigkeit, Farbresten, Dellen und Fremdmaterial wie Spänen oder Rost — anhand einer Checkliste.' },
-        { term: 'Maßprüfung auf dem Transportgestell', text: 'Nur die wichtigsten Maße werden nachgemessen, und zwar gezielt, um Transportverformungen auszuschließen — die volle QA-Doku kommt aus dem Werk.' },
-        { term: 'Handhabung', text: 'Fusionsbauteile haben ein extrem hohes Gewichts-zu-Volumen-Verhältnis: Einzelhübe über 1000 t erzwingen eigens entwickelte Hebe- und Montagewerkzeuge.' },
-        { term: 'Modul-Hub', text: 'Vakuumgefäßsektor + Thermalschild + zwei TF-Spulen werden als ein 1380-t-Modul vormontiert und in die Grube abgelassen.' },
-        { term: 'Metrologie', text: 'Lasertracker (Abstand zum Reflektor plus Kopfwinkel, ~10 µm), Laserscanner (Punktwolken ohne Reflektor) und Photogrammetrie.' },
-        { term: 'Geschraubt vs. geschweißt', text: 'Geschweißt wird an Druck- und Vakuumgrenzen (Vakuumgefäß, UHV-Pflicht); geschraubt wird dort, wo demontiert werden muss oder Schweißwärme Leiter und Isolation schädigen würde.' },
-        { term: 'Elektrische Joints', text: 'Gelötet oder mit Weichmetall (Indium) verpresst; sie müssen über 10 000 Zyklen ohne Inspektion halten und bis 56 kV DC gegen Erde isoliert sein.' },
+      { group: 'Montage & Inbetriebnahme', groupEn: 'Assembly & Commissioning', icon: '🏗️', items: [
+        { term: 'Sondertransporte', termEn: 'Special Transports', text: 'Fertigungs- und Montageort fallen fast nie zusammen: Für ITER rund 250 nächtliche Konvois von Marseille nach Cadarache, der schwerste ~800 t.', textEn: 'Manufacturing and assembly sites almost never coincide: for ITER, about 250 night-time convoys from Marseille to Cadarache, the heaviest about 800 t.' },
+        { term: 'Eingangsprüfung', termEn: 'Incoming Inspection', text: 'Vor dem Einbau wird geprüft, ob der Transport das Bauteil beschädigt hat: Verpackung, Logger, Sichtprüfung, Druck-/Durchfluss-/Lecktest, Elektro- und Maßprüfung.', textEn: 'Before installation, checks confirm transport has not damaged the component: packaging, loggers, visual inspection, pressure/flow/leak test, electrical and dimensional checks.' },
+        { term: 'Schock- und Kippindikatoren', termEn: 'Shock and Tilt Indicators', text: 'Sind sie ausgelöst, hat das Paket einen Stoß oder eine Fehlbehandlung erlebt.', textEn: 'If triggered, the package has been subjected to an impact or to mishandling.' },
+        { term: 'Sichtprüfung', termEn: 'Visual Inspection', text: 'Gesucht wird nach Öl, Schneidflüssigkeit, Farbresten, Dellen und Fremdmaterial wie Spänen oder Rost — anhand einer Checkliste.', textEn: 'Looks for oil, cutting fluid, paint residue, dents, and foreign material like filings or rust — following a checklist.' },
+        { term: 'Maßprüfung auf dem Transportgestell', termEn: 'Dimensional Check on the Transport Frame', text: 'Nur die wichtigsten Maße werden nachgemessen, und zwar gezielt, um Transportverformungen auszuschließen — die volle QA-Doku kommt aus dem Werk.', textEn: 'Only the most important dimensions are re-measured, specifically to rule out transport deformation — the full QA documentation comes from the factory.' },
+        { term: 'Handhabung', termEn: 'Handling', text: 'Fusionsbauteile haben ein extrem hohes Gewichts-zu-Volumen-Verhältnis: Einzelhübe über 1000 t erzwingen eigens entwickelte Hebe- und Montagewerkzeuge.', textEn: 'Fusion components have an extremely high weight-to-volume ratio: single lifts over 1000 t require purpose-built lifting and assembly tools.' },
+        { term: 'Modul-Hub', termEn: 'Module Lift', text: 'Vakuumgefäßsektor + Thermalschild + zwei TF-Spulen werden als ein 1380-t-Modul vormontiert und in die Grube abgelassen.', textEn: 'A vacuum vessel sector plus thermal shield plus two TF coils are pre-assembled as a single 1380-t module and lowered into the pit.' },
+        { term: 'Metrologie', termEn: 'Metrology', text: 'Lasertracker (Abstand zum Reflektor plus Kopfwinkel, ~10 µm), Laserscanner (Punktwolken ohne Reflektor) und Photogrammetrie.', textEn: 'Laser tracker (distance to a reflector plus head angles, ~10 µm), laser scanner (point clouds without a reflector), and photogrammetry.' },
+        { term: 'Geschraubt vs. geschweißt', termEn: 'Bolted vs. Welded', text: 'Geschweißt wird an Druck- und Vakuumgrenzen (Vakuumgefäß, UHV-Pflicht); geschraubt wird dort, wo demontiert werden muss oder Schweißwärme Leiter und Isolation schädigen würde.', textEn: 'Welding is used at pressure and vacuum boundaries (vacuum vessel, UHV requirement); bolting is used wherever disassembly is needed or welding heat would damage conductors and insulation.' },
+        { term: 'Elektrische Joints', termEn: 'Electrical Joints', text: 'Gelötet oder mit Weichmetall (Indium) verpresst; sie müssen über 10 000 Zyklen ohne Inspektion halten und bis 56 kV DC gegen Erde isoliert sein.', textEn: 'Soldered or pressed together with a soft metal (indium); they must last over 10,000 cycles without inspection and be insulated up to 56 kV DC to ground.' },
       ]},
     ],
   },
@@ -3165,6 +3191,14 @@ const State = {
 const Store = {
   KEY: 'cogsys_progress_v2',
   STREAK_KEY: 'cogsys_streak_v2',
+  BASICS_LANG_KEY: 'cogsys_basics_lang',
+
+  getBasicsLang() {
+    try { return localStorage.getItem(this.BASICS_LANG_KEY) || 'de'; } catch { return 'de'; }
+  },
+  setBasicsLang(lang) {
+    try { localStorage.setItem(this.BASICS_LANG_KEY, lang); } catch {}
+  },
 
   load() {
     try { return JSON.parse(localStorage.getItem(this.KEY) || '{}'); } catch { return {}; }
@@ -3482,21 +3516,43 @@ function animateNeuronNet(canvas) {
  * Renders the module-level `basics` array: grouped term/one-sentence pairs meant
  * for looking things up, not for drilling. Pure reference — no SRS, no progress.
  */
+const BASICS_COPY = {
+  de: {
+    title: '📌 Basics &amp; Bauteile',
+    sub: n => `${n} Begriffe, je ein Satz — zum Nachschlagen und Wiederholen vor dem Quiz.`,
+    placeholder: 'Suchen… z.B. Divertor, Lawson, Quench',
+    empty: 'Kein Begriff gefunden.',
+  },
+  en: {
+    title: '📌 Basics &amp; Key Components',
+    sub: n => `${n} terms, one sentence each — for reference and review, in exam English.`,
+    placeholder: 'Search… e.g. divertor, Lawson, quench',
+    empty: 'No matching term found.',
+  },
+};
+
 function renderBasicsList(el, module) {
   const groups = module.basics || [];
   const total = groups.reduce((s, g) => s + g.items.length, 0);
+  const lang = Store.getBasicsLang();
+  const copy = BASICS_COPY[lang];
+  const prevQuery = el.querySelector('#basicsSearch') ? el.querySelector('#basicsSearch').value : '';
+
+  const groupTitle = g => (lang === 'en' ? (g.groupEn || g.group) : g.group);
+  const itemTerm = it => (lang === 'en' ? (it.termEn || it.term) : it.term);
+  const itemText = it => (lang === 'en' ? (it.textEn || it.text) : it.text);
 
   const groupsHtml = groups.map((g, gi) => `
     <div class="basics-group" data-group="${gi}">
       <div class="basics-group-head">
         <span class="bgh-icon">${g.icon || '•'}</span>
-        <span class="bgh-title">${esc(g.group)}</span>
+        <span class="bgh-title">${esc(groupTitle(g))}</span>
         <span class="bgh-count">${g.items.length}</span>
       </div>
       ${g.items.map(it => `
-        <div class="basics-item" data-search="${esc((it.term + ' ' + it.text).toLowerCase())}">
-          <div class="bi-term">${esc(it.term)}</div>
-          <div class="bi-text">${esc(it.text)}</div>
+        <div class="basics-item" data-search="${esc((it.term + ' ' + it.text + ' ' + (it.termEn||'') + ' ' + (it.textEn||'')).toLowerCase())}">
+          <div class="bi-term">${esc(itemTerm(it))}</div>
+          <div class="bi-text">${esc(itemText(it))}</div>
         </div>
       `).join('')}
     </div>
@@ -3504,17 +3560,33 @@ function renderBasicsList(el, module) {
 
   el.innerHTML = `
     <div class="basics-intro">
-      <div class="basics-intro-title">📌 Basics &amp; Bauteile</div>
-      <div class="basics-intro-sub">${total} Begriffe, je ein Satz — zum Nachschlagen und Wiederholen vor dem Quiz.</div>
-      <input type="search" class="basics-search" id="basicsSearch" placeholder="Suchen… z.B. Divertor, Lawson, Quench" autocomplete="off" autocorrect="off" spellcheck="false"/>
-      <div class="basics-empty hidden" id="basicsEmpty">Kein Begriff gefunden.</div>
+      <div class="basics-intro-top">
+        <div class="basics-intro-copy">
+          <div class="basics-intro-title">${copy.title}</div>
+          <div class="basics-intro-sub">${copy.sub(total)}</div>
+        </div>
+        <div class="basics-lang-toggle" role="group" aria-label="Language">
+          <button type="button" class="blt-btn ${lang === 'de' ? 'active' : ''}" data-lang="de">DE</button>
+          <button type="button" class="blt-btn ${lang === 'en' ? 'active' : ''}" data-lang="en">EN</button>
+        </div>
+      </div>
+      <input type="search" class="basics-search" id="basicsSearch" placeholder="${esc(copy.placeholder)}" autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div class="basics-empty hidden" id="basicsEmpty">${esc(copy.empty)}</div>
     </div>
     ${groupsHtml}
   `;
 
+  el.querySelectorAll('.blt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.lang === Store.getBasicsLang()) return;
+      Store.setBasicsLang(btn.dataset.lang);
+      renderBasicsList(el, module);
+    });
+  });
+
   const input = el.querySelector('#basicsSearch');
   const empty = el.querySelector('#basicsEmpty');
-  input.addEventListener('input', () => {
+  function applyFilter() {
     const q = input.value.trim().toLowerCase();
     let hits = 0;
     el.querySelectorAll('.basics-item').forEach(item => {
@@ -3528,7 +3600,9 @@ function renderBasicsList(el, module) {
       g.querySelector('.bgh-count').textContent = shown;
     });
     empty.classList.toggle('hidden', hits > 0);
-  });
+  }
+  input.addEventListener('input', applyFilter);
+  if (prevQuery) { input.value = prevQuery; applyFilter(); }
 }
 
 /** Minimal HTML escaping — basics text is authored data, but keep it safe anyway. */
