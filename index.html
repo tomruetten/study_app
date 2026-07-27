@@ -973,6 +973,177 @@ body::before {
 .sr-partial { background: rgba(255,214,10,0.11); color: var(--yellow); border-color: rgba(255,214,10,0.28); }
 .sr-got     { background: rgba(48,209,88,0.12);  color: var(--green);  border-color: rgba(48,209,88,0.3); }
 
+/* ─── Sketch Mode (Skizzen-Trainer) ─────────────────────────────────────── */
+.sk-wrap, .ca-wrap { display: flex; flex-direction: column; gap: 14px; }
+.sk-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sk-cat { font-size: 11px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; color: var(--text-faint); }
+.sk-prompt { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.45; color: var(--text); }
+
+.sk-canvas-shell { position: relative; }
+.sk-canvas {
+  width: 100%;
+  height: 260px;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--hairline-strong);
+  background:
+    linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px) 0 0 / 100% 20px,
+    linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px) 0 0 / 20px 100%,
+    rgba(255,255,255,0.02);
+  touch-action: none;
+  cursor: crosshair;
+}
+.sk-canvas-tools { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; }
+.sk-tool {
+  width: 32px; height: 32px; border-radius: 10px;
+  background: var(--glass-strong); border: 1px solid var(--hairline);
+  color: var(--text-dim); font-size: 14px; cursor: pointer; font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.sk-tool:active { transform: scale(0.92); }
+.sk-canvas-hint {
+  position: absolute; left: 0; right: 0; bottom: 10px;
+  text-align: center; font-size: 11.5px; color: var(--text-faint); pointer-events: none;
+  transition: opacity 0.3s;
+}
+.sk-hint-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.sk-solution {
+  background: linear-gradient(140deg, rgba(10,132,255,0.10), rgba(100,210,255,0.06));
+  border: 1px solid rgba(10,132,255,0.28);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  animation: slideUp 0.35s var(--ease);
+}
+.sk-svg { width: 100%; height: auto; display: block; background: rgba(0,0,0,0.22); border-radius: 12px; padding: 6px; }
+.sk-svg .sk-ax { fill: #c7c7cc; font-size: 10.5px; font-weight: 600; font-family: -apple-system, system-ui, sans-serif; }
+.sk-svg .sk-lb { fill: #e5e5ea; font-size: 9.5px; font-weight: 500; font-family: -apple-system, system-ui, sans-serif; }
+.sk-check-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--cyan); margin: 16px 0 8px; }
+.sk-check { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.sk-check li {
+  position: relative; padding-left: 24px; font-size: 13.5px; line-height: 1.55; color: var(--text-dim);
+}
+.sk-check li::before {
+  content: '✓'; position: absolute; left: 0; top: 0;
+  width: 16px; height: 16px; border-radius: 5px; display: grid; place-items: center;
+  background: rgba(48,209,88,0.16); color: var(--green); font-size: 10px; font-weight: 800;
+}
+
+/* ─── Calc Mode (Rechen-Trainer) ────────────────────────────────────────── */
+.ca-title { font-size: 19px; font-weight: 750; letter-spacing: -0.3px; color: var(--text); }
+.ca-given {
+  background: var(--glass); border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;
+}
+.ca-given-row { display: flex; justify-content: space-between; gap: 12px; font-size: 13.5px; }
+.ca-given-row .gl { color: var(--text-dim); }
+.ca-given-row .gv { color: var(--cyan); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ca-question { font-size: 16px; font-weight: 650; line-height: 1.5; color: var(--text); }
+.ca-input-row { display: flex; align-items: center; gap: 10px; }
+.ca-input { flex: 1; }
+.ca-unit { font-size: 15px; font-weight: 700; color: var(--text-dim); min-width: 46px; }
+.ca-feedback {
+  padding: 13px 16px; border-radius: var(--radius-sm); font-size: 14px; animation: slideUp 0.3s var(--ease);
+}
+.ca-feedback.correct { background: rgba(48,209,88,0.1); border: 1px solid rgba(48,209,88,0.3); color: #86efac; }
+.ca-feedback.wrong   { background: rgba(255,69,58,0.08); border: 1px solid rgba(255,69,58,0.3); color: #fca5a5; }
+.ca-steps {
+  background: linear-gradient(140deg, rgba(191,90,242,0.10), rgba(10,132,255,0.05));
+  border: 1px solid rgba(191,90,242,0.26);
+  border-radius: var(--radius-sm); padding: 16px;
+  animation: slideUp 0.35s var(--ease);
+}
+.ca-steps ol { list-style: none; counter-reset: st; display: flex; flex-direction: column; gap: 10px; }
+.ca-steps li {
+  counter-increment: st; position: relative; padding-left: 30px;
+  font-size: 13.5px; line-height: 1.6; color: var(--text-dim);
+}
+.ca-steps li::before {
+  content: counter(st); position: absolute; left: 0; top: 1px;
+  width: 20px; height: 20px; border-radius: 7px; display: grid; place-items: center;
+  background: rgba(191,90,242,0.2); color: var(--purple); font-size: 11px; font-weight: 800;
+}
+.ca-steps .math, .sk-solution .math { color: var(--cyan); }
+
+/* ─── Lernplan Screen ───────────────────────────────────────────────────── */
+.plan-content { padding: 20px 16px 32px; display: flex; flex-direction: column; gap: 16px; max-width: 680px; margin: 0 auto; }
+.plan-card {
+  background: var(--glass); border: 1px solid var(--hairline); border-radius: var(--radius);
+  backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); padding: 20px;
+}
+.plan-card h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.1px; color: var(--text-dim); margin-bottom: 14px; }
+.plan-setup-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+.plan-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+.plan-field label { font-size: 11.5px; color: var(--text-faint); font-weight: 600; }
+.plan-field input, .plan-field select {
+  padding: 12px 13px; border-radius: var(--radius-sm);
+  background: var(--glass); border: 1px solid var(--hairline); color: var(--text);
+  font-size: 15px; font-family: inherit; outline: none;
+}
+.plan-field input:focus, .plan-field select:focus { border-color: var(--blue); }
+.plan-hero { display: flex; align-items: center; gap: 16px; }
+.plan-hero-num { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; color: var(--blue); }
+.plan-hero-txt { font-size: 13.5px; color: var(--text-dim); line-height: 1.5; }
+
+.plan-phase-bar { display: flex; gap: 4px; margin: 4px 0 12px; }
+.plan-phase-seg { height: 8px; border-radius: 999px; flex: 1; }
+.plan-legend { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 11.5px; color: var(--text-dim); }
+.plan-legend span { display: flex; align-items: center; gap: 6px; }
+.plan-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+.plan-day {
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  background: var(--glass-thin); margin-bottom: 10px; overflow: hidden;
+}
+.plan-day.today { border-color: rgba(10,132,255,0.5); box-shadow: 0 0 0 3px rgba(10,132,255,0.12); }
+.plan-day.done .pd-head { opacity: 0.55; }
+.plan-day-head {
+  display: flex; align-items: center; gap: 12px; padding: 13px 14px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.pd-badge {
+  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+  font-size: 12px; font-weight: 800; flex-shrink: 0; line-height: 1.1; text-align: center;
+}
+.pd-title { flex: 1; min-width: 0; }
+.pd-name { font-size: 14.5px; font-weight: 700; color: var(--text); }
+.pd-sub { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
+.pd-count { font-size: 11.5px; font-weight: 700; color: var(--text-dim); }
+.pd-chev { color: var(--text-faint); transition: transform 0.25s var(--ease); }
+.plan-day.open .pd-chev { transform: rotate(90deg); }
+.plan-day-body { display: none; padding: 0 14px 12px; }
+.plan-day.open .plan-day-body { display: block; }
+
+.plan-task {
+  display: flex; align-items: flex-start; gap: 11px; padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.pt-check {
+  width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0; margin-top: 1px;
+  border: 1.5px solid var(--hairline-strong); background: transparent;
+  display: grid; place-items: center; cursor: pointer; color: transparent;
+  font-size: 12px; font-weight: 800; -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pt-check.checked { background: var(--green); border-color: var(--green); color: #05300f; }
+.pt-body { flex: 1; min-width: 0; }
+.pt-label { font-size: 13.5px; color: var(--text); line-height: 1.45; }
+.plan-task.done .pt-label { text-decoration: line-through; color: var(--text-faint); }
+.pt-meta { font-size: 11px; color: var(--text-faint); margin-top: 3px; }
+.pt-go {
+  border: 1px solid var(--hairline); background: var(--glass); color: var(--blue);
+  border-radius: 999px; padding: 5px 12px; font-size: 11.5px; font-weight: 700;
+  font-family: inherit; cursor: pointer; flex-shrink: 0; -webkit-tap-highlight-color: transparent;
+}
+.pt-go:active { transform: scale(0.93); }
+
+.plan-method { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.plan-method:last-child { border-bottom: none; }
+.pm-icon { font-size: 19px; line-height: 1.2; }
+.pm-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
+.pm-text { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; margin-top: 3px; }
+
 /* ─── Stats Screen ──────────────────────────────────────────────────────── */
 .stats-content { padding: 20px 16px 32px; display: flex; flex-direction: column; gap: 16px; max-width: 640px; margin: 0 auto; }
 
@@ -1142,7 +1313,7 @@ code.inline-code {
       <div class="home-content">
         <div class="home-badge">Klausur Quest</div>
         <h1 class="home-title">Level Up<br/>Your Exams</h1>
-        <p class="home-sub">Drei Module · adaptives Lernen mit SM-2 &amp; Quiz-SRS · Klausur-Simulation mit Note</p>
+        <p class="home-sub">Adaptives Lernen mit SM-2 &amp; Quiz-SRS · Skizzen- und Rechen-Trainer · Klausur-Simulation mit Note · Lernplan bis zum Prüfungstag</p>
         <div class="xp-card" id="progressOverview"></div>
         <div class="exam-grid" id="moduleGrid"></div>
         <button class="btn-primary btn-full" id="btnQuickStudy">
@@ -1244,6 +1415,64 @@ code.inline-code {
         </div>
       </div>
 
+      <!-- Sketch Mode (Skizzen-Trainer) -->
+      <div id="mode-sketch" class="mode-container hidden">
+        <div class="sk-wrap">
+          <div class="sk-head">
+            <span class="sk-cat" id="sketchCategory"></span>
+            <span class="open-points-badge" id="sketchPoints"></span>
+          </div>
+          <div class="sk-prompt" id="sketchPrompt"></div>
+          <div class="sk-canvas-shell">
+            <canvas id="sketchCanvas" class="sk-canvas"></canvas>
+            <div class="sk-canvas-tools">
+              <button type="button" class="sk-tool" id="sketchUndo" title="Letzten Strich zurück">↶</button>
+              <button type="button" class="sk-tool" id="sketchClear" title="Alles löschen">🗑</button>
+            </div>
+            <div class="sk-canvas-hint" id="sketchCanvasHint">Hier oder auf Papier skizzieren — erst danach die Lösung aufdecken.</div>
+          </div>
+          <div class="sk-hint-row">
+            <button class="btn-hint" id="sketchHint">Hinweis zeigen</button>
+            <span class="fill-hint-text hidden" id="sketchHintText"></span>
+          </div>
+          <button class="btn-primary" id="sketchReveal">Musterlösung &amp; Checkliste anzeigen</button>
+          <div class="sk-solution hidden" id="sketchSolution"></div>
+          <div class="self-rate hidden" id="sketchRate">
+            <p>Wie viele Punkte der Checkliste hattest du?</p>
+            <div class="self-rate-row">
+              <button class="sr-btn sr-no" data-val="0">Kaum</button>
+              <button class="sr-btn sr-partial" data-val="1">Die Hälfte</button>
+              <button class="sr-btn sr-got" data-val="2">Fast alles</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calc Mode (Rechen-Trainer) -->
+      <div id="mode-calc" class="mode-container hidden">
+        <div class="ca-wrap">
+          <div class="sk-head">
+            <span class="sk-cat" id="calcCategory"></span>
+            <span class="open-points-badge" id="calcPoints"></span>
+          </div>
+          <div class="ca-title" id="calcTitle"></div>
+          <div class="ca-given" id="calcGiven"></div>
+          <div class="ca-question" id="calcQuestion"></div>
+          <div class="ca-input-row">
+            <input type="text" inputmode="decimal" class="fill-input ca-input" id="calcInput" placeholder="Ergebnis…" autocomplete="off" autocorrect="off" spellcheck="false"/>
+            <span class="ca-unit" id="calcUnit"></span>
+          </div>
+          <div class="sk-hint-row">
+            <button class="btn-hint" id="calcFormula">Formel zeigen</button>
+            <div class="fill-hint-text hidden" id="calcFormulaText"></div>
+          </div>
+          <button class="btn-primary" id="calcCheck">Prüfen</button>
+          <div class="ca-feedback hidden" id="calcFeedback"></div>
+          <div class="ca-steps hidden" id="calcSteps"></div>
+          <button class="btn-primary hidden" id="calcNext">Weiter →</button>
+        </div>
+      </div>
+
       <!-- Open Question Mode -->
       <div id="mode-open" class="mode-container hidden">
         <div class="open-wrap">
@@ -1265,6 +1494,16 @@ code.inline-code {
       </div>
     </div>
 
+    <!-- Lernplan Screen -->
+    <div id="screen-plan" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" id="btnBackPlan">←</button>
+        <h2>Lernplan</h2>
+        <div class="header-right"></div>
+      </div>
+      <div id="planContent" class="plan-content"></div>
+    </div>
+
     <!-- Stats Screen -->
     <div id="screen-stats" class="screen">
       <div class="screen-header">
@@ -1283,6 +1522,9 @@ code.inline-code {
     </button>
     <button class="nav-btn" data-screen="topics">
       <span class="nav-icon">📚</span><span class="nav-label">Lernen</span>
+    </button>
+    <button class="nav-btn" data-screen="plan">
+      <span class="nav-icon">🗓️</span><span class="nav-label">Lernplan</span>
     </button>
     <button class="nav-btn" data-screen="stats">
       <span class="nav-icon">📊</span><span class="nav-label">Fortschritt</span>
@@ -2796,6 +3038,1169 @@ const MODULES = [
   },
 ];
 
+/** Zahl mit deutschem Dezimalkomma formatieren (für Rechenwege). */
+function fmtN(x, d) {
+  if (!isFinite(x)) return '–';
+  return Number(x).toFixed(d == null ? 2 : d).replace('.', ',');
+}
+// ═══════════════════════════════════════════════════════════════════════════
+// Rennsporttechnik — Erweiterungspaket
+// Formelsammlung · Skizzen-Trainer · Rechen-Trainer · Zusatzfragen · 2 neue Themen
+// Quellen: Folien_Rennsporttechnik/* + Gedächtnisprotokolle WS16/17/18 & WS24/25
+// ═══════════════════════════════════════════════════════════════════════════
+
+const RST_BASICS = [
+  {
+    icon: '🧮', group: 'Formelsammlung — Aerodynamik & Fahrwiderstand',
+    items: [
+      { term: 'Abtrieb  F_z = c_z · A · (ρ/2) · v²', text: 'c_z = Abtriebsbeiwert, A = Querspantfläche [m²], ρ = Luftdichte (1,2 kg/m³), v = Anströmgeschwindigkeit [m/s]. Getrennt für VA (c_zv) und HA (c_zh). Abtrieb wächst quadratisch mit v.' },
+      { term: 'Luftwiderstand  F_w = c_w · A · (ρ/2) · v²', text: 'Gleiche Struktur wie der Abtrieb, nur mit c_w (in der F1 oft c_x genannt). PKW: c_w ≈ 0,25–0,3 · F1: c_x ≈ 1,1–1,4.' },
+      { term: 'Aero-Effizienz  A_eff = c_z / c_x', text: 'Abtrieb pro Widerstand. Heckflügel ≈ 2–2,4 · Frontflügel ≈ 4–6 · Unterboden mit Diffusor ≈ 8–10 (bester Wert, größter Abtriebsanteil).' },
+      { term: 'Leistungsbedarf  P = F · v', text: 'Für reine Luftwiderstandsüberwindung: P = c_w · A · (ρ/2) · v³ — die Leistung wächst mit v³! Mit Verlusten im Antriebsstrang: P_Motor = P_Rad / η.' },
+      { term: 'Fahrwiderstandsgleichung  F_ges = F_Luft + F_Roll + F_Steig + F_Beschl', text: 'F_Luft = c_w·A·(ρ/2)·v²; F_Roll = f_R · F_z,ges (inkl. Abtrieb!); F_Steig = m·g·sin α; F_Beschl = m·a·e_i (e_i = Drehmassenzuschlag).' },
+      { term: 'Deckenfahrt-Bedingung  F_z ≥ m · g', text: 'Der Abtrieb muss die Gewichtskraft übersteigen: c_z ≥ 2·m·g / (ρ·A·v²). Für einen F1 ab ca. v = 170 km/h erfüllt.' },
+      { term: 'Staudruck  q = (ρ/2) · v²', text: 'Der dynamische Druck. Bernoulli: p_total = p + (ρ/2)·v² + ρ·g·z = const. → höhere Geschwindigkeit ⇒ niedrigerer statischer Druck ⇒ Abtrieb.' },
+      { term: 'Luftdichte  ρ = p / (R_s · T)', text: 'Wichtig für Höhenstrecken (Mexiko-Stadt, ≈2200 m): geringerer Luftdruck ⇒ kleinere Dichte ρ ⇒ weniger Abtrieb UND weniger Widerstand bei gleichen Beiwerten. Die Beiwerte c_z/c_x und damit A_eff bleiben gleich!' },
+      { term: 'Flügelfläche & Streckung', text: 'Flügelfläche = Spannweite · Tiefe (Draufsicht). Streckung Λ = Spannweite / Tiefe. Hohe Streckung ⇒ geringerer induzierter Widerstand.' },
+    ],
+  },
+  {
+    icon: '🛞', group: 'Formelsammlung — Reifen & Fahrdynamik',
+    items: [
+      { term: 'Kammscher Kreis  √(F_x² + F_y²) ≤ µ · F_z', text: 'Bzw. (a_x/a_x,max)² + (a_y/a_y,max)² ≤ 1. Längs- und Querkraft teilen sich EIN Kraftpotenzial. Wer bremst, kann nicht gleichzeitig maximal Kurve fahren.' },
+      { term: 'Schlupf  s = (v_Umfang − v_Fahrzeug) / v_Bezug', text: 'Verhältnis von Umfangs- zu Mittelpunktsgeschwindigkeit. Ohne Relativgeschwindigkeit keine Kraftübertragung. Aufteilung in Formschlupf und Gleitschlupf.' },
+      { term: 'Reibungskoeffizienten  µ_x = F_x/F_z ,  µ_y = F_y/F_z', text: 'Rennreifen bis µ ≈ 1,6–1,7; Serienreifen ≈ 1,3. Beide sind KEINE Konstanten, sondern von F_z, Temperatur, Rauigkeit und Schlupf abhängig.' },
+      { term: 'Reibkraft  F = F_Adhäsion + F_Hysterese', text: 'Adhäsion dominiert bei kleinen Gleitgeschwindigkeiten auf trockener Bahn (Trennfilm wie Wasser/Öl schaltet sie ab). Hysterese dominiert bei hohen Gleitgeschwindigkeiten und rauer Fahrbahn.' },
+      { term: 'Rückstellmoment  M_z = F_y · n_R', text: 'n_R = Reifennachlauf. Bei zunehmendem Schräglauf nimmt n_R ab (mehr Gleitanteil) ⇒ M_z fällt, bevor das Seitenkraftmaximum erreicht ist. Die Lenkung wird „leichter“ — Warnsignal für den Fahrer.' },
+      { term: 'Radlastdegressivität', text: 'µ_y sinkt mit steigender Radlast F_z. Doppelte Radlast ⇒ deutlich WENIGER als doppelte Seitenkraft. Folgen: (1) möglichst tiefer Schwerpunkt, (2) Balance über Rollmomentenverteilung einstellbar.' },
+      { term: 'Verlustwinkel  tan δ = E″ / E′', text: 'Maß für die Hysterese des Gummis (E″ = Verlust-, E′ = Speichermodul). Maximum bei der Glasübergangstemperatur — dort ist der Grip am höchsten. Optimaler Arbeitsbereich = Hysterese-Maximum.' },
+      { term: 'Achslastverlagerung beim Bremsen  a/g = l_v / h', text: 'Kipp-/Überschlagsbedingung: a·m·h = g·m·l_v. Bei starker Verzögerung wandert Last nach vorn, die HA wird entlastet.' },
+      { term: 'Aerobalance', text: 'Prozentualer Anteil des Vorderachsabtriebs am Gesamtabtrieb. Sie muss über der Geschwindigkeit der Reifencharakteristik folgen; sie bestimmt im mittleren/hohen Speedbereich das Unter-/Übersteuern („Through-Corner-Balance“).' },
+    ],
+  },
+  {
+    icon: '⚡', group: 'Formelsammlung — Antrieb, Energie & Daten',
+    items: [
+      { term: 'Zugkraft am Rad  F_Z = M_Mot · i_G · i_A · η / r_dyn', text: 'Über der Geschwindigkeit ergibt sich je Gang eine Zugkraftkurve; die Einhüllende ist die effektive Zugkraft. Ideal wäre die Zugkrafthyperbel F_Z = P/v.' },
+      { term: 'Optimaler Schaltpunkt', text: 'Dort, wo sich die Zugkraftkurven zweier benachbarter Gänge SCHNEIDEN — dann ist die Zugkraft im nächsten Gang erstmals größer als im aktuellen.' },
+      { term: 'Theoretische vs. effektive v_max', text: 'Theoretisch: Schnittpunkt der Zugkraftkurve des höchsten Gangs mit der Fahrwiderstandskurve, wenn dieser bei Nenndrehzahl läge. Effektiv: der tatsächlich erreichte Schnittpunkt Zugkraft ∩ Fahrwiderstand.' },
+      { term: 'Energie & Leistung  E = ∫P dt', text: 'F1 2026: max. 4 MJ Energiehub pro Runde, max. 9 MJ Rekuperation pro Runde, 350 kW MGU-K, ≤1000 V, ES ≥35 kg.' },
+      { term: 'Datenrate  R = f_Abtast · n_Bit', text: 'Datenrate hängt von Abtastfrequenz UND Auflösung ab. 2 Hz + 3 Bit ⇒ 2 Abtastwerte/s, je 2³ = 8 Quantisierungsstufen (Stufe = Messbereich/8) ⇒ 6 bit/s.' },
+      { term: 'Zeitverlust Boxenstopp', text: 't_Verlust = t_Standzeit + t_Pitlane(Durchfahrt langsamer als Strecke). Lohnt sich, wenn N_Restrunden · Δt_Rundengewinn > t_Verlust. Unter SC/VSC ist t_Verlust kleiner, weil das Feld ohnehin langsamer fährt.' },
+      { term: 'Reifendegradation aus Rundenzeiten', text: 'Rundenzeit-Trend = Reifendegradation − Gewichtseffekt. Beispiel: gemessen 0,005 s/Rd Verschlechterung; Verbrauch 2,17 kg/Rd · 0,0243 s/kg = 0,0527 s/Rd Gewinn ⇒ echte Degradation = 0,0577 s/Rd.' },
+      { term: 'Rundenzeit-Sensitivitäten (F1, High-DF)', text: '1 % Reifengrip ≈ 0,4 s · 1 % Gewicht ≈ 0,25 s · 1 % Abtrieb ≈ 0,15 s. Schnelles vs. langsames F1-Auto: ≈1,5 s/Runde ≈ 0,1 s pro Kurve.' },
+    ],
+  },
+  {
+    icon: '📐', group: 'Zahlen, die man auswendig können sollte',
+    items: [
+      { term: 'F1 vs. PKW — Beschleunigung', text: 'Querbeschleunigung: PKW 1,2 g · F1 5,2 g (v-abhängig). Bremsen: PKW 1,3 g · F1 5,5 g. Reibwert: PKW 1,3 · F1 1,6.' },
+      { term: 'Rennserien-Übersicht (g-Werte)', text: 'F1: 2 g beschl. / 5 g brems. / 4 g quer · Sportprototyp: 1,5 / 4 / 3,5 · Tourenwagen: 1 / 3 / 2,5 · Rallye: 1,3 / 1,8 / 1,7 · Serie: 0,8 / 1,2 / 1.' },
+      { term: 'F1 Kennwerte 2025/26', text: 'Mindestgewicht 800 kg (mit Fahrer, Tank leer); c_x ≈ 1,1–1,4; c_z > 5 (bei 160 km/h ca. 8 kN Abtrieb); Gewichtsverteilung min. 44,5 % VA / 54 % HA. Ab 2026: −200 mm Radstand, −100 mm Breite, −30 kg, aktive Aero, Override-Boost 0,5 MJ.' },
+      { term: 'Bremsen Monza (Kurve 1)', text: 'F1: 345 → 90 km/h in t = 2,7 s auf s = 150 m. PKW: t = 6,5 s auf s = 350 m. Bremsdruckaufbau in 0,2 s; Scheibentemperatur 450 → 1000 °C in 0,5 s; 4 Schaltvorgänge in 1 s.' },
+      { term: 'Windkanal (BMW Sauber F1)', text: '3000 kW Leistungsaufnahme, Ventilator 66 t, Stahlkonstruktion 480 t, Röhre 141 m, max. 300 km/h — reglementiert erlaubt nur 180 km/h.' },
+      { term: 'Reifentemperatur', text: 'Rennreifen haben ein schmales Temperaturfenster; Optimum je nach Mischung ca. 100–110 °C. F1: Reibwert STEIGT mit Temperatur; PKW-Reifen: Reibwert FÄLLT mit Temperatur.' },
+      { term: 'Schaltvorgänge', text: 'F1-Rennen: 2000–2600 Schaltvorgänge. 24 h Le Mans: 15.800 Schaltvorgänge.' },
+      { term: 'Entwicklungsdauer & Lebensdauer', text: 'Serie: Planung 3–5 Jahre, Lebensdauer 10–15 Jahre, >20 Mio. Testkilometer. Rennen: Planung oft <1 Jahr, Lebensdauer 1–3 Jahre, z.B. Le Mans 30 Testtage / ca. 20.000 km.' },
+    ],
+  },
+  {
+    icon: '🔤', group: 'Begriffe & Abkürzungen',
+    items: [
+      { term: 'Bouncing / Porpoising', text: 'Bei zu geringem Bodenabstand reißt die Unterbodenströmung ab → Abtrieb bricht ein → Fahrzeug steigt → Strömung legt wieder an → Abtrieb kehrt zurück → Fahrzeug sinkt. Selbsterregte, aerodynamisch getriebene Aufbauschwingung.' },
+      { term: 'Ground Effect / Venturi', text: 'Bodennahe Platte mit Diffusor: Querschnittsverengung ⇒ hohe Strömungsgeschwindigkeit ⇒ starker Unterdruck ⇒ Abtrieb. Größter Anteil am F1-Gesamtabtrieb, aber stark bodenabstands- und yaw-abhängig.' },
+      { term: 'DRS / F-Duct / Flexi-Wing', text: 'Systeme zur gezielten Abtriebsreduktion auf Geraden. Flexi-Wings: (1) Änderung des Anstellwinkels über weiche Halterungen/Endplatten, (2) Schließen des Flügelspalts durch weichen Flap ⇒ Strömungsabriss bei hoher Geschwindigkeit.' },
+      { term: 'Gurney Flap', text: 'Kleine Kante an der Hinterkante. Verlangsamt die Strömung auf der Druckseite (mehr Überdruck) und erzeugt ein Unterdruckgebiet dahinter ⇒ deutlich mehr Abtrieb bei nur wenig Mehrwiderstand ⇒ höhere Effizienz.' },
+      { term: 'MGU-K / ERS / ES', text: 'MGU-K = Motor Generator Unit Kinetic (an der Kurbelwelle, ab 2026 max. 350 kW). ERS = Energy Recovery System. ES = Energy Store (Batterie). Die MGU-H entfällt ab 2026.' },
+      { term: 'PSM / ASM / SiC', text: 'PSM = permanenterregte Synchronmaschine (Motorsport-Standard: höchste Effizienz & Leistungsdichte). ASM = Asynchronmaschine (billig, magnetfrei, aber Rotorverluste). SiC = Siliziumkarbid-Leistungsmodule: geringe Schaltverluste, hohe Taktfrequenz.' },
+      { term: 'RANS / DES / LES / DNS', text: 'Aufsteigende Genauigkeit UND Rechenaufwand. RANS = zeitgemittelt, Turbulenzmodell nötig (Standard für Design-Studien). DES = RANS-LES-Hybrid. LES = höchste kommerziell genutzte Auflösung. DNS = nur akademisch.' },
+      { term: 'Tet / Hex / Poly (Mesh)', text: 'Tetraeder: automatisch vernetzbar, komplexe Geometrie. Hexaeder: höchste Genauigkeit pro Zelle, gut bei ausgerichteter Strömung. Polyeder: wenige Zellen bei guter Genauigkeit, schnelle Konvergenz.' },
+      { term: 'Pacejka Magic Formula', text: 'Empirisches Reifenmodell für F_x, F_y, M_z aus F_z, Sturz, Schlupf und Schräglauf. Schnell und wenig Parametrieraufwand, aber ohne Thermik und mit geringer Dynamik.' },
+      { term: 'TameTire / F-Tire / BRIT', text: 'TameTire: semi-empirisch (Mechanik + Gummibeschreibung + Thermik). F-Tire: physikalisch, flexibler Ring, volles nichtlineares 3D-Modell, hoher Parametrieraufwand. BRIT: Brush & Ring.' },
+      { term: 'Prime / Option', text: 'Prime = härtere, haltbarere Mischung mit weniger Peak-Grip. Option = weichere, schnellere Mischung mit kürzerer Lebensdauer.' },
+      { term: 'Undercut / Overcut', text: 'Undercut = früher stoppen und mit frischen Reifen schnelle Runden fahren, um beim Gegenstopp vorbeizukommen. Overcut = länger draußen bleiben, wenn der eigene Reifen noch trägt oder der Gegner im Verkehr steckt.' },
+      { term: 'HANS / Monocoque / Überrollkäfig', text: 'Passive Sicherheitselemente des Rennfahrzeugs. Kein Airbag — der Fahrer ist trainiert, mit 6-Punkt-Gurt fixiert und fährt auf abgesperrter Strecke in eine Richtung.' },
+      { term: 'Homologation / technisches / sportliches Reglement', text: 'Homologation = Rahmenbedingungen für den BAU. Technisches Reglement = notwendige KONFIGURATION zum Starten. Sportliches Reglement = Spielregeln (Strafen, Flaggen, Boxenstopps, Track-Limits).' },
+      { term: 'FIA / ASN / Promoter', text: 'FIA = internationaler Dachverband aller nationalen Automobilclubs, darf als Einzige Weltmeisterschaften ausschreiben. ASN = nationale Sportbehörden. Promoter = Veranstalter der Rennserien.' },
+      { term: 'KPI / Lap Stats', text: 'KPI = Herunterbrechen der Performance auf wenige Metriken; wichtigster KPI ist die Rundenzeit. Lap Stats = Min/Max/Mittel/Integral wichtiger Parameter je Runde zur Fahrzeugüberwachung.' },
+      { term: 'Global vs. Local Planning', text: 'Global: statische Umgebung, offline, einmalige Berechnung der schnellsten Trajektorie um die ganze Strecke (Laufzeit 5–10 min). Local: dynamische Umgebung, online in Echtzeit, sichere Trajektorie vom Ego-Fahrzeug bis zum Planungshorizont.' },
+      { term: 'GripMap / Tube MPC', text: 'GripMap: Karte lokaler Reibwert-Skalierungen zur Schätzung des verfügbaren Beschleunigungspotenzials. Tube MPC: robuster Regler, Punktmassenmodell + Aktordynamik, 100 Hz, hält Constraints trotz Störungen ein.' },
+    ],
+  },
+];
+// ── SVG-Helfer für den Skizzen-Trainer ──────────────────────────────────────
+/** Standard-Diagrammrahmen mit beschrifteten Achsen. */
+function rstChart(inner, xl, yl) {
+  return `<svg viewBox="0 0 360 254" class="sk-svg" xmlns="http://www.w3.org/2000/svg">
+    <line x1="46" y1="206" x2="344" y2="206" stroke="#8e8e93" stroke-width="1.4"/>
+    <polygon points="348,206 338,201.5 338,210.5" fill="#8e8e93"/>
+    <line x1="46" y1="206" x2="46" y2="20" stroke="#8e8e93" stroke-width="1.4"/>
+    <polygon points="46,16 41.5,26 50.5,26" fill="#8e8e93"/>
+    <text x="344" y="248" text-anchor="end" class="sk-ax">${xl}</text>
+    <text x="10" y="16" class="sk-ax">${yl}</text>
+    ${inner}
+  </svg>`;
+}
+
+const RST_SKETCH = {
+
+  // ── Kammscher Kreis (Dauerbrenner: WS16, WS24/25, Fragenkatalog 9/21) ──────
+  rst11: [
+    {
+      id: 'sk_rst11_1', points: '5 Pkt.',
+      prompt: 'Zeichne den Kammschen Kreis und erkläre damit, warum ein Fahrzeug beim Einlenken auf der Bremse in eine ENGE Kurve untersteuert.',
+      hint: 'Achsen: Längskraft/-beschleunigung über Querkraft/-beschleunigung. Der Kreisradius ist µ·F_z.',
+      svg: `<svg viewBox="0 0 360 244" class="sk-svg" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="180" cy="118" r="84" fill="none" stroke="#0a84ff" stroke-width="2"/>
+        <line x1="70" y1="118" x2="290" y2="118" stroke="#8e8e93" stroke-width="1.3"/>
+        <line x1="180" y1="14" x2="180" y2="222" stroke="#8e8e93" stroke-width="1.3"/>
+        <text x="292" y="115" class="sk-ax">F_y (quer)</text>
+        <text x="186" y="14" class="sk-ax">F_x Antrieb</text>
+        <text x="186" y="236" class="sk-ax">F_x Bremsen</text>
+        <line x1="180" y1="118" x2="180" y2="196" stroke="#ff453a" stroke-width="3"/>
+        <polygon points="180,202 175,190 185,190" fill="#ff453a"/>
+        <text x="128" y="176" class="sk-lb" fill="#ff453a">Bremskraft</text>
+        <line x1="180" y1="118" x2="212" y2="118" stroke="#ffd60a" stroke-width="3"/>
+        <polygon points="218,118 206,113 206,123" fill="#ffd60a"/>
+        <text x="196" y="108" class="sk-lb" fill="#ffd60a">Rest F_y</text>
+        <line x1="180" y1="118" x2="212" y2="196" stroke="#30d158" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="216" y="200" class="sk-lb" fill="#30d158">Resultierende
+          <tspan x="216" dy="13">liegt AUF dem Kreis</tspan></text>
+        <text x="46" y="30" class="sk-lb">Radius = µ · F_z</text>
+        <line x1="180" y1="118" x2="264" y2="118" stroke="#0a84ff" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>`,
+      checklist: [
+        'Kreis gezeichnet, Radius beschriftet mit µ·F_z (bzw. a_max)',
+        'Achsen beschriftet: F_y / a_y (quer) horizontal, F_x / a_x (längs, Bremsen ↓ / Antrieb ↑) vertikal',
+        'Kernaussage: Längs- und Querkraft teilen sich EIN gemeinsames Kraftpotenzial — die Resultierende darf den Kreis nicht verlassen',
+        'Bremskraftvektor eingezeichnet, verbleibende Querkraft als Rest zum Kreisrand',
+        'Begründung Untersteuern: in engen (langsamen) Kurven wird spät und hart gebremst → an der VA geht fast das gesamte Potenzial in F_x → für F_y bleibt zu wenig → die Vorderachse schiebt über die Vorderräder = Untersteuern',
+        'Zusatz: wenig Abtrieb bei niedriger Geschwindigkeit → kleiner Kreisradius; zusätzlich Achslastverlagerung nach vorn (Radlastdegressivität senkt µ)',
+      ],
+    },
+    {
+      id: 'sk_rst11_2', points: '4 Pkt.',
+      prompt: 'Zeichne den Kammschen Kreis für die Durchfahrt einer SCHIKANE (Links-Rechts-Kombination) und markiere die Abfolge der Betriebspunkte.',
+      hint: 'Es sind mehrere Punkte auf/innerhalb des Kreises — Anbremsen, Einlenken links, Umsetzen, Einlenken rechts, Beschleunigen.',
+      svg: `<svg viewBox="0 0 360 244" class="sk-svg" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="180" cy="118" r="84" fill="none" stroke="#0a84ff" stroke-width="2"/>
+        <line x1="70" y1="118" x2="290" y2="118" stroke="#8e8e93" stroke-width="1.3"/>
+        <line x1="180" y1="14" x2="180" y2="222" stroke="#8e8e93" stroke-width="1.3"/>
+        <text x="292" y="115" class="sk-ax">a_y rechts</text>
+        <text x="56" y="115" text-anchor="end" class="sk-ax">a_y links</text>
+        <text x="186" y="14" class="sk-ax">+a_x</text>
+        <text x="186" y="236" class="sk-ax">−a_x (Bremsen)</text>
+        <circle cx="180" cy="202" r="5" fill="#ff453a"/><text x="188" y="216" class="sk-lb">1 reines Bremsen</text>
+        <circle cx="121" cy="177" r="5" fill="#ff9f0a"/><text x="60" y="196" class="sk-lb">2 Einlenken links</text>
+        <circle cx="96" cy="118" r="5" fill="#ffd60a"/><text x="46" y="146" class="sk-lb">3 max. a_y links</text>
+        <circle cx="264" cy="118" r="5" fill="#ffd60a"/><text x="238" y="146" class="sk-lb">4 max. a_y rechts</text>
+        <circle cx="239" cy="59" r="5" fill="#30d158"/><text x="248" y="52" class="sk-lb">5 Beschl. +</text>
+        <circle cx="180" cy="34" r="5" fill="#30d158"/><text x="188" y="30" class="sk-lb">6 volle Traktion</text>
+        <path d="M180 202 Q 130 200 96 118 Q 180 96 264 118 Q 262 66 180 34" fill="none" stroke="#bf5af2" stroke-width="1.6" stroke-dasharray="5 4"/>
+        <text x="150" y="178" class="sk-lb" fill="#bf5af2">Umsetzen durch
+          <tspan x="150" dy="13">den Nullpunkt der Querkraft</tspan></text>
+      </svg>`,
+      checklist: [
+        'Kreis mit beiden Querrichtungen (links / rechts) auf der horizontalen Achse',
+        'Punkt 1: reines Bremsen — ganz unten auf dem Kreis, a_y = 0',
+        'Punkte 2–3: Einlenken auf der Bremse, der Punkt wandert auf dem Kreisrand zur Querachse (Bremskraft nimmt ab, Querkraft zu)',
+        'Beim Umsetzen von links nach rechts durchläuft die Querbeschleunigung den Nullpunkt — kurzzeitig steht wieder mehr Längspotenzial zur Verfügung',
+        'Punkte 4–6: zweiter Kurvenbogen, dann Auslenken kombiniert mit Geschwindigkeitsaufbau bis zur reinen Traktion oben',
+        'Der Fahrer versucht, immer AUF dem Kreisrand zu bleiben (Grenzbereich); innerhalb des Kreises wird Potenzial verschenkt',
+      ],
+    },
+    {
+      id: 'sk_rst11_3', points: '4 Pkt.',
+      prompt: 'Ordne zu und skizziere: Verläufe von Achslast und maximaler Querbeschleunigung über der Geschwindigkeit für einen Sportprototyp (LMP) und einen Tourenwagen.',
+      hint: 'Zwei Diagramme oder zwei Kurvenpaare. Denk daran, wovon der Abtrieb abhängt.',
+      svg: rstChart(`
+        <path d="M46 190 C 120 186, 200 172, 344 120" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <text x="250" y="112" class="sk-lb" fill="#0a84ff">Sportprototyp (LMP)</text>
+        <text x="250" y="126" class="sk-lb" fill="#0a84ff">∝ v² durch Abtrieb</text>
+        <path d="M46 196 C 140 194, 240 192, 344 188" fill="none" stroke="#ff9f0a" stroke-width="2.4"/>
+        <text x="212" y="176" class="sk-lb" fill="#ff9f0a">Tourenwagen — nahezu flach</text>
+        <line x1="46" y1="206" x2="344" y2="206" stroke="#8e8e93" stroke-width="1.4"/>
+        <text x="150" y="60" class="sk-lb">Gilt gleichermaßen für</text>
+        <text x="150" y="74" class="sk-lb">Achslast F_z und a_y,max</text>`,
+        'v [km/h]', 'F_z bzw. a_y,max'),
+      checklist: [
+        'Zwei Kurven in EINEM Diagramm über der Geschwindigkeit',
+        'LMP/Sportprototyp: stark (quadratisch) ansteigend — große Aero-Anbauteile, Abtrieb ∝ v² erhöht Achslast und damit die übertragbare Querkraft',
+        'Tourenwagen: flach/nahezu konstant — seriennah, kaum Abtrieb, Achslast praktisch nur aus dem Fahrzeuggewicht',
+        'Zusatzbegründungen für den LMP: bessere Reifen, niedrigerer Schwerpunkt',
+        'Achsen beschriftet (v auf der Abszisse, F_z bzw. a_y,max auf der Ordinate)',
+        'Merke die Reihenfolge der Klassen: F1 > Sportprototyp > Tourenwagen > Rallye > Serie',
+      ],
+    },
+  ],
+
+  // ── Reifen ────────────────────────────────────────────────────────────────
+  rst3: [
+    {
+      id: 'sk_rst3_1', points: '4 Pkt.',
+      prompt: 'Zeichne die Abweichung der Pacejka Magic Formula von der realen Haftung eines Rennreifens (Seitenkraft über Schräglaufwinkel) und begründe sie.',
+      hint: 'Zwei Kurven: Pacejka und real. Achte auf Anfangssteigung, Lage des Maximums und Höhe des Maximums.',
+      svg: rstChart(`
+        <path d="M46 206 C 78 108, 104 66, 136 62 C 210 56, 280 70, 344 82" fill="none" stroke="#ff453a" stroke-width="2.4"/>
+        <text x="176" y="38" class="sk-lb" fill="#ff453a">Pacejka: steiler,<tspan x="176" dy="12">früheres &amp; höheres Maximum</tspan></text>
+        <path d="M46 206 C 88 140, 124 104, 168 100 C 236 96, 292 108, 344 118" fill="none" stroke="#30d158" stroke-width="2.4"/>
+        <text x="196" y="140" class="sk-lb" fill="#30d158">realer Rennreifen</text>
+        <line x1="136" y1="62" x2="136" y2="206" stroke="#ff453a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="168" y1="100" x2="168" y2="206" stroke="#30d158" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="112" y="220" class="sk-lb" fill="#ff453a">α_opt,P</text>
+        <text x="170" y="220" class="sk-lb" fill="#30d158">α_opt,real</text>
+        <line x1="46" y1="62" x2="136" y2="62" stroke="#ff453a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="46" y1="100" x2="168" y2="100" stroke="#30d158" stroke-width="1" stroke-dasharray="3 3"/>`,
+        'Schräglaufwinkel α [°]', 'Seitenkraft F_y'),
+      checklist: [
+        'Beide Kurven starten im Ursprung und laufen über ein Maximum in einen abfallenden Bereich',
+        'Pacejka-Kurve hat die HÖHERE Anfangssteigung (Schräglaufsteifigkeit) als der reale Reifen',
+        'Pacejka-Maximum liegt bei KLEINEREM Schräglaufwinkel (Optimum nach links verschoben)',
+        'Pacejka-Maximum ist ZU HOCH (unrealistisch hohe maximale Haftung)',
+        'Begründung: Die Pacejka-Messprozedur hält den Reifen nicht auf der geeigneten Temperatur; dazu kommt die nicht realistische Fahrbahn am Prüfstand',
+        'Konsequenz: Ein Rennreifenmodell braucht häufig einen thermischen Ansatz (z.B. TameTire) bzw. Skalierungsfaktoren',
+      ],
+    },
+    {
+      id: 'sk_rst3_2', points: '4 Pkt.',
+      prompt: 'Skizziere die Seitenkraft über dem Schräglaufwinkel für mehrere Radlasten F_z und erkläre damit, warum eine doppelte Radlast NICHT die doppelte Querbeschleunigung bedeutet.',
+      hint: 'Kurvenschar. Vergleiche nicht die absoluten Kräfte, sondern F_y/F_z.',
+      svg: rstChart(`
+        <path d="M46 206 C 86 176, 120 158, 170 154 C 240 150, 292 156, 344 162" fill="none" stroke="#64d2ff" stroke-width="2.2"/>
+        <text x="290" y="152" class="sk-lb" fill="#64d2ff">F_z klein</text>
+        <path d="M46 206 C 84 152, 118 122, 170 116 C 240 111, 292 119, 344 126" fill="none" stroke="#0a84ff" stroke-width="2.2"/>
+        <text x="290" y="112" class="sk-lb" fill="#0a84ff">F_z mittel</text>
+        <path d="M46 206 C 82 132, 116 92, 172 84 C 242 78, 294 88, 344 96" fill="none" stroke="#bf5af2" stroke-width="2.2"/>
+        <text x="284" y="76" class="sk-lb" fill="#bf5af2">F_z groß</text>
+        <text x="60" y="44" class="sk-lb">Verdoppelt man F_z, steigt F_y,max</text>
+        <text x="60" y="58" class="sk-lb">deutlich WENIGER als das Doppelte</text>
+        <text x="60" y="76" class="sk-lb" fill="#ffd60a">⇒ µ_y = F_y/F_z sinkt = Radlastdegressivität</text>`,
+        'Schräglaufwinkel α [°]', 'Seitenkraft F_y'),
+      checklist: [
+        'Kurvenschar mit mindestens drei Radlasten, alle vom Ursprung über ein Maximum',
+        'Die Abstände zwischen den Kurven werden mit steigender Radlast KLEINER (degressiv)',
+        'Explizit benannt: der Reibwert µ_y = F_y/F_z nimmt mit steigender Radlast ab ⇒ Radlastdegressivität',
+        'Physikalische Begründung: die Aufstandsfläche wird länger, Flächenpressung und Walkarbeit steigen, es entsteht mehr Wärme',
+        'Konsequenz 1: Forderung nach möglichst tiefem Schwerpunkt (weniger Radlastverlagerung ⇒ weniger Gesamtpotenzialverlust)',
+        'Konsequenz 2: die Balance lässt sich gezielt über die Rollmomentenverteilung verändern',
+      ],
+    },
+    {
+      id: 'sk_rst3_3', points: '4 Pkt.',
+      prompt: 'Zeichne den Verlauf von Elastizität (E-Modul) und Hysterese von Gummi über der Temperatur — und beschreibe, wie sich das Bild über der Frequenz verhält.',
+      hint: 'Zwei Kurven in einem Diagramm. Wo liegt der optimale Arbeitsbereich?',
+      svg: rstChart(`
+        <path d="M46 40 C 96 44, 128 92, 160 132 C 200 178, 260 194, 344 198" fill="none" stroke="#64d2ff" stroke-width="2.4"/>
+        <text x="52" y="34" class="sk-lb" fill="#64d2ff">E-Modul (Steifigkeit)</text>
+        <path d="M46 190 C 96 184, 132 78, 164 74 C 206 70, 250 150, 344 188" fill="none" stroke="#ff9f0a" stroke-width="2.4"/>
+        <text x="196" y="66" class="sk-lb" fill="#ff9f0a">Hysterese (tan δ = E″/E′)</text>
+        <line x1="164" y1="74" x2="164" y2="206" stroke="#ffd60a" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="128" y="222" class="sk-lb" fill="#ffd60a">T_g (Glasübergang)</text>
+        <text x="52" y="120" class="sk-lb">Glasbereich:</text>
+        <text x="52" y="134" class="sk-lb">steif &amp; spröde</text>
+        <text x="252" y="120" class="sk-lb">Gummibereich:</text>
+        <text x="252" y="134" class="sk-lb">weich, federartig</text>
+        <text x="212" y="30" class="sk-lb" fill="#30d158">Optimaler Arbeitsbereich<tspan x="212" dy="12">= Hysterese-Maximum</tspan></text>`,
+        'Temperatur T →', 'E-Modul / Hysterese'),
+      checklist: [
+        'E-Modul fällt monoton mit steigender Temperatur (links steif/spröde = Glasverhalten, rechts weich = Federverhalten)',
+        'Hysterese hat ein ausgeprägtes MAXIMUM bei der Glasübergangstemperatur T_g',
+        'Die Glasübergangstemperatur ist markiert; dort herrscht mittlere Steifigkeit und höchste Hysterese',
+        'Der optimale Arbeitsbereich des Reifens liegt im Hysterese-Maximum (maximaler Grip-Anteil aus Rauigkeitseffekten)',
+        'Über der FREQUENZ ist das Bild gespiegelt: niedrige Frequenz = geringe Hysterese, hohe Elastizität; steigende Frequenz = viskoelastisch mit Hysterese-Maximum; sehr hohe Frequenz = Versprödung, Glasverhalten, maximale Steifigkeit',
+        'Merksatz: hohe Frequenz wirkt wie niedrige Temperatur (Zeit-Temperatur-Superposition)',
+      ],
+    },
+    {
+      id: 'sk_rst3_4', points: '3 Pkt.',
+      prompt: 'Skizziere den Gough-Plot: Seitenkraft und Rückstellmoment über dem Schräglaufwinkel — und erkläre, warum die Lenkung „leichter“ wird, bevor das Seitenkraftmaximum erreicht ist.',
+      hint: 'Zwei Kurven mit unterschiedlichen Maxima-Positionen.',
+      svg: rstChart(`
+        <path d="M46 206 C 86 140, 122 104, 172 98 C 240 92, 294 104, 344 112" fill="none" stroke="#30d158" stroke-width="2.4"/>
+        <text x="248" y="96" class="sk-lb" fill="#30d158">Seitenkraft F_y</text>
+        <path d="M46 206 C 66 178, 84 158, 106 156 C 160 152, 240 194, 344 204" fill="none" stroke="#ff9f0a" stroke-width="2.4"/>
+        <text x="120" y="146" class="sk-lb" fill="#ff9f0a">Rückstellmoment M_z</text>
+        <line x1="106" y1="156" x2="106" y2="206" stroke="#ff9f0a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="172" y1="98" x2="172" y2="206" stroke="#30d158" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="82" y="222" class="sk-lb" fill="#ff9f0a">M_z,max</text>
+        <text x="164" y="222" class="sk-lb" fill="#30d158">F_y,max</text>
+        <text x="56" y="44" class="sk-lb">M_z = F_y · n_R (Reifennachlauf)</text>
+        <text x="56" y="60" class="sk-lb">n_R sinkt mit zunehmendem Gleitanteil</text>`,
+        'Schräglaufwinkel α [°]', 'F_y bzw. M_z'),
+      checklist: [
+        'Beide Kurven starten im Ursprung',
+        'Das Maximum des Rückstellmoments liegt bei DEUTLICH kleinerem Schräglaufwinkel als das Seitenkraftmaximum',
+        'Formel angegeben: M_z = F_y · Reifennachlauf n_R',
+        'Begründung: mit zunehmendem Schräglauf wächst der Gleitanteil in der Aufstandsfläche, die resultierende Seitenkraft rückt nach vorn ⇒ n_R nimmt ab',
+        'Fahrpraktische Folge: Die Lenkkraft an der Vorderachse fällt, obwohl noch Seitenkraftreserve besteht — der Fahrer verliert die Rückmeldung über das tatsächliche Grip-Maximum',
+      ],
+    },
+  ],
+
+  // ── Aerodynamik / Fahrdynamik F1 ─────────────────────────────────────────
+  rst6: [
+    {
+      id: 'sk_rst6_1', points: '4 Pkt.',
+      prompt: 'Gegeben ist der Verlauf einer abnehmenden Abtriebskraft über zunehmendem Bodenabstand. Zeichne beide Verläufe (VA und HA) und begründe, welcher zu welcher Achse gehört.',
+      hint: 'Beide fallen mit steigendem Ride Height — aber wie stark, und was passiert bei sehr kleinem Abstand?',
+      svg: rstChart(`
+        <path d="M52 44 C 96 52, 140 68, 200 80 C 260 92, 310 98, 344 102" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <text x="150" y="42" class="sk-lb" fill="#0a84ff">Vorderachse: steiler Abfall<tspan x="150" dy="12">(Frontflügel im Ground Effect)</tspan></text>
+        <path d="M52 78 C 110 96, 170 122, 240 148 C 290 166, 322 178, 344 184" fill="none" stroke="#ff9f0a" stroke-width="2.4"/>
+        <text x="180" y="176" class="sk-lb" fill="#ff9f0a">Hinterachse: über größeren</text>
+        <text x="180" y="190" class="sk-lb" fill="#ff9f0a">Bereich stark fallend (Diffusor)</text>
+        <path d="M46 96 C 48 70, 50 54, 52 44" fill="none" stroke="#ff453a" stroke-width="2.4" stroke-dasharray="4 3"/>
+        <text x="52" y="30" class="sk-lb" fill="#ff453a">Einbruch: Strömungsabriss ⇒ Bouncing</text>
+        <line x1="52" y1="20" x2="52" y2="206" stroke="#ff453a" stroke-width="1" stroke-dasharray="2 4"/>`,
+        'Bodenabstand / Ride Height [mm]', 'Abtrieb c_z [%]'),
+      checklist: [
+        'Beide Kurven fallen mit zunehmendem Bodenabstand',
+        'Vorderachse: sehr steiler Abfall bereits über wenige Millimeter (Frontflügel arbeitet dicht am Boden im Ground Effect) — in der Vorlesungsgrafik von 100 % auf ~92 % über 0–50 mm',
+        'Hinterachse: Abfall über einen deutlich größeren Bodenabstandsbereich (0–120 mm), dafür prozentual größerer Gesamthub (bis ~60 %)',
+        'Begründungssatz: je näher am Boden, desto stärker der Venturi-/Ground-Effect ⇒ höherer Unterdruck ⇒ mehr Abtrieb',
+        'Bei ZU kleinem Bodenabstand reißt die Unterbodenströmung ab und der Abtrieb bricht ein — Kurve knickt nach unten weg (Bouncing/Porpoising)',
+        'Konsequenz fürs Setup: das Abstimmungsfenster ist wegen Radlastschwankung und Bodenabstand sehr eng',
+      ],
+    },
+    {
+      id: 'sk_rst6_2', points: '4 Pkt.',
+      prompt: 'Erkläre „Bouncing“ (Porpoising) anhand einer Skizze des Zyklus.',
+      hint: 'Es ist ein selbsterregter Kreisprozess aus Abtrieb und Aufbaubewegung.',
+      svg: `<svg viewBox="0 0 360 244" class="sk-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="24" y="24" width="132" height="46" rx="10" fill="rgba(10,132,255,0.14)" stroke="#0a84ff"/>
+        <text x="90" y="44" text-anchor="middle" class="sk-lb">hohe v ⇒ viel Abtrieb</text>
+        <text x="90" y="58" text-anchor="middle" class="sk-lb">Fahrzeug wird nach unten gezogen</text>
+        <rect x="204" y="24" width="132" height="46" rx="10" fill="rgba(255,69,58,0.14)" stroke="#ff453a"/>
+        <text x="270" y="44" text-anchor="middle" class="sk-lb">Bodenabstand zu klein ⇒</text>
+        <text x="270" y="58" text-anchor="middle" class="sk-lb">Strömung reißt ab (Stall)</text>
+        <rect x="204" y="150" width="132" height="46" rx="10" fill="rgba(255,159,10,0.14)" stroke="#ff9f0a"/>
+        <text x="270" y="170" text-anchor="middle" class="sk-lb">Abtrieb bricht ein ⇒</text>
+        <text x="270" y="184" text-anchor="middle" class="sk-lb">Federn drücken Aufbau hoch</text>
+        <rect x="24" y="150" width="132" height="46" rx="10" fill="rgba(48,209,88,0.14)" stroke="#30d158"/>
+        <text x="90" y="170" text-anchor="middle" class="sk-lb">Strömung legt wieder an ⇒</text>
+        <text x="90" y="184" text-anchor="middle" class="sk-lb">Abtrieb kehrt schlagartig zurück</text>
+        <line x1="156" y1="47" x2="200" y2="47" stroke="#8e8e93" stroke-width="1.6"/><polygon points="204,47 195,43 195,51" fill="#8e8e93"/>
+        <line x1="270" y1="70" x2="270" y2="146" stroke="#8e8e93" stroke-width="1.6"/><polygon points="270,150 266,141 274,141" fill="#8e8e93"/>
+        <line x1="204" y1="173" x2="160" y2="173" stroke="#8e8e93" stroke-width="1.6"/><polygon points="156,173 165,169 165,177" fill="#8e8e93"/>
+        <line x1="90" y1="150" x2="90" y2="74" stroke="#8e8e93" stroke-width="1.6"/><polygon points="90,70 86,79 94,79" fill="#8e8e93"/>
+        <text x="180" y="118" text-anchor="middle" class="sk-lb" fill="#bf5af2">selbsterregte</text>
+        <text x="180" y="132" text-anchor="middle" class="sk-lb" fill="#bf5af2">Aufbauschwingung</text>
+      </svg>`,
+      checklist: [
+        'Bouncing/Porpoising als selbsterregte, aerodynamisch getriebene vertikale Aufbauschwingung benannt',
+        'Schritt 1: mit steigender Geschwindigkeit wächst der Abtrieb ∝ v², das Fahrzeug wird zum Boden gezogen',
+        'Schritt 2: der Bodenabstand unterschreitet den kritischen Wert, die Unterbodenströmung reißt ab (Stall)',
+        'Schritt 3: der Abtrieb bricht schlagartig ein, die Federn drücken den Aufbau wieder hoch',
+        'Schritt 4: die Strömung legt wieder an, der Abtrieb kehrt zurück — der Zyklus beginnt von vorn',
+        'Nennung der Rahmenbedingungen: sehr steife Fahrwerke + tiefe Ride Heights + starker Venturi-Unterboden (Reglement ab 2022) begünstigen das Phänomen',
+      ],
+    },
+    {
+      id: 'sk_rst6_3', points: '4 Pkt.',
+      prompt: 'Zeichne einen typischen Geschwindigkeitsverlauf über der Streckenlänge einer Runde und kennzeichne die Streckenabschnitte (Gerade, Bremspunkt, Einlenkpunkt, Scheitelpunkt, Beschleunigungsphase).',
+      hint: 'Der Scheitelpunkt liegt beim Geschwindigkeitsminimum.',
+      svg: rstChart(`
+        <path d="M46 60 L 108 46 L 132 60 L 158 120 L 186 166 L 214 176 L 250 140 L 292 92 L 344 62" fill="none" stroke="#0a84ff" stroke-width="2.6"/>
+        <circle cx="108" cy="46" r="4.5" fill="#ffd60a"/><text x="76" y="38" class="sk-lb" fill="#ffd60a">v_max Gerade</text>
+        <circle cx="132" cy="60" r="4.5" fill="#ff453a"/><text x="136" y="52" class="sk-lb" fill="#ff453a">Bremspunkt</text>
+        <circle cx="158" cy="120" r="4.5" fill="#ff9f0a"/><text x="160" y="112" class="sk-lb" fill="#ff9f0a">Einlenkpunkt</text>
+        <circle cx="214" cy="176" r="4.5" fill="#30d158"/><text x="200" y="200" class="sk-lb" fill="#30d158">Scheitelpunkt (Apex) = v_min</text>
+        <circle cx="292" cy="92" r="4.5" fill="#bf5af2"/><text x="222" y="76" class="sk-lb" fill="#bf5af2">Track-out / Beschleunigen</text>
+        <line x1="46" y1="60" x2="108" y2="46" stroke="#0a84ff" stroke-width="5" opacity="0.25"/>
+        <text x="50" y="80" class="sk-lb">Gerade</text>
+        <text x="146" y="96" class="sk-lb">Bremsen</text>
+        <text x="276" y="132" class="sk-lb">Beschleunigen</text>`,
+        'Streckenlänge s [m]', 'Geschwindigkeit v [km/h]'),
+      checklist: [
+        'Plateau/leicht ansteigender Ast = Gerade mit v_max am Ende',
+        'Steiler Abfall = Bremsphase; der Beginn des Abfalls ist der Bremspunkt',
+        'Kurvenknick beim Einlenkpunkt (Turn-in): der Abfall wird flacher, weil Bremskraft in Querkraft umgesetzt wird (Kammscher Kreis)',
+        'Minimum der Kurve = Scheitelpunkt / Apex',
+        'Danach Wiederanstieg = Auslenken kombiniert mit Geschwindigkeitsaufbau bis zur nächsten Geraden',
+        'Achsen beschriftet, wegbasiert aufgetragen (s statt t) — so lassen sich Brems- und Scheitelpunkte zwischen Runden vergleichen',
+      ],
+    },
+  ],
+
+  // ── Rennstrategie ─────────────────────────────────────────────────────────
+  rst8: [
+    {
+      id: 'sk_rst8_1', points: '4 Pkt.',
+      prompt: 'Zeichne die Reifenperformance über den Runden und benenne alle Phasen.',
+      hint: 'Es sind sechs Phasen — von der Anwärmphase bis zum Totalabbau.',
+      svg: rstChart(`
+        <path d="M46 178 L 76 58 L 106 52 L 160 74 L 216 98 L 268 150 L 316 200" fill="none" stroke="#0a84ff" stroke-width="2.6"/>
+        <line x1="76" y1="30" x2="76" y2="206" stroke="#48484a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="106" y1="30" x2="106" y2="206" stroke="#48484a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="160" y1="30" x2="160" y2="206" stroke="#48484a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="216" y1="30" x2="216" y2="206" stroke="#48484a" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="268" y1="30" x2="268" y2="206" stroke="#48484a" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="48" y="196" class="sk-lb">1 Anwärm-</text><text x="48" y="208" class="sk-lb">phase</text>
+        <text x="60" y="44" class="sk-lb" fill="#ffd60a">2 Peak</text>
+        <text x="112" y="44" class="sk-lb">3 stabil</text>
+        <text x="166" y="60" class="sk-lb">4 geringer Abbau</text>
+        <text x="218" y="82" class="sk-lb" fill="#ff9f0a">5 starker Abbau</text>
+        <text x="128" y="200" class="sk-lb" fill="#ff453a">6 Reifen am Ende</text>`,
+        'Runden', 'Reifen-Performance'),
+      checklist: [
+        '1 Anwärmphase: steiler Anstieg, kann eine bis mehrere Runden dauern',
+        '2 Peak Performance: kurzes Maximum — das ist die Qualifying-Runde (ggf. nach Cool-down-Runde ein zweiter Peak)',
+        '3 Stabiles Verhalten: Abfall auf ein niedrigeres, dann konstantes Niveau; Rundenzeiten fallen trotzdem, weil das Auto leichter wird',
+        '4 Geringer Abbau: konstanter, kleiner Performanceverlust — Rundenzeiten stagnieren oder steigen leicht',
+        '5 Starker Abbau: Ende der Lebensdauer, Rundenzeiten steigen deutlich, spätestens jetzt Boxenstopp',
+        '6 Reifen komplett am Ende: Lauffläche abgenutzt, kaum Grip, Auto nahezu unfahrbar',
+        'Zusatz: Prime (härter, flacher, länger) vs. Option (weicher, höherer Peak, kürzer) als zweite Kurve eintragen können',
+      ],
+    },
+    {
+      id: 'sk_rst8_2', points: '4 Pkt.',
+      prompt: 'Zeichne den zeitlichen Abstand zweier Fahrzeuge über den Runden bei einem erfolgreichen Undercut (vorgezogener Stopp) und erkläre den Mechanismus.',
+      hint: 'Achse: Abstand zum Gegner in Sekunden. Wo springt die Kurve?',
+      svg: rstChart(`
+        <line x1="46" y1="118" x2="344" y2="118" stroke="#8e8e93" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="298" y="136" class="sk-lb">Gleichstand</text>
+        <path d="M46 108 L 110 102" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <path d="M110 102 L 124 52" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <path d="M124 52 L 168 88" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <path d="M168 88 L 182 150" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <path d="M182 150 L 344 168" fill="none" stroke="#0a84ff" stroke-width="2.4"/>
+        <line x1="117" y1="30" x2="117" y2="206" stroke="#ff453a" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="88" y="26" class="sk-lb" fill="#ff453a">eigener Stopp</text>
+        <line x1="175" y1="30" x2="175" y2="206" stroke="#ff9f0a" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="178" y="26" class="sk-lb" fill="#ff9f0a">Stopp des Gegners</text>
+        <text x="128" y="72" class="sk-lb" fill="#ff453a">Zeitverlust</text>
+        <text x="128" y="84" class="sk-lb" fill="#ff453a">Boxenstopp</text>
+        <text x="196" y="98" class="sk-lb" fill="#30d158">frische Reifen ⇒</text>
+        <text x="196" y="110" class="sk-lb" fill="#30d158">schnelle Runden</text>
+        <text x="150" y="188" class="sk-lb" fill="#30d158">Undercut aufgegangen: eigener Vorsprung</text>`,
+        'Rennrunden', 'Abstand zum Gegner [s]'),
+      checklist: [
+        'Vor dem Stopp verläuft der Abstand nahezu konstant',
+        'Beim eigenen Stopp springt die Kurve um den vollen Zeitverlust des Boxenstopps in den Rückstand',
+        'Danach fällt der Rückstand schnell, weil frische Reifen deutlich schneller sind als die alten des Gegners',
+        'Beim Stopp des Gegners springt die Kurve wieder — jetzt zugunsten des eigenen Fahrzeugs',
+        'Ergebnis: nach dem Gegenstopp liegt man vorn ⇒ Undercut erfolgreich',
+        'Voraussetzungen genannt: großer Performanceunterschied frisch/alt, freie Strecke nach dem Stopp (kein Verkehr), Boxenstoppzeit hinreichend klein',
+        'Gegenbeispiel Overcut: bleibt der eigene Reifen stabil oder steckt der Gegner nach seinem Stopp im Verkehr, lohnt sich das Draußenbleiben',
+      ],
+    },
+  ],
+
+  // ── Datentechnik ──────────────────────────────────────────────────────────
+  rst9: [
+    {
+      id: 'sk_rst9_1', points: '4 Pkt.',
+      prompt: 'Digitalisiere ein gegebenes Analogsignal händisch mit 2 Hz Abtastrate und 3 Bit Auflösung — zeichne das Ergebnis.',
+      hint: '2 Hz = alle 0,5 s ein Abtastwert. 3 Bit = 2³ Stufen.',
+      svg: rstChart(`
+        <path d="M46 178 C 86 96, 118 52, 152 58 C 190 64, 214 152, 250 176 C 288 200, 316 152, 344 108" fill="none" stroke="#48484a" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="240" y="228" class="sk-lb" fill="#8e8e93">Analogsignal</text>
+        <line x1="46" y1="186" x2="344" y2="186" stroke="#3a3a3c" stroke-width="0.8"/>
+        <line x1="46" y1="166" x2="344" y2="166" stroke="#3a3a3c" stroke-width="0.8"/>
+        <line x1="46" y1="146" x2="344" y2="146" stroke="#3a3a3c" stroke-width="0.8"/>
+        <line x1="46" y1="126" x2="344" y2="126" stroke="#3a3a3c" stroke-width="0.8"/>
+        <line x1="46" y1="106" x2="344" y2="106" stroke="#3a3a3c" stroke-width="0.8"/>
+        <line x1="46" y1="86" x2="344" y2="86" stroke="#3a3a3c" stroke-width="0.8"/>
+        <line x1="46" y1="66" x2="344" y2="66" stroke="#3a3a3c" stroke-width="0.8"/>
+        <text x="20" y="190" class="sk-lb">000</text><text x="20" y="150" class="sk-lb">010</text>
+        <text x="20" y="110" class="sk-lb">100</text><text x="20" y="70" class="sk-lb">110</text>
+        <path d="M46 186 H 84 V 106 H 122 V 66 H 160 V 66 H 198 V 126 H 236 V 186 H 274 V 186 H 312 V 126 H 344" fill="none" stroke="#30d158" stroke-width="2.4"/>
+        <circle cx="46" cy="186" r="3.5" fill="#0a84ff"/><circle cx="84" cy="106" r="3.5" fill="#0a84ff"/>
+        <circle cx="122" cy="66" r="3.5" fill="#0a84ff"/><circle cx="160" cy="66" r="3.5" fill="#0a84ff"/>
+        <circle cx="198" cy="126" r="3.5" fill="#0a84ff"/><circle cx="236" cy="186" r="3.5" fill="#0a84ff"/>
+        <circle cx="274" cy="186" r="3.5" fill="#0a84ff"/><circle cx="312" cy="126" r="3.5" fill="#0a84ff"/>
+        <text x="120" y="40" class="sk-lb" fill="#30d158">Treppenkurve = digitalisiertes Signal</text>
+        <text x="52" y="228" class="sk-lb">Δt = 1/(2 Hz) = 0,5 s</text>`,
+        'Zeit t [s]', 'Signalwert'),
+      checklist: [
+        'Zeitachse in Abtastintervallen Δt = 1/f = 1/2 Hz = 0,5 s geteilt und die Abtastzeitpunkte markiert',
+        'Wertachse in 2³ = 8 gleich große Quantisierungsstufen geteilt (Stufenhöhe = Messbereich / 8)',
+        'An jedem Abtastzeitpunkt den Analogwert auf die nächste zulässige Stufe gerundet (Quantisierung)',
+        'Ergebnis als Treppenfunktion (Halteglied) gezeichnet, nicht als glatte Kurve',
+        'Stufen mit den Binärwerten 000 … 111 beschriftet',
+        'Aussage zur Datenrate: 2 Hz · 3 Bit = 6 bit/s; benannt, dass Datenrate = Abtastfrequenz · Auflösung',
+        'Hinweis auf Informationsverlust: schnelle Signalanteile zwischen zwei Abtastpunkten gehen verloren (Aliasing bei zu geringer Abtastrate)',
+      ],
+    },
+  ],
+};
+// ── Rechen-Trainer: parametrierte Aufgaben mit frischen Zahlen bei jedem Durchgang ──
+const RST_CALC = {
+
+  rst6: [
+    {
+      id: 'ca_rst6_1', title: 'Fahren an der Decke', points: '5 Pkt.',
+      formula: '$F_z = c_z · A · (ρ/2) · v²$  muss  $F_G = m·g$  erreichen',
+      vars: [
+        { k: 'm', label: 'Fahrzeugmasse m', unit: 'kg', min: 700, max: 900, step: 10 },
+        { k: 'A', label: 'Querspantfläche A', unit: 'm²', min: 1.2, max: 1.8, step: 0.1 },
+        { k: 'vk', label: 'Geschwindigkeit v', unit: 'km/h', min: 170, max: 260, step: 10 },
+        { k: 'rho', label: 'Luftdichte ρ', unit: 'kg/m³', min: 1.2, max: 1.2, step: 0.1 },
+      ],
+      ask: () => 'Welchen Abtriebsbeiwert c_z braucht das Fahrzeug mindestens, um bei dieser Geschwindigkeit an der Decke fahren zu können?',
+      unit: '–', dec: 2, tol: 0.03,
+      solve: v => (2 * v.m * 9.81) / (v.rho * v.A * Math.pow(v.vk / 3.6, 2)),
+      steps: v => [
+        `Bedingung: Der Abtrieb muss mindestens die Gewichtskraft tragen → $F_z ≥ m·g$`,
+        `Gewichtskraft: $F_G = m·g = ${v.m} · 9,81 = ${fmtN(v.m * 9.81, 0)}$ N`,
+        `Geschwindigkeit in SI: $v = ${v.vk} / 3,6 = ${fmtN(v.vk / 3.6, 2)}$ m/s`,
+        `Abtriebsformel umstellen: $c_z = 2·m·g / (ρ·A·v²)$`,
+        `Einsetzen: $c_z = 2 · ${v.m} · 9,81 / (${fmtN(v.rho, 1)} · ${fmtN(v.A, 1)} · ${fmtN(v.vk / 3.6, 2)}²)$`,
+        `Ergebnis: $c_z = ${fmtN((2 * v.m * 9.81) / (v.rho * v.A * Math.pow(v.vk / 3.6, 2)), 2)}$ (dimensionslos)`,
+        `Plausibilität: Ein F1 erreicht $c_z > 5$; laut Vorlesung könnte er ab ca. 170 km/h an der Decke fahren.`,
+      ],
+    },
+    {
+      id: 'ca_rst6_2', title: 'Antriebsleistung für Zielgeschwindigkeit', points: '5 Pkt.',
+      formula: '$P_{Rad} = F_w · v = c_w · A · (ρ/2) · v³$ ,  $P_{Mot} = P_{Rad} / η$',
+      vars: [
+        { k: 'cw', label: 'Luftwiderstandsbeiwert c_w', unit: '–', min: 0.8, max: 1.4, step: 0.1 },
+        { k: 'A', label: 'Querspantfläche A', unit: 'm²', min: 1.2, max: 1.8, step: 0.1 },
+        { k: 'vk', label: 'Zielgeschwindigkeit v', unit: 'km/h', min: 180, max: 300, step: 10 },
+        { k: 'eta', label: 'Wirkungsgrad Antriebsstrang η', unit: '–', min: 0.85, max: 0.95, step: 0.01 },
+      ],
+      ask: () => 'Welche Motorleistung ist nötig, um diese Geschwindigkeit zu halten (nur Luftwiderstand, ρ = 1,2 kg/m³)?',
+      unit: 'kW', dec: 1, tol: 0.03,
+      solve: v => (v.cw * v.A * 0.6 * Math.pow(v.vk / 3.6, 3)) / v.eta / 1000,
+      steps: v => [
+        `Geschwindigkeit in SI: $v = ${v.vk} / 3,6 = ${fmtN(v.vk / 3.6, 2)}$ m/s`,
+        `Luftwiderstandskraft: $F_w = c_w · A · (ρ/2) · v² = ${fmtN(v.cw, 1)} · ${fmtN(v.A, 1)} · 0,6 · ${fmtN(v.vk / 3.6, 2)}² = ${fmtN(v.cw * v.A * 0.6 * Math.pow(v.vk / 3.6, 2), 0)}$ N`,
+        `Leistung am Rad: $P_{Rad} = F_w · v = ${fmtN(v.cw * v.A * 0.6 * Math.pow(v.vk / 3.6, 3) / 1000, 1)}$ kW`,
+        `Verluste berücksichtigen: $P_{Mot} = P_{Rad}/η = ${fmtN(v.cw * v.A * 0.6 * Math.pow(v.vk / 3.6, 3) / 1000, 1)} / ${fmtN(v.eta, 2)}$`,
+        `Ergebnis: $P_{Mot} = ${fmtN((v.cw * v.A * 0.6 * Math.pow(v.vk / 3.6, 3)) / v.eta / 1000, 1)}$ kW`,
+        `Merke: Die Leistung wächst mit $v³$ — 10 % mehr Geschwindigkeit kosten rund 33 % mehr Leistung.`,
+      ],
+    },
+    {
+      id: 'ca_rst6_3', title: 'Aero auf der Höhenstrecke', points: '4 Pkt.',
+      formula: '$ρ = p / (R_s·T)$ ,  $F_z ∝ ρ$ — die Beiwerte c_z, c_x und damit A_eff bleiben gleich',
+      vars: [
+        { k: 'cz', label: 'Abtriebsbeiwert c_z', unit: '–', min: 3.0, max: 5.0, step: 0.5 },
+        { k: 'A', label: 'Querspantfläche A', unit: 'm²', min: 1.3, max: 1.6, step: 0.1 },
+        { k: 'vk', label: 'Kurvengeschwindigkeit v', unit: 'km/h', min: 150, max: 230, step: 10 },
+        { k: 'rho', label: 'Luftdichte in Mexiko-Stadt ρ', unit: 'kg/m³', min: 0.94, max: 1.0, step: 0.02 },
+      ],
+      ask: () => 'Wie groß ist der Abtrieb auf dieser Höhenstrecke — und um wie viel Prozent weniger als auf Meereshöhe (ρ₀ = 1,2 kg/m³)? Gib den Abtrieb in kN an.',
+      unit: 'kN', dec: 2, tol: 0.03,
+      solve: v => v.cz * v.A * (v.rho / 2) * Math.pow(v.vk / 3.6, 2) / 1000,
+      steps: v => [
+        `Geschwindigkeit in SI: $v = ${fmtN(v.vk / 3.6, 2)}$ m/s`,
+        `Abtrieb in der Höhe: $F_z = c_z · A · (ρ/2) · v² = ${fmtN(v.cz, 1)} · ${fmtN(v.A, 1)} · ${fmtN(v.rho / 2, 3)} · ${fmtN(v.vk / 3.6, 2)}² = ${fmtN(v.cz * v.A * (v.rho / 2) * Math.pow(v.vk / 3.6, 2) / 1000, 2)}$ kN`,
+        `Auf Meereshöhe: $F_{z,0} = ${fmtN(v.cz * v.A * 0.6 * Math.pow(v.vk / 3.6, 2) / 1000, 2)}$ kN`,
+        `Verhältnis: $F_z/F_{z,0} = ρ/ρ_0 = ${fmtN(v.rho, 2)}/1,2 = ${fmtN(v.rho / 1.2, 3)}$ → ${fmtN((1 - v.rho / 1.2) * 100, 1)} % weniger Abtrieb`,
+        `Wichtig für die Klausurfrage: Die AERO-EFFIZIENZ $A_{eff} = c_z/c_x$ ändert sich NICHT — beide Kräfte skalieren mit derselben Dichte.`,
+        `Praktische Folge: weniger Abtrieb UND weniger Widerstand → hohe Topspeeds, aber wenig Kurvengrip; zusätzlich sinkt die Kühlleistung und die Motorleistung des Verbrenners.`,
+      ],
+    },
+    {
+      id: 'ca_rst6_4', title: 'Kurvengeschwindigkeit mit Abtrieb', points: '6 Pkt.',
+      formula: '$m·v²/r = µ·(m·g + c_z·A·(ρ/2)·v²)$',
+      vars: [
+        // Die Wertebereiche sind so gewählt, dass der Nenner (m/r − µ·c_z·A·ρ/2)
+        // immer deutlich positiv bleibt — sonst wüchse der Abtriebsgrip schneller
+        // als der Zentripetalbedarf und es gäbe rechnerisch keine endliche v_max.
+        { k: 'm', label: 'Masse m', unit: 'kg', min: 750, max: 850, step: 50 },
+        { k: 'r', label: 'Kurvenradius r', unit: 'm', min: 60, max: 100, step: 20 },
+        { k: 'mu', label: 'Reibwert µ', unit: '–', min: 1.4, max: 1.6, step: 0.1 },
+        { k: 'cz', label: 'Abtriebsbeiwert c_z', unit: '–', min: 2.0, max: 3.0, step: 0.5 },
+        { k: 'A', label: 'Querspantfläche A', unit: 'm²', min: 1.3, max: 1.5, step: 0.1 },
+      ],
+      ask: () => 'Welche maximale Kurvengeschwindigkeit ist möglich (ρ = 1,2 kg/m³)? Ergebnis in km/h.',
+      unit: 'km/h', dec: 1, tol: 0.03,
+      solve: v => {
+        const denom = v.m / v.r - v.mu * v.cz * v.A * 0.6;
+        return Math.sqrt((v.mu * v.m * 9.81) / denom) * 3.6;
+      },
+      steps: v => {
+        const denom = v.m / v.r - v.mu * v.cz * v.A * 0.6;
+        const vms = Math.sqrt((v.mu * v.m * 9.81) / denom);
+        return [
+          `Kräftegleichgewicht in der Kurve: Zentripetalkraft = übertragbare Seitenkraft`,
+          `$m·v²/r = µ·F_{z,ges} = µ·(m·g + c_z·A·(ρ/2)·v²)$`,
+          `Nach $v²$ sortieren: $v²·(m/r − µ·c_z·A·ρ/2) = µ·m·g$`,
+          `Nenner: $m/r − µ·c_z·A·0,6 = ${fmtN(v.m / v.r, 2)} − ${fmtN(v.mu * v.cz * v.A * 0.6, 2)} = ${fmtN(denom, 2)}$`,
+          `Zähler: $µ·m·g = ${fmtN(v.mu, 1)} · ${v.m} · 9,81 = ${fmtN(v.mu * v.m * 9.81, 0)}$`,
+          `$v = √(${fmtN(v.mu * v.m * 9.81, 0)} / ${fmtN(denom, 2)}) = ${fmtN(vms, 2)}$ m/s $= ${fmtN(vms * 3.6, 1)}$ km/h`,
+          `Ohne Abtrieb wären es nur $v = √(µ·g·r) = ${fmtN(Math.sqrt(v.mu * 9.81 * v.r) * 3.6, 1)}$ km/h — der Abtrieb ist der Hauptgrund für die hohen Kurvengeschwindigkeiten im Rennsport.`,
+        ];
+      },
+    },
+  ],
+
+  rst8: [
+    {
+      id: 'ca_rst8_1', title: 'Lohnt sich der Boxenstopp?', points: '5 Pkt.',
+      formula: 'Break-even: $N · Δt_{Runde} > t_{Verlust}$',
+      vars: [
+        { k: 'tp', label: 'Zeitverlust Boxenstopp t_Verlust', unit: 's', min: 18, max: 30, step: 1 },
+        { k: 'dt', label: 'Rundenzeitvorteil frischer Reifen Δt', unit: 's/Runde', min: 0.5, max: 1.6, step: 0.1 },
+      ],
+      ask: () => 'Wie viele Runden muss man nach dem Stopp mindestens noch fahren, damit sich der Boxenstopp lohnt? (auf ganze Runden aufrunden)',
+      unit: 'Runden', dec: 0, tol: 0.001,
+      solve: v => Math.ceil(v.tp / v.dt),
+      steps: v => [
+        `Der Stopp kostet einmalig $t_{Verlust} = ${v.tp}$ s (Standzeit + langsamere Pitlane-Durchfahrt).`,
+        `Jede Runde mit frischen Reifen bringt $Δt = ${fmtN(v.dt, 1)}$ s zurück.`,
+        `Break-even-Bedingung: $N · Δt ≥ t_{Verlust}$ → $N ≥ ${v.tp} / ${fmtN(v.dt, 1)} = ${fmtN(v.tp / v.dt, 2)}$`,
+        `Aufgerundet: $N = ${Math.ceil(v.tp / v.dt)}$ Runden`,
+        `Wichtige Randbedingungen: Unter Safety Car / VSC ist $t_{Verlust}$ deutlich KLEINER, weil alle langsamer fahren → der Stopp wird „billiger“.`,
+        `In der Praxis kommen dazu: Verkehr nach dem Stopp, Positionsverlust (Track Position), Pflichtstopps und die Reifendegradation des Gegners.`,
+      ],
+    },
+    {
+      id: 'ca_rst8_2', title: 'Reifendegradation aus Rundenzeiten', points: '5 Pkt.',
+      formula: 'Degradation = gemessener Rundenzeittrend + Gewinn aus Gewichtsabnahme',
+      vars: [
+        { k: 'trend', label: 'gemessener Rundenzeittrend', unit: 's/Runde', min: 0.002, max: 0.012, step: 0.001 },
+        { k: 'fuel', label: 'Kraftstoffverbrauch', unit: 'kg/Runde', min: 1.8, max: 2.6, step: 0.1 },
+        { k: 'ws', label: 'Gewichtseffekt aus Simulation', unit: 's/kg', min: 0.02, max: 0.03, step: 0.001 },
+      ],
+      ask: () => 'Wie groß ist die tatsächliche Reifendegradation in s/Runde?',
+      unit: 's/Runde', dec: 4, tol: 0.02,
+      solve: v => v.trend + v.fuel * v.ws,
+      steps: v => [
+        `Das Auto wird durch die Reifenabnutzung langsamer, durch den Kraftstoffverbrauch aber gleichzeitig schneller.`,
+        `Rundenzeitgewinn aus dem Gewicht: $${fmtN(v.fuel, 1)}$ kg/Runde $· ${fmtN(v.ws, 4)}$ s/kg $= ${fmtN(v.fuel * v.ws, 4)}$ s/Runde`,
+        `Gemessener Trend: $${fmtN(v.trend, 3)}$ s/Runde langsamer.`,
+        `Die Degradation muss beide Effekte abdecken: $Deg = Trend + Gewichtsgewinn$`,
+        `$Deg = ${fmtN(v.trend, 3)} + ${fmtN(v.fuel * v.ws, 4)} = ${fmtN(v.trend + v.fuel * v.ws, 4)}$ s/Runde`,
+        `Genau so rechnet die Vorlesung im Beispiel: 0,005 + 2,17 · 0,0243 = 0,0577 s/Runde.`,
+      ],
+    },
+  ],
+
+  rst11: [
+    {
+      id: 'ca_rst11_1', title: 'Bremsweg und Bremszeit', points: '4 Pkt.',
+      formula: '$s = (v_1² − v_2²)/(2·a)$ ,  $t = (v_1 − v_2)/a$',
+      vars: [
+        { k: 'v1', label: 'Anfangsgeschwindigkeit v₁', unit: 'km/h', min: 250, max: 345, step: 5 },
+        { k: 'v2', label: 'Kurvengeschwindigkeit v₂', unit: 'km/h', min: 70, max: 120, step: 10 },
+        { k: 'ag', label: 'Verzögerung a', unit: 'g', min: 2.5, max: 5.5, step: 0.5 },
+      ],
+      ask: () => 'Wie lang ist der Bremsweg (in m)? Rechne mit g = 9,81 m/s² und konstanter Verzögerung.',
+      unit: 'm', dec: 1, tol: 0.03,
+      solve: v => (Math.pow(v.v1 / 3.6, 2) - Math.pow(v.v2 / 3.6, 2)) / (2 * v.ag * 9.81),
+      steps: v => [
+        `Geschwindigkeiten in SI: $v_1 = ${fmtN(v.v1 / 3.6, 2)}$ m/s , $v_2 = ${fmtN(v.v2 / 3.6, 2)}$ m/s`,
+        `Verzögerung: $a = ${fmtN(v.ag, 1)}·9,81 = ${fmtN(v.ag * 9.81, 2)}$ m/s²`,
+        `Energie-/Kinematikansatz: $s = (v_1² − v_2²)/(2a)$`,
+        `$s = (${fmtN(Math.pow(v.v1 / 3.6, 2), 0)} − ${fmtN(Math.pow(v.v2 / 3.6, 2), 0)}) / (2·${fmtN(v.ag * 9.81, 2)}) = ${fmtN((Math.pow(v.v1 / 3.6, 2) - Math.pow(v.v2 / 3.6, 2)) / (2 * v.ag * 9.81), 1)}$ m`,
+        `Bremszeit: $t = (v_1 − v_2)/a = ${fmtN((v.v1 / 3.6 - v.v2 / 3.6) / (v.ag * 9.81), 2)}$ s`,
+        `Vergleich aus der Vorlesung (Monza K1, 345 → 90 km/h): F1 s = 150 m in 2,7 s, PKW s = 350 m in 6,5 s. In Wirklichkeit ist die F1-Verzögerung nicht konstant, weil der Abtrieb mit v² abnimmt.`,
+      ],
+    },
+    {
+      id: 'ca_rst11_2', title: 'Radlastdegressivität rechnerisch', points: '6 Pkt.',
+      formula: '$µ(F_z) = µ_0 − k·F_z$ ,  $F_y = µ(F_z)·F_z$',
+      vars: [
+        { k: 'Fz', label: 'statische Radlast je Rad F_z', unit: 'N', min: 2000, max: 3500, step: 250 },
+        { k: 'dF', label: 'Radlastverlagerung ΔF_z', unit: 'N', min: 500, max: 1500, step: 250 },
+        { k: 'mu0', label: 'µ₀', unit: '–', min: 1.8, max: 2.2, step: 0.1 },
+        { k: 'kk', label: 'Degressivität k', unit: '1/kN', min: 0.08, max: 0.16, step: 0.02 },
+      ],
+      ask: () => 'Um wie viel Prozent sinkt die gesamte übertragbare Seitenkraft einer Achse durch die Radlastverlagerung (Summe beider Räder, verglichen mit dem unbelasteten Fall)?',
+      unit: '%', dec: 2, tol: 0.05,
+      solve: v => {
+        const mu = F => v.mu0 - v.kk * (F / 1000);
+        const ohne = 2 * mu(v.Fz) * v.Fz;
+        const mit = mu(v.Fz + v.dF) * (v.Fz + v.dF) + mu(v.Fz - v.dF) * (v.Fz - v.dF);
+        return (1 - mit / ohne) * 100;
+      },
+      steps: v => {
+        const mu = F => v.mu0 - v.kk * (F / 1000);
+        const ohne = 2 * mu(v.Fz) * v.Fz;
+        const mit = mu(v.Fz + v.dF) * (v.Fz + v.dF) + mu(v.Fz - v.dF) * (v.Fz - v.dF);
+        return [
+          `Ohne Verlagerung trägt jedes Rad $F_z = ${v.Fz}$ N mit $µ = ${fmtN(mu(v.Fz), 3)}$`,
+          `Seitenkraft ohne Verlagerung: $F_y = 2·${fmtN(mu(v.Fz), 3)}·${v.Fz} = ${fmtN(ohne, 0)}$ N`,
+          `Kurvenaußen: $F_z = ${v.Fz + v.dF}$ N → $µ = ${fmtN(mu(v.Fz + v.dF), 3)}$ → $F_y = ${fmtN(mu(v.Fz + v.dF) * (v.Fz + v.dF), 0)}$ N`,
+          `Kurveninnen: $F_z = ${v.Fz - v.dF}$ N → $µ = ${fmtN(mu(v.Fz - v.dF), 3)}$ → $F_y = ${fmtN(mu(v.Fz - v.dF) * (v.Fz - v.dF), 0)}$ N`,
+          `Summe mit Verlagerung: $${fmtN(mit, 0)}$ N`,
+          `Verlust: $1 − ${fmtN(mit, 0)}/${fmtN(ohne, 0)} = ${fmtN((1 - mit / ohne) * 100, 2)}$ %`,
+          `Kernaussage: Der Zugewinn am äußeren Rad wiegt den Verlust am inneren NICHT auf → jede Radlastverlagerung kostet Gesamtpotenzial. Deshalb: tiefer Schwerpunkt, kleine Wankbewegung — und die Balance lässt sich gezielt über die Rollmomentenverteilung verschieben.`,
+        ];
+      },
+    },
+  ],
+
+  rst9: [
+    {
+      id: 'ca_rst9_1', title: 'Datenrate und Quantisierung', points: '4 Pkt.',
+      formula: 'Datenrate $R = f · n_{Bit}$ ,  Stufenanzahl $= 2^{n}$ ,  Stufenhöhe $= Messbereich / 2^{n}$',
+      vars: [
+        { k: 'f', label: 'Abtastfrequenz f', unit: 'Hz', min: 2, max: 1000, step: 2 },
+        { k: 'nb', label: 'Auflösung n', unit: 'Bit', min: 3, max: 16, step: 1 },
+        { k: 'span', label: 'Messbereich', unit: 'bar', min: 5, max: 400, step: 5 },
+      ],
+      ask: () => 'Wie groß ist die kleinste auflösbare Änderung (Quantisierungsstufe) in bar?',
+      unit: 'bar', dec: 5, tol: 0.02,
+      solve: v => v.span / Math.pow(2, v.nb),
+      steps: v => [
+        `Anzahl der Quantisierungsstufen: $2^{${v.nb}} = ${Math.pow(2, v.nb)}$`,
+        `Stufenhöhe: $Messbereich / 2^n = ${v.span} / ${Math.pow(2, v.nb)} = ${fmtN(v.span / Math.pow(2, v.nb), 5)}$ bar`,
+        `Datenrate dieses Kanals: $R = f · n = ${v.f} · ${v.nb} = ${v.f * v.nb}$ bit/s $= ${fmtN(v.f * v.nb / 8, 1)}$ Byte/s`,
+        `Abtastintervall: $Δt = 1/f = ${fmtN(1 / v.f, 4)}$ s`,
+        `Merke: Die Datenrate hängt von BEIDEM ab — Auflösung (Bit) und Frequenz. Deshalb wird die Telemetrie-/Loggingfrequenz meist niedriger gewählt als die Sensorfrequenz und nur für bestimmte Ereignisse (Schaltvorgang, Start) kurzzeitig erhöht.`,
+      ],
+    },
+  ],
+
+  rst4: [
+    {
+      id: 'ca_rst4_1', title: 'Verluste durch Kontaktwiderstand', points: '4 Pkt.',
+      formula: '$ΔU = n · ΔR · I$ ,  $P_V = ΔU · I$',
+      vars: [
+        { k: 'n', label: 'Zellanzahl n', unit: '–', min: 150, max: 300, step: 10 },
+        { k: 'dR', label: 'Widerstandserhöhung je Kontakt ΔR', unit: 'µΩ', min: 40, max: 150, step: 10 },
+        { k: 'I', label: 'Strom I', unit: 'A', min: 300, max: 600, step: 50 },
+      ],
+      ask: () => 'Welche zusätzliche Verlustleistung entsteht im gesamten Zellstapel? Ergebnis in kW.',
+      unit: 'kW', dec: 2, tol: 0.02,
+      solve: v => (v.n * (v.dR * 1e-6) * v.I * v.I) / 1000,
+      steps: v => [
+        `Spannungsabfall: $ΔU = n·ΔR·I = ${v.n} · ${v.dR}·10^{-6} Ω · ${v.I} A = ${fmtN(v.n * v.dR * 1e-6 * v.I, 2)}$ V`,
+        `Verlustleistung: $P_V = ΔU·I = ${fmtN(v.n * v.dR * 1e-6 * v.I, 2)} · ${v.I} = ${fmtN(v.n * v.dR * 1e-6 * v.I * v.I, 0)}$ W`,
+        `Ergebnis: $P_V = ${fmtN(v.n * v.dR * 1e-6 * v.I * v.I / 1000, 2)}$ kW`,
+        `Vorlesungsbeispiel: 100 µΩ · 250 Zellen · 500 A → 12,5 V Spannungsabfall und 6250 W Verluste.`,
+        `Kernaussage: Schon kleinste Widerstandserhöhungen skalieren mit der Zellanzahl und führen zu Leistungslimitierung und massiver Wärmeentwicklung — deshalb ist die Zellkontaktierung (Laser-/Ultraschallschweißen) ein entscheidender Performance-Hebel.`,
+      ],
+    },
+    {
+      id: 'ca_rst4_2', title: 'Energiehub und Boost-Dauer', points: '4 Pkt.',
+      formula: '$E = P · t$ ,  1 MJ = 1000 kJ, 1 kWh = 3,6 MJ',
+      vars: [
+        { k: 'E', label: 'nutzbarer Energiehub pro Runde E', unit: 'MJ', min: 2, max: 9, step: 1 },
+        { k: 'P', label: 'Boost-Leistung P', unit: 'kW', min: 120, max: 350, step: 10 },
+      ],
+      ask: () => 'Wie lange kann diese Leistung pro Runde maximal abgerufen werden? Ergebnis in Sekunden.',
+      unit: 's', dec: 2, tol: 0.02,
+      solve: v => (v.E * 1e6) / (v.P * 1000),
+      steps: v => [
+        `Energie in Joule: $E = ${v.E}$ MJ $= ${fmtN(v.E * 1e6, 0)}$ J`,
+        `Leistung in Watt: $P = ${v.P}$ kW $= ${v.P * 1000}$ W`,
+        `Zeit: $t = E/P = ${fmtN(v.E * 1e6, 0)} / ${v.P * 1000} = ${fmtN(v.E * 1e6 / (v.P * 1000), 2)}$ s`,
+        `Umrechnung: $${v.E}$ MJ $= ${fmtN(v.E / 3.6, 3)}$ kWh — verschwindend wenig gegenüber einer Serien-HV-Batterie (>50 kWh).`,
+        `Genau darin liegt der Auslegungsunterschied: Der F1-Speicher ist auf LEISTUNGSDICHTE optimiert (350 kW aus <4 kWh bei min. 35 kg), die Serienbatterie auf ENERGIEDICHTE.`,
+      ],
+    },
+  ],
+};
+// ── Zwei neue Themen: Lücken aus den Gedächtnisprotokollen, die bisher fehlten ──
+const RST_NEW_TOPICS = [
+  {
+    id: 'rst12', name: 'Fahrwerk, Bremsen & Leichtbau', icon: '🔧', color: '#64d2ff', examWeight: 10,
+    slideDeck: 'Folien_Rennsporttechnik/VL_RST_13_Rennfahrzeuge_StraÃenfahrzeuge.pdf',
+    guided: [
+      { id: 'g_rst12_1', badge: 'Radaufhängung', title: 'Pushrod vs. Pullrod', body: 'Beide Bauarten lenken die Radbewegung über eine Strebe und einen Umlenkhebel (Rocker) auf die innenliegende Feder-Dämpfer-Einheit um. Der Unterschied liegt in der Kraftrichtung:\n\n• **Pushrod (Druckstrebe):** läuft vom UNTEREN Radträgerpunkt schräg nach OBEN-innen. Die Strebe wird beim Einfedern auf DRUCK belastet. Feder/Dämpfer sitzen oben im Chassis.\n• **Pullrod (Zugstrebe):** läuft vom OBEREN Radträgerpunkt schräg nach UNTEN-innen. Die Strebe wird auf ZUG belastet. Feder/Dämpfer sitzen tief im Chassis.\n\nVorteile Pushrod: bessere Zugänglichkeit/Wartbarkeit (schneller Setup-Wechsel), einfachere Kinematik, mehr Bauraum unten für Diffusor/Getriebe.\nVorteile Pullrod: tiefere Lage der Massen → tieferer Schwerpunkt, aerodynamisch saubere obere Fahrzeugzone, Zugstrebe kann dünner/leichter ausgeführt werden (kein Knicken).\n\nDie Konzeptentscheidung Pushrod/Pullrod an VA und HA wird laut Vorlesung PRIMÄR durch die Aerodynamik bestimmt — Querlenker und Spurstange haben großen Einfluss auf die Strömung hinter dem Frontflügel.', example: '🔑 WS16 & WS17: „Push- und Pullrod zeichnen und jeweils den Vorteil benennen." Immer BEIDE zeichnen und die Kraftrichtung (Druck/Zug) eintragen!' },
+      { id: 'g_rst12_2', badge: 'Bremsen', title: 'Bremssattelposition & CFRC-Bremsen', body: 'Warum sitzt der Bremssattel an genau dieser Stelle?\n• **Möglichst tief** → senkt den Schwerpunkt der (ungefederten) Radmasse.\n• **Position relativ zur Radmitte** (meist nach hinten bzw. unten gelegt) → beeinflusst die Umströmung des Rades und damit die Aerodynamik; der Sattel liegt im Windschatten und stört die Anströmung des Unterbodens nicht.\n• Kurze Leitungswege zur Bremsbelüftung, definierte Kühlluftführung.\n• Massenträgheitsmoment um die Lenkachse klein halten → agileres Lenkverhalten.\n\n**CFRC-/Carbon-Bremsen — Vorteile:**\n• Sehr geringe Masse → weniger ungefederte UND rotierende Masse, kleineres Trägheitsmoment\n• Extrem hohe Temperaturbeständigkeit (Betrieb bis ~1000 °C, in Monza 450 → 1000 °C in 0,5 s)\n• Reibwert STEIGT mit der Temperatur → kein Fading im Betriebsfenster\n• Hohe Verschleißfestigkeit bei Betriebstemperatur, sehr hohe spezifische Bremsleistung\n\n**Nachteil:** enges Arbeitsfenster — kalt praktisch keine Bremswirkung, deshalb Aufwärmen und aktives Temperaturmanagement nötig; hohe Kosten.', example: '🔑 Fragenkatalog 5 & 10: „Welche Vorteile bringt eine CFRC-Bremse?" und „Warum wird der Bremssattel an dieser Stelle positioniert?"' },
+      { id: 'g_rst12_3', badge: 'Leichtbau', title: 'Crashbox: Aluminium vs. CFK — und die Prüfung von CFK', body: '**Aluminium-Crashbox:** absorbiert Energie durch PLASTISCHE Verformung (Faltenbeulen). Sehr gutmütige, gut vorhersagbare Kraft-Weg-Kennlinie, günstig, unempfindlich gegen Vorschädigung, bleibt nach dem Crash als Ganzes erhalten.\n\n**CFK-Crashbox:** absorbiert Energie durch progressives ZERFASERN/Zersplittern der Faserstruktur (progressive crushing) an einem definierten Trigger. Die spezifische Energieabsorption pro Masse ist ein Vielfaches von Aluminium → deutlich leichter bei gleicher Energieaufnahme. Nachteile: teuer, sprödes Versagen, Verhalten stark von Lagenaufbau und Triggergeometrie abhängig, nicht reparierbar (nur Austausch), empfindlich gegen unsichtbare Vorschäden (BVID).\n\n**Genau deshalb ist zerstörungsfreie Prüfung (ZfP/NDT) bei CFK Pflicht — drei nennbare Verfahren:**\n1. **Ultraschallprüfung** (C-Scan): erkennt Delaminationen und Poren in der Tiefe\n2. **Röntgen / Computertomographie (CT)**: 3D-Bild von Fehlstellen, Faserorientierung, Klebeverbindungen\n3. **Thermografie** (aktive Thermografie mit Wärmeimpuls): schnelle flächige Prüfung oberflächennaher Fehler\n(weitere: Shearografie, Klopfprüfung/Tap-Test, visuelle Inspektion)', example: '🔑 WS18: „Zerstörungsfreie Prüfverfahren von Carbon (3 Stück)". Fragenkatalog 4: „Wie unterscheiden sich Aluminium- und CFK-Crashbox?"' },
+      { id: 'g_rst12_4', badge: 'Vertikaldynamik', title: 'Federsteifigkeit: F1 vs. Serienfahrzeug', body: 'Das Rennfahrzeug hat gegenüber dem Serienfahrzeug:\n• **höhere Aufbaueigenfrequenz** (PKW ca. 1–1,5 Hz, F1 ca. 3–5 Hz)\n• **höhere Radlastschwankung**\n• **geringere Bodenabstandsschwankung**\n\nDa die Eigenfrequenz $f ∝ √(c/m)$ gilt, entspricht ein Frequenzverhältnis von ~3 einem STEIFIGKEITSVERHÄLTNIS von etwa Faktor **10** (Größenordnung) — genau danach wurde in WS18 gefragt.\n\nWarum so steif? Der Abtrieb hängt direkt vom Bodenabstand ab. Ein weiches Fahrwerk würde bei hoher Geschwindigkeit einfedern, den Bodenabstand verändern und den Abtrieb (und damit die Balance) unkontrolliert schwanken lassen — bis hin zum Bouncing.\n\n**Bewertungskriterien der Vertikaldynamik:**\n• Rennfahrzeug: Fahrstabilität/Aufbaubewegung, Kraftschluss/Radlastschwankung, aerodynamische Stabilität/Bodenabstand\n• Serienfahrzeug: Fahrkomfort ($\\ddot{z}_{Aufbau} ≈ 0$), Fahrsicherheit (Radlastschwankung ΔF_z), konstruktive Restriktion (Federwege)\n\nDas Abstimmungsfenster des Rennfahrzeugs ist wegen Radlastschwankung und Bodenabstand relativ ENG.', example: '🔑 WS18: „Um welchen Faktor ändert sich die Fahrwerksfedersteifigkeit zwischen F1 und PKW?" → rund Faktor 10.' },
+      { id: 'g_rst12_5', badge: 'Rallye', title: 'Rallye: Basisfahrzeug & Achse', body: '**Hauptanforderungen an ein Rallye-Basisfahrzeug:**\n• Serienfahrzeug mit Straßenzulassung und ausreichender Stückzahl (Homologation)\n• Kompakte Abmessungen und geringes Grundgewicht (Wendigkeit auf engen Wertungsprüfungen)\n• Geeignetes Antriebskonzept — Allradantrieb ist im Schotter/Mix entscheidend\n• Robuste, steife Karosseriestruktur, die sich mit Käfig gut versteifen lässt\n• Ausreichende Bauräume: große Federwege, hochgesetzte Federbeindome, Unterfahrschutz, Reserverad\n• Motorlage/Package, das eine Verlagerung von Massen nach innen/unten zulässt\n\n**Besonderheit der Rallye-Achse wegen des Reglements:** Das Reglement schreibt vor, dass das ACHSKONZEPT des Serienfahrzeugs beibehalten werden muss (z.B. bleibt ein McPherson-Federbein ein McPherson-Federbein; die Anlenkpunkte dürfen nur begrenzt verschoben werden). Man darf also nicht auf eine reine Doppelquerlenker-Rennfahrwerkskinematik wechseln, sondern muss innerhalb des Serienkonzepts optimieren — mit stark verlängerten Federwegen (Sprünge, Bodenwellen), verstärkten Anlenkpunkten und angepasster Kinematik. Daraus resultieren die typisch großen Federwege und die vergleichsweise moderaten g-Werte (ca. 1,3 g längs / 1,7 g quer).', example: '🔑 WS16: „Hauptanforderungen an ein Rallye-Basisfahrzeug." WS18: „Besonderheiten der Rallye-Achse wegen des Reglements."' },
+      { id: 'g_rst12_6', badge: 'Setup', title: 'Setup-Möglichkeiten und ihre Wirkung auf den Reifen', body: 'Ziel der Abstimmung: für EINEN bestimmten Fahrer das Fahrzeug an DIESE Strecke und DIESE Witterung anzupassen — möglichst neutrales Fahrverhalten, bestmögliche Reifenhaftung, kontrollierbare Leistungsentfaltung.\n\n**Stellhebel und ihre Reifenwirkung:**\n• **Reifendruck ↑** → kleinerer Contact Patch, höhere Reifensteifigkeit, höherer Energieeintrag → beeinflusst Temperatur und Grip direkt\n• **Sturz (negativ) ↑** → mehr Querkraftpotenzial am kurvenÄUSSEREN Rad (Abstützeffekt), aber weniger am kurveninneren Rad und weniger Längskraftpotenzial; verschiebt die Temperaturverteilung über der Lauffläche nach innen\n• **Spur** → Ansprechverhalten beim Einlenken, Geradeauslaufstabilität, zusätzlicher Energieeintrag (Temperatur)\n• **Federn / Stabilisatoren / Rollmomentenverteilung** → verteilt die Radlast zwischen den Achsen → über die Radlastdegressivität direkter Balance-Hebel (weicher vorne = weniger Untersteuern)\n• **Dämpfer** → transientes Verhalten, Radlastschwankung, Reifenanregung\n• **Ride Height / Rake** → Aerobalance und Abtriebsniveau\n• **Flügelanstellwinkel** → Abtriebsniveau und Aerobalance im mittleren/hohen Speedbereich\n• **Differentialsperrwerte, Bremsbalance** → Traktion und Stabilität beim An- und Ausbremsen\n\n**Abstimmungsvarianten:** Basisabstimmung → Grobabstimmung → Feinabstimmung, jeweils schrittweise mit dokumentierten Ergebnissen.', example: '🔑 Fragenkatalog 2: „Welche Setupmöglichkeiten hat man? Wie beeinflussen diese den Reifen?" Immer Stellhebel UND Reifenwirkung nennen.' },
+    ],
+    flashcards: [
+      { id: 'fc_rst12_1', front: 'Pushrod vs. Pullrod: Geometrie und Belastung?', back: '• Pushrod (Druckstrebe): von UNTEN am Radträger schräg nach OBEN-innen, Strebe auf DRUCK, Feder/Dämpfer oben im Chassis\n• Pullrod (Zugstrebe): von OBEN am Radträger schräg nach UNTEN-innen, Strebe auf ZUG, Feder/Dämpfer tief im Chassis' },
+      { id: 'fc_rst12_2', front: 'Nenne je einen Vorteil von Pushrod und Pullrod.', back: '• Pushrod: bessere Zugänglichkeit/Wartbarkeit, einfachere Kinematik, mehr Bauraum unten (Diffusor)\n• Pullrod: tiefere Massenlage → tieferer Schwerpunkt, aerodynamisch saubere obere Zone, leichtere Zugstrebe (kein Knicken)\n\nDie Konzeptwahl an VA/HA wird PRIMÄR von der Aerodynamik bestimmt.' },
+      { id: 'fc_rst12_3', front: 'Warum wird der Bremssattel an genau dieser Stelle positioniert?', back: '• Möglichst tief → niedriger Schwerpunkt der ungefederten Masse\n• Aerodynamik: Sattel liegt im Windschatten des Rades und stört die Radumströmung / Unterbodenanströmung nicht\n• Kurze Wege für die Bremsbelüftung, definierte Kühlluftführung\n• Kleines Trägheitsmoment um die Lenkachse → agileres Lenken' },
+      { id: 'fc_rst12_4', front: 'Welche Vorteile bringt eine CFRC-/Carbon-Bremse?', back: '• Sehr geringe Masse (ungefederte + rotierende Masse, kleines Trägheitsmoment)\n• Temperaturbeständig bis ~1000 °C\n• Reibwert STEIGT mit Temperatur → kein Fading\n• Hohe Verschleißfestigkeit, sehr hohe spezifische Bremsleistung\n\nNachteil: kalt kaum Bremswirkung (enges Arbeitsfenster), teuer.' },
+      { id: 'fc_rst12_5', front: 'Wie unterscheiden sich Aluminium- und CFK-Crashbox?', back: '• Alu: Energieabsorption durch PLASTISCHE Verformung (Faltenbeulen); gutmütige, vorhersagbare Kennlinie, günstig, schwerer\n• CFK: progressives ZERFASERN am Trigger; deutlich höhere spezifische Energieabsorption → leichter; aber teuer, sprödes Versagen, auslegungsempfindlich, nicht reparierbar' },
+      { id: 'fc_rst12_6', front: 'Nenne 3 zerstörungsfreie Prüfverfahren für CFK-Bauteile.', back: '1. Ultraschallprüfung (C-Scan) — Delaminationen, Poren\n2. Röntgen / Computertomographie — 3D-Fehlstellen, Faserorientierung\n3. Thermografie (aktive Thermografie) — schnelle flächige Prüfung\n\n(weitere: Shearografie, Klopfprüfung/Tap-Test, Sichtprüfung)' },
+      { id: 'fc_rst12_7', front: 'Um welchen Faktor ist die Fahrwerksfedersteifigkeit eines F1 höher als beim Serien-PKW?', back: 'Rund **Faktor 10** (Größenordnung).\n\nHerleitung: Aufbaueigenfrequenz PKW ca. 1–1,5 Hz, F1 ca. 3–5 Hz. Wegen $f ∝ √(c/m)$ entspricht Faktor ~3 bei der Frequenz einem Faktor ~10 bei der Steifigkeit.' },
+      { id: 'fc_rst12_8', front: 'Wie unterscheidet sich die Vertikaldynamik von Renn- und Serienfahrzeug?', back: 'Rennfahrzeug: höhere Aufbaueigenfrequenz, höhere Radlastschwankung, GERINGERE Bodenabstandsschwankung.\n\nBewertungskriterien:\n• Rennen: Fahrstabilität/Aufbaubewegung, Kraftschluss/Radlastschwankung, aerodyn. Stabilität/Bodenabstand\n• Serie: Fahrkomfort (z̈ ≈ 0), Fahrsicherheit (ΔF_z), Federwege\n\nDas Abstimmungsfenster des Rennwagens ist wegen der Aerodynamik sehr eng.' },
+      { id: 'fc_rst12_9', front: 'Welche Besonderheit hat die Rallye-Achse wegen des Reglements?', back: 'Das SERIEN-Achskonzept muss beibehalten werden (z.B. McPherson bleibt McPherson, Anlenkpunkte nur begrenzt verschiebbar). Man optimiert also INNERHALB des Serienkonzepts:\n• stark verlängerte Federwege (Sprünge, Schotter)\n• hochgesetzte Dome, verstärkte Anlenkpunkte\n• angepasste Kinematik trotz Konzeptzwang' },
+      { id: 'fc_rst12_10', front: 'Hauptanforderungen an ein Rallye-Basisfahrzeug?', back: '• Serienfahrzeug mit Straßenzulassung + Homologationsstückzahl\n• kompakt und leicht\n• geeignetes (Allrad-)Antriebskonzept\n• robuste, versteifbare Karosseriestruktur\n• Bauraum für große Federwege, Unterfahrschutz, Reserverad\n• günstige Motorlage / Package' },
+      { id: 'fc_rst12_11', front: 'Welche Setup-Möglichkeiten gibt es und wie wirken sie auf den Reifen?', back: '• Reifendruck ↑ → kleinerer Contact Patch, steiferer Reifen, mehr Energieeintrag\n• Sturz negativ ↑ → mehr Querkraft außen (Abstützeffekt), weniger innen und weniger Längskraft\n• Spur → Einlenkverhalten + Temperatureintrag\n• Federn/Stabis/Rollmomentenverteilung → Radlastverteilung → Balance (Radlastdegressivität)\n• Dämpfer → transientes Verhalten, Radlastschwankung\n• Ride Height/Rake und Flügelwinkel → Aerobalance\n• Differentialsperre, Bremsbalance → Traktion/Stabilität' },
+      { id: 'fc_rst12_12', front: 'Nenne die Elemente der Sicherheitsstruktur eines Rennfahrzeugs.', back: '1 vordere Schutzzone · 2 vordere Schottwand · 3 mittlere Schottwand · 4 Feuerlöscher · 5 Seitenaufprallschutz · 6 Flammschutzwand · 7 Knautschzone · 8 Überrollbügel vorne · 9 Überrollbügel hinten · 10 Fahrerschulterschutz · 11 Heckaufprallelement' },
+    ],
+    quiz: [
+      { id: 'qz_rst12_1', category: 'RST 12 — Fahrwerk', question: 'Welche Aussage über die Pullrod-Bauweise ist korrekt?', options: ['Die Strebe läuft vom unteren Radträgerpunkt nach oben und wird auf Druck belastet', 'Die Strebe läuft vom oberen Radträgerpunkt nach unten-innen und wird auf Zug belastet', 'Pullrod-Systeme haben keine Umlenkhebel', 'Pullrod bedeutet, dass die Feder direkt am Radträger sitzt'], correct: 1, explanation: 'Pullrod = Zugstrebe: von OBEN am Radträger schräg nach unten-innen, Zugbelastung, Feder/Dämpfer liegen tief → tieferer Schwerpunkt und aerodynamisch saubere obere Zone.' },
+      { id: 'qz_rst12_2', category: 'RST 12 — Fahrwerk', question: 'Wodurch wird die Konzeptentscheidung Pushrod/Pullrod an VA und HA laut Vorlesung primär bestimmt?', options: ['Durch die Kosten', 'Durch die Aerodynamik', 'Durch die Vorgaben des Reifenherstellers', 'Durch das Gewicht der Feder'], correct: 1, explanation: 'Querlenker und Spurstange haben großen Einfluss auf die Strömung hinter dem Frontflügel — deshalb entscheidet die Aerodynamik über das Konzept (VL_RST_12).' },
+      { id: 'qz_rst12_3', category: 'RST 12 — Bremsen', question: 'Was gilt für den Reibwert einer Carbon-/CFRC-Bremse?', options: ['Er ist temperaturunabhängig konstant', 'Er sinkt mit steigender Temperatur (Fading)', 'Er steigt mit der Temperatur — kalt bremst die Scheibe kaum', 'Er hängt nur vom Anpressdruck ab'], correct: 2, explanation: 'Genau umgekehrt zur Serienbremse: Carbon braucht Temperatur. Kalt ist die Bremswirkung gering, im Betriebsfenster (bis ~1000 °C) gibt es dafür kein Fading.' },
+      { id: 'qz_rst12_4', category: 'RST 12 — Leichtbau', question: 'Wie absorbiert eine CFK-Crashbox Energie?', options: ['Durch plastisches Faltenbeulen wie Aluminium', 'Durch progressives Zerfasern/Zersplittern an einem definierten Trigger', 'Durch elastische Rückfederung', 'Durch Schmelzen der Matrix'], correct: 1, explanation: 'CFK versagt spröde und absorbiert Energie durch progressive crushing (Zerfasern). Pro Masse ist die Energieaufnahme ein Vielfaches von Aluminium — dafür ist das Bauteil nach dem Crash nicht reparierbar.' },
+      { id: 'qz_rst12_5', category: 'RST 12 — Leichtbau', question: 'Welches Verfahren zählt NICHT zu den zerstörungsfreien Prüfverfahren für CFK?', options: ['Ultraschall-C-Scan', 'Computertomographie', 'Aktive Thermografie', 'Zugversuch am Probestab'], correct: 3, explanation: 'Der Zugversuch zerstört die Probe. Zerstörungsfrei sind u.a. Ultraschall, Röntgen/CT, Thermografie, Shearografie und die Klopfprüfung.' },
+      { id: 'qz_rst12_6', category: 'RST 12 — Vertikaldynamik', question: 'Wie verhält sich die Fahrwerksfedersteifigkeit eines F1 zu der eines Serien-PKW?', options: ['Etwa gleich', 'Rund Faktor 2 höher', 'Rund Faktor 10 höher', 'Rund Faktor 100 höher'], correct: 2, explanation: 'Größenordnung Faktor 10. Die Aufbaueigenfrequenz liegt beim PKW bei 1–1,5 Hz, beim F1 bei 3–5 Hz — und die Steifigkeit geht quadratisch in die Frequenz ein.' },
+      { id: 'qz_rst12_7', category: 'RST 12 — Vertikaldynamik', question: 'Welche Kombination beschreibt das Rennfahrzeug im Vergleich zum Serienfahrzeug korrekt?', options: ['niedrigere Eigenfrequenz, geringere Radlastschwankung, größere Bodenabstandsschwankung', 'höhere Eigenfrequenz, höhere Radlastschwankung, geringere Bodenabstandsschwankung', 'höhere Eigenfrequenz, geringere Radlastschwankung, größere Bodenabstandsschwankung', 'gleiche Eigenfrequenz, nur andere Dämpfung'], correct: 1, explanation: 'Steifes Fahrwerk ⇒ hohe Eigenfrequenz und wenig Bodenabstandsänderung (wichtig für den Abtrieb), dafür schluckt es Unebenheiten schlechter ⇒ höhere Radlastschwankung.' },
+      { id: 'qz_rst12_8', category: 'RST 12 — Rallye', question: 'Welche Besonderheit gilt für die Rallye-Achse aufgrund des Reglements?', options: ['Es darf eine freie Rennfahrwerkskinematik konstruiert werden', 'Das Achskonzept des Serienfahrzeugs muss beibehalten werden', 'Es ist keine Federwegänderung erlaubt', 'Es sind nur Starrachsen zugelassen'], correct: 1, explanation: 'Rallyefahrzeuge basieren auf homologierten Serienfahrzeugen — das Serien-Achskonzept (z.B. McPherson) bleibt erhalten; optimiert wird innerhalb dieses Konzepts, u.a. mit stark vergrößerten Federwegen.' },
+      { id: 'qz_rst12_9', category: 'RST 12 — Setup', question: 'Was bewirkt mehr negativer Sturz?', options: ['Mehr Querkraft am kurvenäußeren Rad, weniger am inneren und weniger Längskraft', 'Mehr Querkraft an beiden Rädern und mehr Längskraft', 'Nur eine Änderung des Reifendrucks', 'Weniger Querkraft außen, mehr innen'], correct: 0, explanation: 'Abstützeffekt: Der kurvenäußere Reifen stellt sich unter Wanken günstiger zur Fahrbahn → mehr Querkraftpotenzial. Bezahlt wird das mit weniger Potenzial am Innenrad und weniger Längskraft (kleinere effektive Aufstandsfläche beim Bremsen/Beschleunigen).' },
+      { id: 'qz_rst12_10', category: 'RST 12 — Setup', question: 'Welche Setup-Änderung wirkt am direktesten über die RADLASTDEGRESSIVITÄT auf die Balance?', options: ['Reifendruck', 'Rollmomentenverteilung (Federn/Stabilisatoren)', 'Bremsbalance', 'Getriebeabstufung'], correct: 1, explanation: 'Die Rollmomentenverteilung bestimmt, welche Achse mehr Radlastverlagerung erfährt. Weil µ mit F_z sinkt, verliert die stärker belastete Achse überproportional Grip — genau darüber stellt man Unter-/Übersteuern ein.' },
+    ],
+    sketch: [
+      {
+        id: 'sk_rst12_1', points: '5 Pkt.',
+        prompt: 'Zeichne Pushrod und Pullrod im Vergleich (Frontansicht) und benenne jeweils Kraftrichtung und einen Vorteil.',
+        hint: 'Radträger, oberer und unterer Querlenker, Strebe, Umlenkhebel (Rocker), Feder/Dämpfer.',
+        svg: `<svg viewBox="0 0 360 244" class="sk-svg" xmlns="http://www.w3.org/2000/svg">
+          <text x="88" y="18" text-anchor="middle" class="sk-lb" fill="#0a84ff">PUSHROD (Druckstrebe)</text>
+          <line x1="20" y1="196" x2="160" y2="196" stroke="#48484a" stroke-width="2"/>
+          <rect x="26" y="60" width="42" height="126" fill="rgba(255,255,255,0.05)" stroke="#8e8e93"/>
+          <text x="47" y="130" text-anchor="middle" class="sk-lb">Chassis</text>
+          <line x1="132" y1="96" x2="132" y2="176" stroke="#f5f5f7" stroke-width="3"/>
+          <text x="140" y="140" class="sk-lb">Radträger</text>
+          <line x1="68" y1="104" x2="132" y2="100" stroke="#8e8e93" stroke-width="2"/>
+          <line x1="68" y1="164" x2="132" y2="172" stroke="#8e8e93" stroke-width="2"/>
+          <line x1="132" y1="172" x2="74" y2="84" stroke="#0a84ff" stroke-width="3"/>
+          <text x="96" y="164" class="sk-lb" fill="#0a84ff">Druck →</text>
+          <line x1="74" y1="84" x2="60" y2="66" stroke="#ffd60a" stroke-width="3"/>
+          <line x1="60" y1="66" x2="30" y2="72" stroke="#30d158" stroke-width="5"/>
+          <text x="22" y="58" class="sk-lb" fill="#30d158">Feder/Dämpfer OBEN</text>
+          <circle cx="74" cy="84" r="4" fill="#ffd60a"/><text x="78" y="76" class="sk-lb" fill="#ffd60a">Rocker</text>
+          <text x="272" y="18" text-anchor="middle" class="sk-lb" fill="#ff9f0a">PULLROD (Zugstrebe)</text>
+          <line x1="204" y1="196" x2="344" y2="196" stroke="#48484a" stroke-width="2"/>
+          <rect x="210" y="60" width="42" height="126" fill="rgba(255,255,255,0.05)" stroke="#8e8e93"/>
+          <text x="231" y="130" text-anchor="middle" class="sk-lb">Chassis</text>
+          <line x1="316" y1="96" x2="316" y2="176" stroke="#f5f5f7" stroke-width="3"/>
+          <text x="344" y="140" text-anchor="end" class="sk-lb">Radträger</text>
+          <line x1="252" y1="104" x2="316" y2="100" stroke="#8e8e93" stroke-width="2"/>
+          <line x1="252" y1="164" x2="316" y2="172" stroke="#8e8e93" stroke-width="2"/>
+          <line x1="316" y1="100" x2="258" y2="172" stroke="#ff9f0a" stroke-width="3"/>
+          <text x="262" y="96" class="sk-lb" fill="#ff9f0a">← Zug</text>
+          <line x1="258" y1="172" x2="244" y2="182" stroke="#ffd60a" stroke-width="3"/>
+          <line x1="244" y1="182" x2="212" y2="178" stroke="#30d158" stroke-width="5"/>
+          <text x="204" y="200" class="sk-lb" fill="#30d158">Feder/Dämpfer TIEF</text>
+          <circle cx="258" cy="172" r="4" fill="#ffd60a"/>
+          <text x="20" y="222" class="sk-lb">+ Zugänglichkeit,<tspan x="20" dy="12">Bauraum unten frei</tspan></text>
+          <text x="200" y="222" class="sk-lb">+ tiefer Schwerpunkt,<tspan x="200" dy="12">saubere obere Aero</tspan></text>
+        </svg>`,
+        checklist: [
+          'Beide Varianten gezeichnet mit Chassis, oberem und unterem Querlenker, Radträger',
+          'Pushrod: Strebe vom UNTEREN Radträgerpunkt schräg nach OBEN-innen, Kraftrichtung DRUCK eingetragen',
+          'Pullrod: Strebe vom OBEREN Radträgerpunkt schräg nach UNTEN-innen, Kraftrichtung ZUG eingetragen',
+          'Umlenkhebel (Rocker) und die Feder-Dämpfer-Einheit eingezeichnet — beim Pushrod oben, beim Pullrod tief im Chassis',
+          'Vorteil Pushrod genannt: bessere Zugänglichkeit/Wartbarkeit, einfachere Kinematik, mehr Bauraum unten (Diffusor)',
+          'Vorteil Pullrod genannt: tiefere Massenlage ⇒ tieferer Schwerpunkt, aerodynamisch saubere obere Fahrzeugzone, leichtere Zugstrebe (Zug statt Knickung)',
+          'Zusatzpunkt: Die Konzeptentscheidung an VA/HA wird primär von der Aerodynamik bestimmt',
+        ],
+      },
+    ],
+    open: [
+      { id: 'op_rst12_1', points: '4 Pkt.', question: 'Welche Vor- und Nachteile haben Pull- bzw. Push-Rod-Systeme?', answer: '**Pushrod** (Strebe von unten nach oben, Druckbelastung):\n+ gute Zugänglichkeit von Feder/Dämpfer → schneller Setup-Wechsel (1)\n+ mehr Bauraum unten für Diffusor/Getriebe, einfachere Kinematik\n− höhere Massenlage, Strebe knickgefährdet → etwas schwerer\n\n**Pullrod** (Strebe von oben nach unten, Zugbelastung):\n+ Feder/Dämpfer tief → tieferer Schwerpunkt (1)\n+ aerodynamisch saubere obere Fahrzeugzone, Zugstrebe kann dünner/leichter sein (1)\n− schlechtere Zugänglichkeit, Bauraumkonflikt mit Unterboden/Getriebe\n\nDie Konzeptwahl an VA und HA wird primär durch die Aerodynamik bestimmt (1).' },
+      { id: 'op_rst12_2', points: '3 Pkt.', question: 'Nenne drei zerstörungsfreie Prüfverfahren für CFK-Bauteile und je einen erkennbaren Fehler.', answer: '• **Ultraschall (C-Scan)**: Delaminationen, Poren, Lufteinschlüsse in der Tiefe (1)\n• **Röntgen/Computertomographie**: 3D-Darstellung von Fehlstellen, Faserorientierung, Klebespalten (1)\n• **Thermografie (aktiv, mit Wärmeimpuls)**: schnelle flächige Prüfung oberflächennaher Ablösungen (1)\n\nWeitere gültige Antworten: Shearografie, Klopfprüfung (Tap-Test), visuelle Inspektion.' },
+      { id: 'op_rst12_3', points: '4 Pkt.', question: 'Wie unterscheiden sich Aluminium- und CFK-Crashbox? Nenne Wirkprinzip und je zwei Eigenschaften.', answer: '**Aluminium**: Energieabsorption über plastische Verformung/Faltenbeulen (1). Gutmütige und gut vorhersagbare Kraft-Weg-Kennlinie, günstig, unempfindlich; dafür schwerer (1).\n\n**CFK**: Energieabsorption über progressives Zerfasern/Zersplittern an einem definierten Trigger (1). Deutlich höhere spezifische Energieabsorption pro Masse ⇒ leichter; dafür teuer, sprödes Versagen, stark auslegungsabhängig, nicht reparierbar und empfindlich gegen unsichtbare Vorschäden — deshalb zerstörungsfreie Prüfung erforderlich (1).' },
+      { id: 'op_rst12_4', points: '4 Pkt.', question: 'Welche Setup-Möglichkeiten hat man und wie beeinflussen diese den Reifen?', answer: '• **Reifendruck**: höher ⇒ kleinerer Contact Patch, höhere Reifensteifigkeit, mehr Energieeintrag ⇒ direkter Einfluss auf Temperatur und Grip (1)\n• **Sturz**: mehr negativ ⇒ Abstützeffekt, mehr Querkraft außen, weniger innen und weniger Längskraft; verschiebt die Temperaturverteilung über der Lauffläche (1)\n• **Federn/Stabilisatoren/Rollmomentenverteilung**: verteilen die Radlast zwischen den Achsen ⇒ über die Radlastdegressivität der zentrale Balance-Hebel (1)\n• **Ride Height/Rake und Flügelanstellwinkel**: Abtriebsniveau und Aerobalance ⇒ Radlast und damit Reifenbelastung über der Geschwindigkeit (1)\n\nWeitere: Spur (Einlenkverhalten, Temperatur), Dämpfer (Radlastschwankung), Differentialsperre und Bremsbalance (Traktion/Stabilität).' },
+      { id: 'op_rst12_5', points: '3 Pkt.', question: 'Um welchen Faktor ändert sich die Fahrwerksfedersteifigkeit zwischen F1 und Serien-PKW — und warum ist das so?', answer: 'Rund **Faktor 10** (Größenordnung) (1).\n\nBegründung über die Eigenfrequenz: PKW ca. 1–1,5 Hz, F1 ca. 3–5 Hz; wegen $f ∝ √(c/m)$ entspricht Faktor ~3 in der Frequenz Faktor ~10 in der Steifigkeit (1).\n\nUrsache: Der Abtrieb hängt direkt vom Bodenabstand ab. Ein weiches Fahrwerk würde den Ride Height mit der Geschwindigkeit stark verändern ⇒ schwankender Abtrieb, wandernde Aerobalance, im Extremfall Bouncing. Der Preis ist eine höhere Radlastschwankung und ein sehr enges Abstimmungsfenster (1).' },
+    ],
+    fillblank: [
+      { id: 'fb_rst12_1', sentence: 'Bei der Pushrod-Bauweise wird die Strebe auf ___ belastet.', blank: 'Druck', hint: 'Der Name verrät es: push = schieben.' },
+      { id: 'fb_rst12_2', sentence: 'Die CFK-Crashbox absorbiert Energie durch progressives ___ der Faserstruktur.', blank: 'Zerfasern/Zersplittern/crushing', hint: 'Anders als Alu verformt sie sich nicht plastisch.' },
+      { id: 'fb_rst12_3', sentence: 'Der Reibwert einer Carbon-Bremse ___ mit steigender Temperatur.', blank: 'steigt/nimmt zu', hint: 'Deshalb bremst sie kalt so schlecht.' },
+      { id: 'fb_rst12_4', sentence: 'Bei Rallyefahrzeugen schreibt das Reglement die Beibehaltung des Serien-___ vor.', blank: 'Achskonzepts/Achskonzept', hint: 'Ein McPherson bleibt ein McPherson.' },
+    ],
+  },
+
+  {
+    id: 'rst13', name: 'Ideallinie & Rundenzeitsimulation', icon: '🏁', color: '#ffd60a', examWeight: 11,
+    slideDeck: 'Folien_Rennsporttechnik/VorlesungRennsporttechnikStrategie 2025.pdf',
+    guided: [
+      { id: 'g_rst13_1', badge: 'Ideallinie', title: 'Die Punkte der Ideallinie', body: 'Jede Kurve wird über dieselben charakteristischen Punkte beschrieben — die muss man benennen KÖNNEN:\n\n1. **Bremspunkt** — Ende der Vollgasphase, Beginn der maximalen Verzögerung (reine Längskraft, Punkt unten auf dem Kammschen Kreis)\n2. **Einlenkpunkt / Turn-in** — Beginn der Lenkbewegung; ab hier wird Bremskraft schrittweise in Querkraft umgesetzt (der Betriebspunkt wandert auf dem Kreisrand)\n3. **Scheitelpunkt / Apex** — Punkt der größten Annäherung an den Kurveninnenrand; hier liegt die MINIMALE Geschwindigkeit und die MAXIMALE Querbeschleunigung\n4. **Ausgangspunkt / Track-out** — Auslenken kombiniert mit Geschwindigkeitsaufbau, bis das Fahrzeug den äußeren Streckenrand berührt und wieder rein längsbeschleunigt\n\nDie Phasen einer Kurvenfahrt laut Vorlesung: max. Beschleunigung auf der Geraden → größtmögliche Verzögerung vor der Kurve → Einlenken auf der Bremse (a_resultierend schöpft das Reifenpotenzial aus) → max. a_y in Kurvenmitte → Auslenken kombiniert mit Geschwindigkeitsaufbau.\n\nWichtig: Durch die Luftkräfte (Abtrieb) verändert sich der Grenzbereich MIT der Geschwindigkeit — der Kammsche Kreis ist bei hoher Geschwindigkeit größer.', example: '🔑 Fragenkatalog 14: „Nennen Sie die Punkte der Ideallinie." Bremspunkt → Einlenkpunkt → Scheitelpunkt → Ausgangspunkt.' },
+      { id: 'g_rst13_2', badge: 'Late Apex', title: 'Ideallinie einer 180°-Kurve', body: 'Die 180°-Kurve (Haarnadel) ist die Klassiker-Zeichenaufgabe. Das Prinzip:\n\n• **Ausholen nach ganz außen** vor der Kurve — maximiert den befahrbaren Radius\n• **Spät einlenken** und einen **späten Scheitelpunkt (late apex)** anfahren\n• Nach dem Apex **früh und voll aufs Gas**, das Fahrzeug läuft dabei bis an den äußeren Rand aus\n\nWarum späterer Apex statt geometrisch symmetrischer Linie? Weil der Kurvenausgang auf die folgende GERADE führt. Ein später Apex opfert etwas Kurveneingangsgeschwindigkeit, erlaubt dafür aber ein früheres Vollgas und damit eine höhere Geschwindigkeit über die gesamte anschließende Gerade. Die Zeit auf der Geraden wiegt schwerer als die im Kurvenscheitel.\n\nDaraus folgt die allgemeine Regel: **Die Ideallinie richtet sich nach dem, was NACH der Kurve kommt.** Vor einer langen Geraden wird der Apex nach hinten gezogen, vor einer weiteren Kurve (Kombination) wird die Linie geopfert, um die WICHTIGERE Kurve optimal anfahren zu können.', example: '🔑 WS17: „Zeichnen der Ideallinie in einer 180°-Kurve." Immer außen–innen–außen mit SPÄTEM Scheitelpunkt zeichnen und begründen.' },
+      { id: 'g_rst13_3', badge: 'Linienfindung', title: 'Welche Aspekte gehen in die Ideallinienfindung ein?', body: 'Die Ideallinie ist kein rein geometrisches Problem — folgende Aspekte fließen ein:\n\n• **Streckengeometrie**: Kurvenradien, Kurvenfolge, Streckenbreite, Track Limits und Kerbs (was darf ich nutzen?)\n• **Priorität der Kurve**: welche Kurve führt auf die längste Gerade → dort wird die Linie optimiert, andere geopfert\n• **Fahrzeugcharakteristik**: Grip- und Abtriebsniveau, Leistung, Masse, Balance, Bremsvermögen — ein Fahrzeug mit viel Abtrieb fährt eine andere Linie als ein Fahrzeug mit viel Leistung\n• **Krümmungs- vs. Weg-Kompromiss**: kürzeste Linie (minimale Weglänge) vs. Minimum-Curvature-Linie (maximaler Radius = höhere Geschwindigkeit). Das Optimum liegt dazwischen: die zeitoptimale Trajektorie\n• **Streckenbelag & Grip-Verteilung**: eingegummte Linie, Bodenwellen, Höhenprofil, Bordsteine\n• **Reifen & Energie**: Verschleiß, Temperaturfenster, Lift-and-Coast, ERS-/Kraftstoffmanagement\n• **Witterung**: bei Nässe wird die eingegummte Trockenlinie gemieden (nasse Linie außen herum)\n• **Rennsituation**: Verteidigen/Überholen, Verkehr, Ein- und Ausfahrt der Boxengasse\n\nAlgorithmisch: Das Global Planning löst genau dieses Problem offline als nichtlineares Optimierungsproblem (Minimum-Curvature oder Minimum-Time, Laufzeit 5–10 min); eine GripMap kann lokal unterschiedliche Reibwerte einbringen.', example: '🔑 WS16 & Fragenkatalog 24: „Welche Aspekte werden zur Ideallinienfindung hergenommen?" Mindestens 4–5 nennen können.' },
+      { id: 'g_rst13_4', badge: 'Längsdynamik', title: 'Zugkraftdiagramm, Schaltpunkte und v_max', body: 'Über der Geschwindigkeit ergibt sich für jeden Gang eine **Zugkraftkurve** (Motorkennlinie mal Gesamtübersetzung durch dynamischen Reifenhalbmesser). Die Einhüllende aller Gänge ist die **effektive Zugkraft**.\n\n• Ideal wäre die **Zugkrafthyperbel** $F_Z = P/v$ — sie stünde für ein stufenloses Getriebe mit dauerhaft maximaler Motorleistung.\n• Je mehr Gänge, desto besser schmiegt sich die Einhüllende an die Hyperbel an — die Fläche zwischen Hyperbel und Einhüllender ist die „verschenkte" Zugkraft.\n\n**Optimale Schaltpunkte** liegen genau in den SCHNITTPUNKTEN benachbarter Gangkurven: Dort wird die Zugkraft im nächsthöheren Gang erstmals größer als im aktuellen Gang.\n\n**Geschwindigkeiten:**\n• **Theoretische v_max**: Schnittpunkt der Zugkraftkurve des höchsten Gangs mit der Fahrwiderstandskurve, wenn dieser Schnittpunkt genau bei Nenndrehzahl läge (Auslegung „auf v_max")\n• **Effektive v_max**: der tatsächliche Schnittpunkt von effektiver Zugkraft und Fahrwiderstandskurve\n\nDie **Fahrwiderstandskurve** setzt sich zusammen aus Luftwiderstand (∝ v²), Rollwiderstand (steigt im Rennwagen mit dem Abtrieb!) und ggf. Steigungswiderstand.\n\nIm Rennsport werden die Übersetzungen streckenspezifisch abgestimmt: passende Übersetzungen für jede Kurvenkombination und jede Gerade (kurze/mittlere/lange Übersetzung).', example: '🔑 WS24/25: „Effektive Zugkrafthysterese einzeichnen mit optimalen Schaltpunkten und theoretischer max. Geschwindigkeit und eff. max. Geschwindigkeit."' },
+      { id: 'g_rst13_5', badge: 'Rundenzeitsim.', title: 'Die zwei Solver der Rundenzeitsimulation', body: 'In den Altklausuren wird nach den „zwei Varianten des SSLS-Solvers" (Steady-State-Lap-Simulation) gefragt — gemeint sind die beiden grundsätzlichen Ansätze der Rundenzeitsimulation:\n\n**1. Quasistationärer Solver (QSS / „steady state")**\nDie Strecke wird in Segmente mit bekanntem Krümmungsradius zerlegt. Für jeden Apex wird über das g-g-Diagramm (Kammscher Kreis) die maximale stationäre Kurvengeschwindigkeit berechnet. Von jedem Apex aus wird dann VORWÄRTS (Beschleunigen, begrenzt durch Zugkraft und Reifen) und RÜCKWÄRTS (Bremsen) integriert; das punktweise MINIMUM der Hüllkurven ergibt das Geschwindigkeitsprofil.\n+ sehr schnell und robust, wenige Parameter, ideal für Konzept- und Sensitivitätsstudien (Was bringt 1 % Abtrieb?)\n− keine transienten Effekte: Lastwechsel, Wank-/Nickaufbau, Reifentransiente, Fahrerverhalten und Regelsysteme fehlen; die Übergänge sind idealisiert\n\n**2. Transienter / dynamischer Solver**\nDas vollständige Fahrzeugmodell wird über der Zeit integriert — entweder VORWÄRTS mit einem Fahrer-/Reglermodell oder als Optimalsteuerungsproblem (Minimum-Time-Optimierung über die ganze Runde).\n+ bildet transientes Fahrverhalten, Regelsysteme, Energiemanagement (ERS) und Fahrereinflüsse ab; deutlich realistischer\n− hoher Rechen- und Parametrieraufwand, Fahrermodell bzw. Optimierer nötig, Konvergenz- und Stabilitätsprobleme\n\n**Charakteristische Verläufe:** Das QSS-Geschwindigkeitsprofil ist „eckig" — scharfe Knicke zwischen Brems-, Kurven- und Beschleunigungsphase und ein konstantes Plateau im Scheitel. Das transiente Profil ist verrundet, die Übergänge brauchen Zeit, und es liegt tendenziell etwas UNTER dem quasistationären.\n\n**Entscheidung mit Begründung (das wird in der Klausur verlangt!):** Für die ERSTE Auslegung und für Variantenvergleiche nimmt man den quasistationären Solver — er ist schnell genug, um Tausende Varianten zu rechnen, und die relativen Unterschiede (Deltas) stimmen. Für die Detailabstimmung, Regelsysteme und Energiemanagement braucht man den transienten Solver.', example: '🔑 WS16, WS17, WS18 und Fragenkatalog 7: „Beide SSLS-Solver benennen, darstellen, sich für einen entscheiden und die Entscheidung begründen." Die Begründung ist die halbe Punktzahl!' },
+    ],
+    flashcards: [
+      { id: 'fc_rst13_1', front: 'Nenne die Punkte der Ideallinie.', back: '1. Bremspunkt (Ende Vollgas, max. Verzögerung)\n2. Einlenkpunkt / Turn-in (Bremskraft → Querkraft)\n3. Scheitelpunkt / Apex (v_min, a_y max, engste Annäherung innen)\n4. Ausgangspunkt / Track-out (Auslenken + Beschleunigen bis zum äußeren Rand)' },
+      { id: 'fc_rst13_2', front: 'Wie sieht die Ideallinie einer 180°-Kurve aus und warum?', back: 'Außen – innen – außen mit SPÄTEM Scheitelpunkt (late apex).\n\nBegründung: Der Kurvenausgang führt auf die Gerade. Ein später Apex opfert etwas Eingangsgeschwindigkeit, erlaubt aber früheres Vollgas und damit mehr Geschwindigkeit über die ganze folgende Gerade — das wiegt schwerer.' },
+      { id: 'fc_rst13_3', front: 'Welche Aspekte gehen in die Ideallinienfindung ein? (mind. 5)', back: '• Streckengeometrie: Radien, Kurvenfolge, Breite, Track Limits/Kerbs\n• Priorität: welche Kurve führt auf die längste Gerade\n• Fahrzeugcharakteristik: Grip, Abtrieb, Leistung, Masse, Balance\n• Kompromiss kürzeste Linie ↔ größter Radius (Minimum Curvature) → zeitoptimale Linie\n• Streckenbelag/Grip-Verteilung, Bodenwellen, Höhenprofil\n• Reifenverschleiß & -temperatur, Energie-/Kraftstoffmanagement\n• Witterung (nasse Linie), Rennsituation (Überholen/Verteidigen, Verkehr)' },
+      { id: 'fc_rst13_4', front: 'Wo liegen die optimalen Schaltpunkte im Zugkraftdiagramm?', back: 'In den SCHNITTPUNKTEN der Zugkraftkurven benachbarter Gänge — dort ist die Zugkraft im nächsthöheren Gang erstmals größer als im aktuellen.' },
+      { id: 'fc_rst13_5', front: 'Was ist die Zugkrafthyperbel — und was sagt die Fläche zwischen ihr und der Einhüllenden aus?', back: 'Die Zugkrafthyperbel $F_Z = P/v$ ist der Idealverlauf bei konstant maximaler Motorleistung (stufenloses Getriebe).\n\nDie Fläche zwischen Hyperbel und der Einhüllenden der Gangkurven ist die „verschenkte" Zugkraft. Je mehr Gänge, desto kleiner wird sie.' },
+      { id: 'fc_rst13_6', front: 'Unterscheide theoretische und effektive Höchstgeschwindigkeit.', back: '• Theoretische v_max: Schnittpunkt Zugkraftkurve des höchsten Gangs ∩ Fahrwiderstandskurve, wenn dieser genau bei Nenndrehzahl läge\n• Effektive v_max: der tatsächliche Schnittpunkt der effektiven Zugkraft mit der Fahrwiderstandskurve\n\nBeide werden im Zugkraftdiagramm als Schnittpunkte auf der v-Achse markiert.' },
+      { id: 'fc_rst13_7', front: 'Nenne die beiden Solver-Varianten der Rundenzeitsimulation.', back: '1. **Quasistationär (QSS/Steady State)**: Apex-Geschwindigkeiten aus dem g-g-Diagramm, dann Vorwärts-/Rückwärtsintegration; Minimum der Hüllkurven = Geschwindigkeitsprofil\n2. **Transient/dynamisch**: vollständiges Fahrzeugmodell über der Zeit — Vorwärtsrechnung mit Fahrermodell oder Optimalsteuerung (Minimum Time)' },
+      { id: 'fc_rst13_8', front: 'Vor- und Nachteile des quasistationären Rundenzeitsolvers?', back: '+ sehr schnell und robust, wenige Parameter\n+ ideal für Konzeptauslegung und Sensitivitätsstudien (Deltas stimmen)\n− keine transienten Effekte (Lastwechsel, Wank-/Nickaufbau, Reifentransiente)\n− Fahrerverhalten und Regelsysteme werden nicht abgebildet\n− Übergänge idealisiert → „eckiges" Geschwindigkeitsprofil' },
+      { id: 'fc_rst13_9', front: 'Welchen Rundenzeitsolver wählst du für die erste Auslegung — und warum?', back: 'Den **quasistationären** Solver.\n\nBegründung: In der Konzeptphase braucht man Tausende Varianten (Abtrieb, Masse, Übersetzung, Reifen). Der QSS-Solver ist schnell und robust genug dafür, und für Variantenvergleiche zählen die relativen Unterschiede — die bildet er korrekt ab. Der transiente Solver kommt erst bei Detailabstimmung, Regelsystemen und Energiemanagement zum Einsatz.' },
+      { id: 'fc_rst13_10', front: 'Wie erkennt man einen Streckenabschnitt am Geschwindigkeitsverlauf?', back: '• Plateau/steigender Ast = Gerade (v_max am Ende)\n• Steiler Abfall = Bremsphase, Beginn = Bremspunkt\n• Knick zu flacherem Abfall = Einlenkpunkt (Bremskraft → Querkraft)\n• Minimum = Scheitelpunkt/Apex\n• Wiederanstieg = Auslenken + Beschleunigen\n\nWegbasiert auftragen — so lassen sich Brems- und Scheitelpunkte zwischen Runden vergleichen.' },
+      { id: 'fc_rst13_11', front: 'Was macht das Global Planning eines autonomen Rennwagens mit der Ideallinie?', back: 'Es löst die Ideallinienfindung OFFLINE als nichtlineares Optimierungsproblem (Minimum Curvature oder Minimum Time) für die statische Strecke; Fahrzeugperformance geht als Ein- oder Zweispurmodell ein, verfügbarer Grip über eine GripMap. Laufzeit 5–10 Minuten, einmalige Ausführung.' },
+      { id: 'fc_rst13_12', front: 'Welche Anteile hat die Fahrwiderstandskurve?', back: '$F_{ges} = F_{Luft} + F_{Roll} + F_{Steig} + F_{Beschl}$\n• Luftwiderstand $c_w·A·(ρ/2)·v²$ — dominiert bei hoher Geschwindigkeit\n• Rollwiderstand $f_R·F_{z,ges}$ — im Rennwagen steigend, weil der Abtrieb die Radlast erhöht!\n• Steigungswiderstand $m·g·sinα$\n• Beschleunigungswiderstand $m·a·e_i$ (Drehmassenzuschlag)' },
+    ],
+    quiz: [
+      { id: 'qz_rst13_1', category: 'RST 13 — Ideallinie', question: 'Wo liegt der Scheitelpunkt (Apex) im Geschwindigkeitsverlauf?', options: ['Beim Geschwindigkeitsmaximum', 'Beim Geschwindigkeitsminimum', 'Am Bremspunkt', 'Am Ende der Geraden'], correct: 1, explanation: 'Der Apex ist der Punkt der engsten Annäherung an den Kurveninnenrand — dort ist die Geschwindigkeit minimal und die Querbeschleunigung maximal.' },
+      { id: 'qz_rst13_2', category: 'RST 13 — Ideallinie', question: 'Warum fährt man in einer 180°-Kurve vor einer langen Geraden einen SPÄTEN Scheitelpunkt?', options: ['Weil die Kurveneingangsgeschwindigkeit dadurch steigt', 'Weil man dadurch früher voll beschleunigen kann und über die gesamte Gerade schneller ist', 'Weil der Reifen dadurch weniger belastet wird', 'Weil es die kürzeste Wegstrecke ist'], correct: 1, explanation: 'Man opfert etwas Eingangsgeschwindigkeit für einen besseren Kurvenausgang. Der Zeitgewinn über die gesamte anschließende Gerade ist größer als der Verlust im Scheitel.' },
+      { id: 'qz_rst13_3', category: 'RST 13 — Ideallinie', question: 'Welcher Kompromiss steckt hinter der zeitoptimalen Linie?', options: ['Zwischen kürzester Weglänge und größtmöglichem Kurvenradius (Minimum Curvature)', 'Zwischen Reifendruck und Sturz', 'Zwischen Abtrieb und Widerstand', 'Zwischen Motorleistung und Verbrauch'], correct: 0, explanation: 'Die kürzeste Linie hat kleine Radien (niedrige Kurvengeschwindigkeit), die Minimum-Curvature-Linie ist länger, erlaubt aber höhere Geschwindigkeiten. Das Zeitoptimum liegt dazwischen.' },
+      { id: 'qz_rst13_4', category: 'RST 13 — Längsdynamik', question: 'Wo liegt der optimale Schaltpunkt?', options: ['Immer bei der Nenndrehzahl des Motors', 'Im Schnittpunkt der Zugkraftkurven zweier benachbarter Gänge', 'Am Maximum des Motordrehmoments', 'Am Schnittpunkt mit der Fahrwiderstandskurve'], correct: 1, explanation: 'Genau dort wird die Zugkraft im nächsthöheren Gang erstmals größer als im aktuellen Gang — vorher zu schalten kostet Zugkraft, später ebenfalls.' },
+      { id: 'qz_rst13_5', category: 'RST 13 — Längsdynamik', question: 'Was beschreibt die Zugkrafthyperbel F_Z = P/v?', options: ['Den Fahrwiderstand des Fahrzeugs', 'Den Idealverlauf bei konstant maximaler Motorleistung (stufenloses Getriebe)', 'Die Zugkraft im ersten Gang', 'Das Bremsvermögen des Fahrzeugs'], correct: 1, explanation: 'Sie ist der Idealfall. Die Einhüllende der realen Gangkurven schmiegt sich mit zunehmender Gangzahl immer besser an sie an; die Fläche dazwischen ist verschenkte Zugkraft.' },
+      { id: 'qz_rst13_6', category: 'RST 13 — Rundenzeitsim.', question: 'Wie ermittelt der quasistationäre Rundenzeitsolver das Geschwindigkeitsprofil?', options: ['Durch Zeitintegration des vollständigen Fahrzeugmodells mit Fahrermodell', 'Apex-Geschwindigkeiten aus dem g-g-Diagramm, dann Vorwärts- und Rückwärtsintegration; Minimum der Hüllkurven', 'Durch Messung auf der Strecke', 'Durch neuronale Netze aus historischen Rundenzeiten'], correct: 1, explanation: 'Das ist das Kernprinzip des QSS-Solvers: stationäre Apex-Geschwindigkeit aus dem Reifenpotenzial, dann beschleunigend vorwärts und bremsend rückwärts integrieren und punktweise das Minimum nehmen.' },
+      { id: 'qz_rst13_7', category: 'RST 13 — Rundenzeitsim.', question: 'Welcher Nachteil trifft auf den quasistationären Solver zu?', options: ['Er ist zu langsam für Variantenstudien', 'Er bildet transiente Effekte wie Lastwechsel, Wankaufbau und Reifentransiente nicht ab', 'Er braucht ein aufwendiges Fahrermodell', 'Er kann keine Kurvenradien verarbeiten'], correct: 1, explanation: 'Genau das ist der Preis für seine Geschwindigkeit: Alles Transiente — Lastwechsel, Aufbaubewegungen, Reifendynamik, Regelsysteme, Fahrerverhalten — fehlt.' },
+      { id: 'qz_rst13_8', category: 'RST 13 — Rundenzeitsim.', question: 'Wie unterscheiden sich die charakteristischen Geschwindigkeitsprofile beider Solver?', options: ['Sie sind identisch', 'Das quasistationäre Profil ist „eckig" mit scharfen Übergängen, das transiente ist verrundet und liegt tendenziell etwas darunter', 'Das transiente Profil ist eckiger', 'Das quasistationäre Profil hat kein Minimum im Scheitel'], correct: 1, explanation: 'Der QSS-Solver nimmt sofortige Übergänge zwischen Bremsen, Kurve und Beschleunigen an. Real brauchen diese Übergänge Zeit — das transiente Profil ist verrundet und minimal langsamer.' },
+      { id: 'qz_rst13_9', category: 'RST 13 — Rundenzeitsim.', question: 'Welchen Solver wählst du für die erste Fahrzeugauslegung?', options: ['Den transienten, weil er genauer ist', 'Den quasistationären, weil er schnell genug für Tausende Varianten ist und die relativen Deltas korrekt abbildet', 'Beide gleichzeitig', 'Keinen — man misst auf der Strecke'], correct: 1, explanation: 'In der Konzeptphase zählen Sensitivitäten (Was bringt 1 % Abtrieb / 10 kg?). Dafür braucht man Geschwindigkeit und Robustheit, nicht absolute Genauigkeit.' },
+      { id: 'qz_rst13_10', category: 'RST 13 — Fahrwiderstand', question: 'Warum steigt der Rollwiderstand eines Rennfahrzeugs mit der Geschwindigkeit besonders stark?', options: ['Weil der Reifendruck sinkt', 'Weil der Abtrieb die Radlast erhöht und der Rollwiderstand proportional zur Radlast ist', 'Weil die Fahrbahn wärmer wird', 'Weil das Fahrzeug leichter wird'], correct: 1, explanation: '$F_{Roll} = f_R · F_{z,ges}$ — und $F_{z,ges}$ enthält beim Rennwagen den Abtrieb, der quadratisch mit v wächst. Deshalb ist der Rollwiderstand hier keine Konstante.' },
+    ],
+    sketch: [
+      {
+        id: 'sk_rst13_1', points: '5 Pkt.',
+        prompt: 'Zeichne die Ideallinie in einer 180°-Kurve (Haarnadel) und markiere Bremspunkt, Einlenkpunkt, Scheitelpunkt und Ausgangspunkt.',
+        hint: 'Außen – innen – außen. Wo liegt der Scheitelpunkt, wenn danach eine lange Gerade folgt?',
+        svg: `<svg viewBox="0 0 360 244" class="sk-svg" xmlns="http://www.w3.org/2000/svg">
+          <path d="M40 44 L 200 44 A 62 62 0 0 1 200 168 L 40 168" fill="none" stroke="#48484a" stroke-width="2"/>
+          <path d="M40 84 L 200 84 A 22 22 0 0 1 200 128 L 40 128" fill="none" stroke="#48484a" stroke-width="2"/>
+          <path d="M46 54 L 172 54 C 226 60, 232 138, 176 156 L 46 158" fill="none" stroke="#0a84ff" stroke-width="3"/>
+          <circle cx="112" cy="54" r="5" fill="#ff453a"/><text x="86" y="40" class="sk-lb" fill="#ff453a">Bremspunkt</text>
+          <circle cx="168" cy="54" r="5" fill="#ff9f0a"/><text x="160" y="38" class="sk-lb" fill="#ff9f0a">Einlenkpunkt</text>
+          <circle cx="222" cy="118" r="5" fill="#30d158"/><text x="232" y="146" class="sk-lb" fill="#30d158">Scheitelpunkt</text>
+          <text x="232" y="160" class="sk-lb" fill="#30d158">SPÄT (late apex)</text>
+          <circle cx="120" cy="157" r="5" fill="#bf5af2"/><text x="96" y="176" class="sk-lb" fill="#bf5af2">Ausgangspunkt</text>
+          <text x="44" y="200" class="sk-lb">◀ lange Gerade — hier zählt jede Zehntel</text>
+          <path d="M40 190 L 100 190" stroke="#bf5af2" stroke-width="2"/><polygon points="36,190 46,186 46,194" fill="#bf5af2"/>
+          <text x="44" y="30" class="sk-lb">Anfahrt ▶</text>
+          <path d="M232 76 A 46 46 0 0 1 232 160" fill="none" stroke="#30d158" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="102" y="104" class="sk-lb">größtmöglicher Radius</text>
+          <text x="102" y="117" class="sk-lb">= höhere Kurvengeschw.</text>
+        </svg>`,
+        checklist: [
+          'Kurvenverlauf mit äußerem und innerem Streckenrand gezeichnet',
+          'Linie folgt dem Schema außen – innen – außen (Radius maximieren)',
+          'Bremspunkt markiert: Ende der Vollgasphase, ganz außen auf der Anfahrt',
+          'Einlenkpunkt markiert: hier beginnt die Lenkbewegung, Bremskraft wird in Querkraft umgesetzt',
+          'Scheitelpunkt markiert und erkennbar SPÄT (hinter der geometrischen Kurvenmitte) gelegt',
+          'Ausgangspunkt markiert: Auslenken bis an den äußeren Streckenrand unter Vollgas',
+          'Begründung für den späten Apex: bessere Ausgangsgeschwindigkeit auf die folgende Gerade wiegt schwerer als die etwas geringere Eingangsgeschwindigkeit',
+        ],
+      },
+      {
+        id: 'sk_rst13_2', points: '6 Pkt.',
+        prompt: 'Zeichne das Zugkraftdiagramm eines Rennfahrzeugs: Gangkurven, effektive Zugkraft (Einhüllende), Zugkrafthyperbel, Fahrwiderstandskurve, optimale Schaltpunkte sowie theoretische und effektive Höchstgeschwindigkeit.',
+        hint: 'Zugkraft über Geschwindigkeit. Wo schneiden sich die Gänge, wo schneidet die Zugkraft den Fahrwiderstand?',
+        svg: rstChart(`
+          <path d="M56 40 C 70 44, 84 66, 96 96" fill="none" stroke="#0a84ff" stroke-width="2.2"/>
+          <path d="M92 74 C 108 78, 124 100, 140 128" fill="none" stroke="#0a84ff" stroke-width="2.2"/>
+          <path d="M136 108 C 156 112, 178 130, 198 152" fill="none" stroke="#0a84ff" stroke-width="2.2"/>
+          <path d="M194 136 C 220 140, 250 152, 278 168" fill="none" stroke="#0a84ff" stroke-width="2.2"/>
+          <path d="M272 156 C 300 160, 326 168, 344 174" fill="none" stroke="#0a84ff" stroke-width="2.2"/>
+          <text x="58" y="34" class="sk-lb" fill="#0a84ff">1.</text><text x="96" y="70" class="sk-lb" fill="#0a84ff">2.</text>
+          <text x="142" y="104" class="sk-lb" fill="#0a84ff">3.</text><text x="200" y="132" class="sk-lb" fill="#0a84ff">4.</text>
+          <text x="264" y="144" class="sk-lb" fill="#0a84ff">5. Gang</text>
+          <path d="M56 30 C 100 52, 160 96, 240 134 C 290 156, 322 166, 344 170" fill="none" stroke="#ffd60a" stroke-width="2" stroke-dasharray="5 4"/>
+          <text x="196" y="112" class="sk-lb" fill="#ffd60a">Zugkrafthyperbel F=P/v</text>
+          <path d="M46 202 C 120 198, 200 186, 262 168 C 300 156, 328 142, 344 132" fill="none" stroke="#ff453a" stroke-width="2.4"/>
+          <text x="186" y="198" class="sk-lb" fill="#ff453a">Fahrwiderstand F_W(v)</text>
+          <circle cx="94" cy="86" r="4" fill="#30d158"/><circle cx="138" cy="118" r="4" fill="#30d158"/>
+          <circle cx="196" cy="145" r="4" fill="#30d158"/><circle cx="275" cy="162" r="4" fill="#30d158"/>
+          <text x="200" y="46" class="sk-lb" fill="#30d158">Schaltpunkte =</text>
+          <text x="200" y="58" class="sk-lb" fill="#30d158">Schnittpunkte der Gänge</text>
+          <circle cx="313" cy="166" r="5" fill="#bf5af2"/>
+          <line x1="313" y1="166" x2="313" y2="206" stroke="#bf5af2" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="272" y="220" class="sk-lb" fill="#bf5af2">v_max,eff</text>
+          <line x1="344" y1="174" x2="344" y2="206" stroke="#64d2ff" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="344" y="234" text-anchor="end" class="sk-lb" fill="#64d2ff">v_max,theor</text>`,
+          'Geschwindigkeit v [km/h]', 'Zugkraft F_Z [N]'),
+        checklist: [
+          'Zugkraft über der Geschwindigkeit aufgetragen, Achsen beschriftet',
+          'Für jeden Gang eine fallende Zugkraftkurve; die Gänge überlappen sich',
+          'Einhüllende der Gangkurven als effektive Zugkraft erkennbar',
+          'Zugkrafthyperbel F = P/v als gestrichelte Idealkurve darüber; Fläche dazwischen = verschenkte Zugkraft',
+          'Fahrwiderstandskurve F_W(v) eingezeichnet (steigend, dominiert durch den Luftwiderstand ∝ v²)',
+          'Optimale Schaltpunkte in den Schnittpunkten benachbarter Gangkurven markiert',
+          'Effektive v_max = Schnittpunkt effektive Zugkraft ∩ Fahrwiderstand; theoretische v_max separat markiert',
+        ],
+      },
+      {
+        id: 'sk_rst13_3', points: '6 Pkt.',
+        prompt: 'Nenne und skizziere die zwei Solver-Varianten der Rundenzeitsimulation (SSLS), zeichne die charakteristischen Geschwindigkeitsverläufe, entscheide dich für einen und begründe die Entscheidung.',
+        hint: 'Ein Profil ist „eckig", das andere verrundet. Denk an Vorwärts-/Rückwärtsintegration vom Apex aus.',
+        svg: rstChart(`
+          <path d="M46 60 L 104 60 L 150 152 L 196 152 L 244 74 L 344 74" fill="none" stroke="#0a84ff" stroke-width="2.6"/>
+          <text x="56" y="48" class="sk-lb" fill="#0a84ff">quasistationär (QSS): eckig, Plateau im Scheitel</text>
+          <path d="M46 64 C 92 64, 110 76, 152 156 C 172 168, 196 166, 214 148 C 240 112, 270 86, 344 80" fill="none" stroke="#ff9f0a" stroke-width="2.6"/>
+          <text x="52" y="176" class="sk-lb" fill="#ff9f0a">transient: verrundet,<tspan x="52" dy="12">liegt tendenziell darunter</tspan></text>
+          <path d="M104 60 L 150 152" stroke="#ff453a" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <text x="94" y="112" class="sk-lb" fill="#ff453a">rückwärts</text><text x="94" y="124" class="sk-lb" fill="#ff453a">integriert</text>
+          <path d="M196 152 L 244 74" stroke="#30d158" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <text x="216" y="118" class="sk-lb" fill="#30d158">vorwärts</text><text x="216" y="130" class="sk-lb" fill="#30d158">integriert</text>
+          <circle cx="173" cy="152" r="4.5" fill="#ffd60a"/>
+          <text x="196" y="196" class="sk-lb" fill="#ffd60a">Apex: v aus g-g-Diagramm</text>`,
+          'Streckenlänge s', 'Geschwindigkeit v'),
+        checklist: [
+          'Variante 1 benannt: quasistationärer Solver (Steady State) — Apex-Geschwindigkeit aus dem g-g-Diagramm/Kammschen Kreis, dann Vorwärts- (Beschleunigen) und Rückwärtsintegration (Bremsen), punktweises Minimum der Hüllkurven',
+          'Variante 2 benannt: transienter/dynamischer Solver — Zeitintegration des vollständigen Fahrzeugmodells, vorwärts mit Fahrermodell oder als Minimum-Time-Optimalsteuerung',
+          'Charakteristischer QSS-Verlauf gezeichnet: eckig, scharfe Knicke, konstantes Plateau im Scheitel',
+          'Charakteristischer transienter Verlauf gezeichnet: verrundete Übergänge, tendenziell etwas unter dem QSS-Profil',
+          'Vor-/Nachteile QSS: schnell, robust, wenige Parameter ↔ keine transienten Effekte, keine Regelsysteme, kein Fahrerverhalten',
+          'Vor-/Nachteile transient: realistisch, bildet Lastwechsel, Regelsysteme und Energiemanagement ab ↔ hoher Rechen-/Parametrieraufwand, Fahrermodell/Optimierer nötig',
+          'ENTSCHEIDUNG mit Begründung: für erste Auslegung und Variantenstudien den quasistationären Solver (Tausende Varianten, relative Deltas stimmen); für Detailabstimmung und Energiemanagement den transienten Solver',
+        ],
+      },
+    ],
+    calc: [
+      {
+        id: 'ca_rst13_1', title: 'Rundenzeit aus Sektorzeiten', points: '4 Pkt.',
+        formula: 'Zeitgewinn = Zeitanteil × relative Verbesserung',
+        vars: [
+          { k: 'tl', label: 'Rundenzeit t_Runde', unit: 's', min: 70, max: 110, step: 1 },
+          { k: 'anteil', label: 'Anteil Kurvenphasen an der Rundenzeit', unit: '%', min: 40, max: 70, step: 5 },
+          { k: 'verb', label: 'Verbesserung der Kurvengeschwindigkeit', unit: '%', min: 1, max: 5, step: 1 },
+        ],
+        ask: () => 'Wie viel Rundenzeit gewinnt man näherungsweise, wenn nur die Kurvenphasen um diesen Prozentsatz schneller durchfahren werden?',
+        unit: 's', dec: 3, tol: 0.03,
+        solve: v => v.tl * (v.anteil / 100) * (1 - 1 / (1 + v.verb / 100)),
+        steps: v => [
+          `Zeit in den Kurvenphasen: $t_K = ${v.tl} · ${v.anteil}\\% = ${fmtN(v.tl * v.anteil / 100, 2)}$ s`,
+          `Bei ${v.verb} % höherer Geschwindigkeit sinkt die Zeit auf $t_K / (1 + ${v.verb}\\%) = ${fmtN(v.tl * v.anteil / 100 / (1 + v.verb / 100), 3)}$ s`,
+          `Gewinn: $Δt = ${fmtN(v.tl * v.anteil / 100, 2)} − ${fmtN(v.tl * v.anteil / 100 / (1 + v.verb / 100), 3)} = ${fmtN(v.tl * (v.anteil / 100) * (1 - 1 / (1 + v.verb / 100)), 3)}$ s`,
+          `Genau so entstehen die Sensitivitäten der Vorlesung: 1 % Reifengrip ≈ 0,4 s, 1 % Gewicht ≈ 0,25 s, 1 % Abtrieb ≈ 0,15 s auf einer High-Downforce-Strecke.`,
+          `Einordnung: Der Unterschied zwischen einem schnellen (Quali P2–3) und einem langsamen F1 (P16–18) beträgt rund 1,5 s pro Runde — das sind nur etwa 0,1 s pro Kurve.`,
+        ],
+      },
+    ],
+    open: [
+      { id: 'op_rst13_1', points: '4 Pkt.', question: 'Nenne die Punkte der Ideallinie und beschreibe, was an jedem Punkt passiert.', answer: '• **Bremspunkt**: Ende der Vollgasphase, Beginn der maximalen Verzögerung — reine Längskraft, Betriebspunkt unten auf dem Kammschen Kreis (1)\n• **Einlenkpunkt (Turn-in)**: Beginn der Lenkbewegung; Bremskraft wird schrittweise in Querkraft umgesetzt, der Betriebspunkt wandert auf dem Kreisrand (1)\n• **Scheitelpunkt (Apex)**: engste Annäherung an den Kurveninnenrand, minimale Geschwindigkeit und maximale Querbeschleunigung (1)\n• **Ausgangspunkt (Track-out)**: Auslenken kombiniert mit Geschwindigkeitsaufbau, bis das Fahrzeug den äußeren Streckenrand berührt und wieder rein längsbeschleunigt (1)' },
+      { id: 'op_rst13_2', points: '5 Pkt.', question: 'Welche Aspekte werden zur Ideallinienfindung herangezogen? Nenne mindestens fünf.', answer: '• **Streckengeometrie**: Kurvenradien, Kurvenfolge, Streckenbreite, Track Limits und nutzbare Kerbs (1)\n• **Priorität der Kurve**: Kurven vor langen Geraden werden auf den Ausgang optimiert, andere geopfert (1)\n• **Fahrzeugcharakteristik**: Grip- und Abtriebsniveau, Leistung, Masse, Balance, Bremsvermögen (1)\n• **Kompromiss kürzeste Weglänge ↔ größter Radius (Minimum Curvature)**; das Zeitoptimum liegt dazwischen (1)\n• **Streckenbelag und Grip-Verteilung**: eingegummte Linie, Bodenwellen, Höhenprofil (1)\n\nWeitere: Reifenverschleiß und -temperatur, Energie-/Kraftstoffmanagement (Lift and Coast), Witterung (nasse Linie), Rennsituation (Überholen/Verteidigen, Verkehr).' },
+      { id: 'op_rst13_3', points: '6 Pkt.', question: 'Erklären Sie die zwei Varianten des SSLS-Solvers, zeichnen Sie die charakteristischen Verläufe, entscheiden Sie sich für einen und begründen Sie.', answer: '**1. Quasistationärer Solver (Steady State)** (1)\nDie Strecke wird in Segmente mit bekannter Krümmung zerlegt. Für jeden Apex wird über das g-g-Diagramm die maximale stationäre Kurvengeschwindigkeit bestimmt. Von dort wird vorwärts (Beschleunigen) und rückwärts (Bremsen) integriert; das punktweise Minimum ergibt das Geschwindigkeitsprofil.\nVerlauf: eckig, scharfe Übergänge, Plateau im Scheitel (1)\n+ schnell, robust, wenige Parameter · − keine transienten Effekte, kein Fahrer-/Reglerverhalten\n\n**2. Transienter/dynamischer Solver** (1)\nZeitintegration des vollständigen Fahrzeugmodells — vorwärts mit Fahrermodell oder als Minimum-Time-Optimalsteuerung.\nVerlauf: verrundete Übergänge, liegt tendenziell etwas unter dem quasistationären Profil (1)\n+ realistisch, bildet Lastwechsel, Regelsysteme und Energiemanagement ab · − hoher Rechen- und Parametrieraufwand\n\n**Entscheidung** (2): Für die erste Auslegung und für Variantenvergleiche der quasistationäre Solver — in der Konzeptphase müssen Tausende Varianten (Abtrieb, Masse, Übersetzung) gerechnet werden, und für Sensitivitäten zählen die relativen Deltas, die er korrekt abbildet. Der transiente Solver kommt erst bei der Detailabstimmung, für Regelsysteme und für das Energiemanagement zum Einsatz.' },
+      { id: 'op_rst13_4', points: '4 Pkt.', question: 'Kennzeichnen Sie in einem gegebenen Geschwindigkeitsverlauf die Streckenabschnitte.', answer: '• **Plateau / leicht ansteigender Ast** = Gerade; das Ende ist v_max (1)\n• **Steiler Abfall** = Bremsphase; der Beginn des Abfalls ist der Bremspunkt (1)\n• **Knick zu flacherem Abfall** = Einlenkpunkt — Bremskraft wird in Querkraft umgesetzt (Kammscher Kreis) (1)\n• **Minimum** = Scheitelpunkt/Apex; danach Wiederanstieg = Auslenken und Beschleunigen (1)\n\nHinweis: Wegbasiert auftragen — nur so lassen sich Brems- und Scheitelpunkte zwischen Runden vergleichen; zeitbasiert ist besser fürs Debugging.' },
+      { id: 'op_rst13_5', points: '5 Pkt.', question: 'Zeichnen Sie die effektive Zugkraft ein und markieren Sie optimale Schaltpunkte sowie theoretische und effektive Höchstgeschwindigkeit.', answer: '• **Zugkraftkurven je Gang** über v auftragen; die **Einhüllende** ist die effektive Zugkraft (1)\n• **Optimale Schaltpunkte** = Schnittpunkte benachbarter Gangkurven; dort ist die Zugkraft im nächsthöheren Gang erstmals größer (1)\n• **Zugkrafthyperbel** $F_Z = P/v$ als Ideal darüberlegen; die Fläche dazwischen ist verschenkte Zugkraft — sie schrumpft mit steigender Gangzahl (1)\n• **Fahrwiderstandskurve** $F_W(v)$ eintragen (Luftwiderstand ∝ v², Rollwiderstand steigt beim Rennwagen mit dem Abtrieb) (1)\n• **Effektive v_max** = Schnittpunkt der effektiven Zugkraft mit $F_W$; **theoretische v_max** = Schnittpunkt der Zugkraftkurve des höchsten Gangs mit $F_W$, wenn dieser bei Nenndrehzahl läge (1)' },
+    ],
+    fillblank: [
+      { id: 'fb_rst13_1', sentence: 'Am Scheitelpunkt einer Kurve ist die Geschwindigkeit ___ und die Querbeschleunigung maximal.', blank: 'minimal/am kleinsten', hint: 'Danach geht es wieder bergauf.' },
+      { id: 'fb_rst13_2', sentence: 'Die optimalen Schaltpunkte liegen in den ___ der Zugkraftkurven benachbarter Gänge.', blank: 'Schnittpunkten/Schnittpunkte', hint: 'Dort wird der nächste Gang erstmals stärker.' },
+      { id: 'fb_rst13_3', sentence: 'Der quasistationäre Rundenzeitsolver integriert vom Apex aus vorwärts und ___.', blank: 'rückwärts', hint: 'Einmal beschleunigend, einmal bremsend.' },
+      { id: 'fb_rst13_4', sentence: 'Vor einer langen Geraden legt man den Scheitelpunkt bewusst ___.', blank: 'spät/später/nach hinten', hint: 'Late apex.' },
+    ],
+  },
+];
+// ── Ergänzungen zu den bestehenden Themen ───────────────────────────────────
+const RST_EXTRA = {
+  rst1: {
+    flashcards: [
+      { id: 'fc_rst1_11', front: 'Nenne die Motorsport-KATEGORIEN und die FORMATE.', back: '**Kategorien (Fahrzeugtypen):** Formel (F1/F2/Formel E), Prototypen (LMH, LMDh, LMP2/3), Grand Touring (GT3, GT4), Rally (WRC), Rally-Cross (WRX), Cross-Country (T1–T5), Markenpokale, US Racing (IndyCar, NASCAR), Kart, E-Sport.\n\n**Formate (Wettbewerbsart):** Sprint, Endurance, Cross-Country, Hill Climb, Drag Racing, Drift, Land Speed Records, Single Events.' },
+      { id: 'fc_rst1_12', front: 'Wie ordnest du ein Formel- und ein Prototypen-Fahrzeug richtig zu?', back: '• **Formel**: offene, freistehende Räder, Monoposto (Einsitzer) — z.B. F1, F2, Formel E, IndyCar\n• **Prototyp**: geschlossenes Fahrzeug, Zweisitzer-Layout, für Langstrecke ausgelegt — z.B. LMH, LMDh, LMP2/LMP3\n\n(GT dagegen: von einem Serienfahrzeug abgeleitet, z.B. GT3/GT4.)' },
+    ],
+    fillblank: [
+      { id: 'fb_rst1_1', sentence: 'Die drei Ziele jedes Motorsport-Reglements sind fairer Wettbewerb, Sicherheit und ___.', blank: 'Kostenkontrolle', hint: 'Budget Cap, Einheitsteile, Testlimits.' },
+      { id: 'fb_rst1_2', sentence: 'Das ___ Reglement beschreibt die notwendige Konfiguration eines Rennwagens, um in einer Serie starten zu dürfen.', blank: 'technische', hint: 'Nicht das sportliche, nicht die Homologation.' },
+      { id: 'fb_rst1_3', sentence: 'Nur die ___ darf Weltmeisterschaften ausschreiben.', blank: 'FIA', hint: 'Der internationale Dachverband der Automobilclubs.' },
+      { id: 'fb_rst1_4', sentence: 'Was im Reglement nicht ausdrücklich erlaubt ist, ist ___.', blank: 'verboten', hint: 'Das Grundprinzip der Reglementauslegung.' },
+    ],
+  },
+
+  rst2: {
+    fillblank: [
+      { id: 'fb_rst2_1', sentence: 'Das ___ Planning berechnet offline die schnellste Trajektorie um die gesamte Strecke.', blank: 'Global/globale', hint: 'Statische Umgebung, Laufzeit 5–10 min.' },
+      { id: 'fb_rst2_2', sentence: 'Als Middleware für den Datenaustausch zwischen den Softwaremodulen dient ___.', blank: 'ROS2/ROS 2', hint: 'Robot Operating System, zweite Generation.' },
+      { id: 'fb_rst2_3', sentence: 'Die ___ schätzt das lokal verfügbare Reibwert- bzw. Beschleunigungspotenzial der Strecke.', blank: 'GripMap/Grip Map', hint: 'Eine Karte über Streckenzellen.' },
+    ],
+  },
+
+  rst3: {
+    flashcards: [
+      { id: 'fc_rst3_14', front: 'Wie beeinflusst der Promoter die Reifeneigenschaften? Vergleiche F1 und WEC.', back: '**F1**: Der Promoter will verschiedene Mischungen und schnell abbauende Reifen. Unbegrenzte Mechanikerzahl → Reifenwechsel in 1,92 s → viele Boxenstopps, Grip-Unterschiede, mehr Überholmanöver („bessere Show").\n\n**Le Mans/WEC**: Der Veranstalter fordert Alltagsrelevanz und Nachhaltigkeit. Begrenzte Mechanikerzahl → Reifenwechsel 20–23 s → Reifen werden über MEHRERE Stints genutzt → Fokus auf Langlebigkeit; ohne Reifenwechsel ist der Zeitverlust geringer.' },
+      { id: 'fc_rst3_15', front: 'Welche Reifentypen gibt es in der F1 und wofür?', back: '• **P Zero Weiß (C1)**: Hochtemperaturstrecken mit abrasivem Asphalt und hohen Querkräften\n• **P Zero Gelb (C2–C4)**: vielseitig, Kompromiss aus Leistung und Haltbarkeit\n• **P Zero Rot (C5+C6)**: max. mechanischer Grip, schnelles Aufwärmen, kurze Einsatzdauer\n• **Intermediate**: bis 25 l Wasser/s, feuchter oder abtrocknender Asphalt\n• **Wet**: bis 65 l Wasser/s, verhindert Aquaplaning bei stehendem Wasser' },
+      { id: 'fc_rst3_16', front: 'Warum sind Rennreifen schwerer zu vermessen und zu modellieren als Straßenreifen?', back: '• Stärkeres Zusammenspiel zwischen Mechanik und Thermik\n• Großer Einfluss der Fahrbahnoberfläche (Makro-/Mikrorauigkeit)\n• Der Kontakt Reifen–Fahrbahn lässt sich am Prüfstand nicht realistisch abbilden\n• Die Temperaturabhängigkeit der Haftung wird nicht abgebildet → Modelle müssen über Skalierungsfaktoren angepasst werden' },
+    ],
+    fillblank: [
+      { id: 'fb_rst3_1', sentence: 'Die beiden Haftungsmechanismen des Reifens sind molekulare Adhäsion und ___.', blank: 'Hysterese', hint: 'Rauigkeitseffekt durch viskoelastisches Verhalten.' },
+      { id: 'fb_rst3_2', sentence: 'Der Reibwert µ_y nimmt mit steigender Radlast ab — das nennt man ___.', blank: 'Radlastdegressivität', hint: 'Deshalb will man einen tiefen Schwerpunkt.' },
+      { id: 'fb_rst3_3', sentence: 'Rennreifen werden generell mit ___ befüllt, weil die größeren Moleküle schlechter durch Gummi diffundieren.', blank: 'Stickstoff/N2', hint: 'Auch wegen des geringen Wasserdampfgehalts.' },
+      { id: 'fb_rst3_4', sentence: 'Das Rückstellmoment berechnet sich als M_z = F_y · ___.', blank: 'Reifennachlauf/Nachlaufstrecke/n_R', hint: 'Der Hebelarm, um den die Seitenkraft versetzt angreift.' },
+      { id: 'fb_rst3_5', sentence: 'Die Hysterese des Gummis erreicht ihr Maximum bei der ___temperatur.', blank: 'Glasübergangs/Glasübergangstemperatur', hint: 'T_g — dort ist der optimale Arbeitsbereich.' },
+    ],
+  },
+
+  rst4: {
+    fillblank: [
+      { id: 'fb_rst4_1', sentence: 'Der elektrische Antriebsstrang besteht aus Batterie, ___, E-Maschine und Getriebe.', blank: 'Inverter/Umrichter', hint: 'Er macht aus DC wieder AC.' },
+      { id: 'fb_rst4_2', sentence: 'Im Motorsport dominiert die ___ Synchronmaschine wegen hoher Effizienz und Leistungsdichte.', blank: 'permanenterregte/permanent erregte', hint: 'PSM.' },
+      { id: 'fb_rst4_3', sentence: 'Oberhalb der Nenndrehzahl arbeitet die E-Maschine im ___bereich, in dem ein negativer d-Strom eingeprägt wird.', blank: 'Feldschwäch/Feldschwächbereich/Feldschwächung', hint: 'Die Spannungsgrenze ist erreicht.' },
+      { id: 'fb_rst4_4', sentence: 'Ab 2026 entfällt in der F1-Power-Unit die ___.', blank: 'MGU-H', hint: 'Die am Turbolader.' },
+    ],
+  },
+
+  rst5: {
+    fillblank: [
+      { id: 'fb_rst5_1', sentence: 'Der Spalt bei mehrteiligen Flügeln führt energiereiche Luft von der Druckseite auf die ___seite.', blank: 'Unterdruck/Saug/Unterdruckseite', hint: 'Damit die Strömung bis zur Hinterkante anliegt.' },
+      { id: 'fb_rst5_2', sentence: 'Randwirbel an den Flügelenden erzeugen den sogenannten ___ Widerstand.', blank: 'induzierten/induzierter', hint: 'Er entsteht durch den Druckausgleich um die Flügelspitze.' },
+      { id: 'fb_rst5_3', sentence: 'Die Streckung eines Flügels berechnet sich als Spannweite geteilt durch ___.', blank: 'Tiefe/Flügeltiefe', hint: 'Die Sehnenlänge in Strömungsrichtung.' },
+      { id: 'fb_rst5_4', sentence: 'Bei NACA 2412 bedeutet die erste Ziffer eine Wölbung von ___ Prozent.', blank: '2', hint: 'Wölbung 2 %, Wölbungsposition 40 %, Dicke 12 %.' },
+    ],
+  },
+
+  rst6: {
+    flashcards: [
+      { id: 'fc_rst6_13', front: 'Nenne die Aerodynamik-Bauteile eines F1-Fahrzeugs — und sortiere sie nach Abtrieb bzw. Widerstand.', back: '**Bauteile:** Frontflügel (mit Flaps und Endplatten), Unterboden mit Venturi-Kanälen und Diffusor, Heckflügel (mit DRS), Bodywork/Engine Cover, Bremsbelüftung, Radaufhängungsverkleidungen, Halo, Räder.\n\n**Nach ABTRIEBSANTEIL:** Unterboden/Diffusor > Frontflügel > Heckflügel.\n**Nach WIDERSTAND:** die freistehenden RÄDER haben den größten Anteil am c_x, dann Heckflügel > Frontflügel > Unterboden.\n**Nach EFFIZIENZ (c_z/c_x):** Unterboden 8–10 > Frontflügel 4–6 > Heckflügel 2–2,4.' },
+      { id: 'fc_rst6_14', front: 'Was regelt das Reglement zur Gewichtsverteilung — und wie lässt sie sich noch ändern?', back: 'Seit 2014 ist die Gewichtsverteilung reglementiert; 2022: mindestens 44,5 % auf der VA und mindestens 54 % auf der HA (ohne Kraftstoff).\n\nSie bestimmt das gesamte Fahrzeugkonzept (Radstand, Tanklage, Getriebe, Hinterachse) und ist nachträglich nur in kleinem Rahmen änderbar — praktisch nur durch Verschieben von BALLAST (sofern man genug davon hat).' },
+      { id: 'fc_rst6_15', front: 'Was ändert sich mit der aktiven Aerodynamik ab 2026?', back: 'Front- und Heckflügel werden aktiv verstellbar (Anstellwinkel der Flaps):\n• **Corner Mode**: High Downforce für Kurvenfahrt und Bremsen\n• **Straight Mode**: Low Downforce für Topspeed und Energiereduzierung\n\nAufgabenteilung bleibt: Heckflügel bestimmt c_x und Topspeed, Frontflügel die Aerobalance. Dazu: Abtrieb −30 %, Widerstand −55 %, Radstand −200 mm, Breite −100 mm, Gewicht −30 kg, Override-Boost 0,5 MJ.' },
+      { id: 'fc_rst6_16', front: 'Wie wirkt sich Schräganströmung (Yaw) auf den Abtrieb aus?', back: 'Der Gesamtabtrieb FÄLLT mit zunehmendem Yaw-Winkel (Kurvenfahrt, Seitenwind) — in der Vorlesungsgrafik um bis zu ~15–20 % bei ±15°.\n\nGrund: Die seitliche „Abdichtung" des Venturi-Unterbodens durch Wirbelschleppen funktioniert bei Schräganströmung schlechter, Luft strömt seitlich ein und reduziert die Strömungsgeschwindigkeit im Kanal. Die Yaw-Sensitivität ist deshalb ein zentrales Bewertungskriterium beim Vergleich zweier Aeroentwicklungen.' },
+    ],
+    fillblank: [
+      { id: 'fb_rst6_1', sentence: 'Der Unterboden mit Diffusor arbeitet nach dem ___-Prinzip.', blank: 'Venturi', hint: 'Querschnittsverengung ⇒ hohe Geschwindigkeit ⇒ Unterdruck.' },
+      { id: 'fb_rst6_2', sentence: 'Die Aero-Effizienz ist definiert als das Verhältnis ___ zu Widerstand.', blank: 'Abtrieb/cz/c_z', hint: 'A_eff = c_z / c_x.' },
+      { id: 'fb_rst6_3', sentence: 'Den größten Einfluss auf den hohen c_x-Wert eines F1-Fahrzeugs haben die freistehenden ___.', blank: 'Räder/Reifen', hint: 'Deshalb werden sie ab 2026 schmaler.' },
+      { id: 'fb_rst6_4', sentence: 'Der ___flügel ist verantwortlich für die Aerobalance, der Heckflügel für c_x und Topspeed.', blank: 'Front', hint: 'Über den Anstellwinkel seiner Flaps.' },
+      { id: 'fb_rst6_5', sentence: 'Die Abtriebskraft wächst ___ mit der Geschwindigkeit, die nötige Leistung dagegen kubisch.', blank: 'quadratisch/mit v²', hint: 'F_z ∝ v².' },
+    ],
+  },
+
+  rst7: {
+    fillblank: [
+      { id: 'fb_rst7_1', sentence: 'Die Navier-Stokes-Gleichungen beschreiben die Erhaltung von Masse, Impuls und ___.', blank: 'Energie', hint: 'Die dritte Erhaltungsgröße.' },
+      { id: 'fb_rst7_2', sentence: 'Bei RANS entsteht durch die Mittelung ein unterbestimmtes Gleichungssystem — das sogenannte ___ Problem.', blank: 'Closure/Schließungs', hint: 'Gelöst durch semi-empirische Turbulenzmodelle.' },
+      { id: 'fb_rst7_3', sentence: 'Die drei grundsätzlichen Mesh-Typen sind Tet, Hex und ___.', blank: 'Poly/Polyeder', hint: 'Wenige Zellen bei guter Genauigkeit.' },
+      { id: 'fb_rst7_4', sentence: 'Für die erste Auslegung eines Rennfahrzeugs nutzt man ___-Simulationen.', blank: 'RANS', hint: 'Schnell genug für Design-Studien.' },
+    ],
+  },
+
+  rst8: {
+    fillblank: [
+      { id: 'fb_rst8_1', sentence: 'Wer früher als der Gegner stoppt, um mit frischen Reifen an ihm vorbeizukommen, fährt einen ___.', blank: 'Undercut', hint: 'Das Gegenteil heißt Overcut.' },
+      { id: 'fb_rst8_2', sentence: 'Unter Safety Car ist der Zeitverlust beim Boxenstopp ___.', blank: 'kleiner/geringer', hint: 'Weil alle langsamer fahren.' },
+      { id: 'fb_rst8_3', sentence: 'Eine rote Flagge bedeutet in der F1 einen ___ Reifenwechsel.', blank: 'freien/kostenlosen/free', hint: 'Free tyre change.' },
+      { id: 'fb_rst8_4', sentence: 'Der harte, haltbare Reifen heißt Prime, der weiche schnelle heißt ___.', blank: 'Option', hint: 'Höherer Peak, kürzere Lebensdauer.' },
+    ],
+  },
+
+  rst9: {
+    fillblank: [
+      { id: 'fb_rst9_1', sentence: 'Der Weg der Daten lautet: Sensor → Steuergerät → Übertragen/Speichern → Aufbereitung → ___.', blank: 'Visualisierung', hint: 'Die letzte Station.' },
+      { id: 'fb_rst9_2', sentence: 'Der wichtigste KPI im Rennsport ist die ___.', blank: 'Rundenzeit', hint: 'Alles bricht darauf herunter.' },
+      { id: 'fb_rst9_3', sentence: 'Als Fahrzeugnetzwerk ist der ___-Bus immer noch Standard.', blank: 'CAN', hint: 'Ethernet kommt vor allem bei E-Antrieben dazu.' },
+      { id: 'fb_rst9_4', sentence: 'Für Rundenvergleiche (Overlays) trägt man Signale besser ___basiert auf.', blank: 'weg/wegbasiert/streckenbasiert', hint: 'So lassen sich Brems- und Scheitelpunkte vergleichen.' },
+      { id: 'fb_rst9_5', sentence: 'Eigenfrequenzen und schädliche Schwingungen erkennt man mit einer ___.', blank: 'FFT/Frequenzanalyse', hint: 'Fast Fourier Transform.' },
+    ],
+  },
+
+  rst10: {
+    fillblank: [
+      { id: 'fb_rst10_1', sentence: 'Schwere Komponenten werden nahe des ___ angeordnet, um die Trägheit gering zu halten.', blank: 'Schwerpunkts/Schwerpunkt', hint: 'Vor allem um die Hochachse.' },
+      { id: 'fb_rst10_2', sentence: 'Gewichtsveränderliche Teile wie der ___ liegen im Schwerpunkt, damit sich die Balance nicht ändert.', blank: 'Tank/Kraftstofftank', hint: 'Er wird im Rennen leichter.' },
+      { id: 'fb_rst10_3', sentence: 'Beim Packaging hat die ___ oberste Priorität bei der Anordnung der Komponenten.', blank: 'Aerodynamik/Aero', hint: 'Die Grundform folgt ihr.' },
+    ],
+  },
+
+  rst11: {
+    flashcards: [
+      { id: 'fc_rst11_14', front: 'Welche Aufgaben hat der Antriebsstrang?', back: '• Anfahren ermöglichen\n• Drehzahlen übersetzen\n• Motormoment möglichst verlustfrei weiterleiten\n• Schalten / Leistungsfluss herstellen\n• Steuern des Getriebes\n• Achsantrieb\n• Drehzahlausgleich in der Kurvenfahrt\n• Sperrmöglichkeit für das Differential\n\n→ Entspricht dem Serienfahrzeug, nur mit anderen Anforderungen an Verschleißfestigkeit und Gewicht.' },
+      { id: 'fc_rst11_15', front: 'Wie unterscheidet sich die Kupplung im Rennfahrzeug?', back: 'Aufgabe und Grundfunktion sind identisch zum Serienfahrzeug. Aber: Die deutlich höhere Motorleistung erfordert entsprechende Komponenten; es zählt VERSCHLEISSFESTIGKEIT statt Fahrkomfort. Reicht eine Einscheibenkupplung nicht mehr, wird auf eine Mehrscheibenkupplung umgerüstet — Gewicht ist dabei entscheidend.' },
+      { id: 'fc_rst11_16', front: 'Nenne die Auslegungsziele der Fahrzeugdynamik eines Rennfahrzeugs (Vertikal/Quer/Längs).', back: '**Vertikal:** hoher aerodynamischer Abtrieb, geringe Radlastschwankung\n**Quer:** geringe Gierträgheit (v.a. um die Hochachse), Maximierung von a_y (Masse, Reifen, Aero), gutes transientes Verhalten\n**Längs:** hohe Motorleistung (niedriges kg/kW), hoher Übertragungswirkungsgrad, minimale Masse und optimale Gewichtsverteilung\n\nQuer über allem: maximale Steifigkeit von Rahmen und Radaufhängung, extrem tiefer Schwerpunkt, hohe Einstellbarkeit (Setup).' },
+      { id: 'fc_rst11_17', front: 'Wie wirkt sich Abtrieb auf die Querdynamik aus?', back: 'Die Schräglaufsteifigkeit der Reifen nimmt mit der abtriebsinduzierten Radlast zu, OHNE dass die Fahrzeugmasse steigt → das Fahrzeug wird mit zunehmender Geschwindigkeit AGILER und gleichzeitig stärker gedämpft.\n\nDer Abtrieb hängt aber vom dynamischen Bodenabstand ab → zusätzliche vertikaldynamisch relevante Kräfte; bei zu geringem Abstand Strömungsabriss = Bouncing.' },
+    ],
+    fillblank: [
+      { id: 'fb_rst11_1', sentence: 'Der Kammsche Kreis besagt, dass Längs- und Querkraft sich ___ Kraftpotenzial teilen.', blank: 'ein/dasselbe/ein gemeinsames', hint: 'Deshalb kann man nicht gleichzeitig maximal bremsen und lenken.' },
+      { id: 'fb_rst11_2', sentence: 'Ein Rennfahrzeug hat im Vergleich zum Serienfahrzeug eine ___ Aufbaueigenfrequenz.', blank: 'höhere/höher', hint: '3–5 Hz statt 1–1,5 Hz.' },
+      { id: 'fb_rst11_3', sentence: 'Die Lebensdauer eines Rennfahrzeugs beträgt ___ Jahre, die eines Serienfahrzeugs 10–15 Jahre.', blank: '1-3/1–3/1 bis 3', hint: 'Je nach Rennserie.' },
+      { id: 'fb_rst11_4', sentence: 'Ein Rennfahrzeug hat keinen ___, weil der Fahrer trainiert und mit 6-Punkt-Gurt fixiert ist.', blank: 'Airbag', hint: 'Stattdessen Monocoque, Käfig und Feuerlöschsystem.' },
+      { id: 'fb_rst11_5', sentence: 'Beim Design gilt für das Rennfahrzeug das Prinzip „form follows ___".', blank: 'function/Funktion', hint: 'FFF.' },
+    ],
+  },
+};
+
+// ── Zusammenführen mit dem bestehenden Modul ────────────────────────────────
+(() => {
+  const mod = MODULES.find(m => m.id === 'rennsport');
+  if (!mod) return;
+
+  const merge = (topic, key, arr) => {
+    if (!arr || !arr.length) return;
+    topic[key] = (topic[key] || []).concat(arr);
+  };
+
+  mod.topics.forEach(t => {
+    const extra = RST_EXTRA[t.id];
+    if (extra) Object.keys(extra).forEach(k => merge(t, k, extra[k]));
+    merge(t, 'sketch', RST_SKETCH[t.id]);
+    merge(t, 'calc', RST_CALC[t.id]);
+  });
+
+  RST_NEW_TOPICS.forEach(t => mod.topics.push(t));
+  mod.basics = RST_BASICS;
+})();
+
 // ── Flat lookup helpers ──────────────────────────────────────────────────────
 
 const DATA = (() => {
@@ -2805,7 +4210,7 @@ const DATA = (() => {
   MODULES.forEach(mod => {
     mod.topics.forEach(topic => {
       allTopics[topic.id] = topic;
-      ['flashcards','quiz','fillblank','open','guided'].forEach(type => {
+      ['flashcards','quiz','fillblank','open','guided','sketch','calc'].forEach(type => {
         (topic[type] || []).forEach(item => {
           allCards[item.id] = { ...item, topicId: topic.id, type };
         });
@@ -3227,6 +4632,8 @@ const Store = {
       ...(topic.flashcards||[]).map(c=>c.id),
       ...(topic.quiz||[]).map(c=>c.id),
       ...(topic.fillblank||[]).map(c=>c.id),
+      ...(topic.sketch||[]).map(c=>c.id),
+      ...(topic.calc||[]).map(c=>c.id),
       ...(topic.open||[]).map(c=>c.id),
     ];
     if (allIds.length === 0) return 0;
@@ -3254,8 +4661,8 @@ const Store = {
 };
 
 // ── Cross-module helpers ─────────────────────────────────────────────────────
-const MODE_TYPES = ['guided', 'flashcard', 'quiz', 'fillblank', 'open'];
-const MODE_LABELS = { guided: 'Lernpfad', flashcard: 'Karteikarten', quiz: 'Quiz', fillblank: 'Lückentext', open: 'Offene Fragen', basics: '📌 Basics' };
+const MODE_TYPES = ['guided', 'flashcard', 'quiz', 'fillblank', 'sketch', 'calc', 'open'];
+const MODE_LABELS = { guided: 'Lernpfad', flashcard: 'Karteikarten', quiz: 'Quiz', fillblank: 'Lückentext', sketch: '✏️ Skizzen', calc: '🧮 Rechnen', open: 'Offene Fragen', basics: '📌 Basics' };
 
 function getTopicItemIds(topic, type) {
   if (type) return (topic[type === 'flashcard' ? 'flashcards' : type] || []).map(c => c.id);
@@ -3263,6 +4670,8 @@ function getTopicItemIds(topic, type) {
     ...(topic.flashcards || []).map(c => c.id),
     ...(topic.quiz || []).map(c => c.id),
     ...(topic.fillblank || []).map(c => c.id),
+    ...(topic.sketch || []).map(c => c.id),
+    ...(topic.calc || []).map(c => c.id),
     ...(topic.open || []).map(c => c.id),
   ];
 }
@@ -3335,6 +4744,7 @@ function showScreen(id) {
 
   if (id === 'home')  renderHome();
   if (id === 'stats') renderStats();
+  if (id === 'plan')  renderPlan();
   if (id === 'topics' && !State.activeTopic) {
     if (!State.activeModule) State.activeModule = MODULES.find(m => !m.locked) || MODULES[0];
     document.getElementById('topicTitle').textContent = State.activeModule.name;
@@ -3723,6 +5133,12 @@ function startStudySession() {
     if (items.length === 0) items = shuffleArray([...quizItems]);
   } else if (mode === 'fillblank') {
     items = shuffleArray([...(topic.fillblank||[])]);
+  } else if (mode === 'sketch') {
+    const ids = SM2.sortForStudy((topic.sketch||[]).map(c=>c.id));
+    items = ids.map(id => DATA.getItem(id)).filter(Boolean);
+    if (items.length === 0) items = topic.sketch || [];
+  } else if (mode === 'calc') {
+    items = shuffleArray([...(topic.calc||[])]);
   } else if (mode === 'open') {
     items = topic.open || [];
   }
@@ -3732,7 +5148,8 @@ function startStudySession() {
     return;
   }
 
-  State.sessionItems = items;
+  // Über DATA normalisieren, damit jedes Item seine topicId kennt (Kategorie-Anzeige).
+  State.sessionItems = items.map(i => DATA.getItem(i.id) || i);
   State.sessionIndex = 0;
   State.sessionCorrect = 0;
   State.cardFlipped = false;
@@ -3742,6 +5159,12 @@ function startStudySession() {
   Store.updateStreak();
   showScreen('study');
   renderStudyItem();
+}
+
+/** Themenname eines Items — funktioniert auch in themenübergreifenden Sessions. */
+function itemTopicName(item) {
+  const t = item && item.topicId ? DATA.getTopic(item.topicId) : null;
+  return (t && t.name) || State.activeTopic?.name || '';
 }
 
 function updateStudyProgress() {
@@ -3770,6 +5193,8 @@ function renderStudyItem() {
   if (mode === 'flashcard') renderFlashcard(item);
   if (mode === 'quiz')      renderQuiz(item);
   if (mode === 'fillblank') renderFillBlank(item);
+  if (mode === 'sketch')    renderSketch(item);
+  if (mode === 'calc')      renderCalc(item);
   if (mode === 'open')      renderOpenQuestion(item);
 }
 
@@ -3975,7 +5400,7 @@ function renderFillBlank(item) {
   const el = document.getElementById('mode-fillblank');
   el.classList.remove('hidden');
 
-  document.getElementById('fillCategory').textContent = State.activeTopic?.name || '';
+  document.getElementById('fillCategory').textContent = itemTopicName(item);
 
   // Mark blank in sentence
   const parts = item.sentence.split('___');
@@ -4038,7 +5463,7 @@ function renderOpenQuestion(item) {
   const el = document.getElementById('mode-open');
   el.classList.remove('hidden');
 
-  document.getElementById('openCategory').textContent = State.activeTopic?.name || '';
+  document.getElementById('openCategory').textContent = itemTopicName(item);
   document.getElementById('openPoints').textContent = item.points || '';
   document.getElementById('openQuestion').innerHTML = formatCardText(item.question);
 
@@ -4074,12 +5499,239 @@ document.getElementById('selfRate').addEventListener('click', e => {
   renderStudyItem();
 });
 
+// ── Sketch Mode (Skizzen-Trainer) ────────────────────────────────────────────
+/**
+ * Zeichenaufgaben sind in dieser Klausur rund ein Fünftel der Punkte.
+ * Ablauf nach dem Generation-Effect: erst selbst skizzieren (Papier oder Canvas),
+ * dann Musterlösung + Bewertungs-Checkliste, dann ehrliche Selbsteinschätzung.
+ */
+const Sketchpad = {
+  canvas: null, ctx: null, drawing: false, strokes: [], current: null,
+
+  init() {
+    if (this.canvas) return;
+    this.canvas = document.getElementById('sketchCanvas');
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+
+    const pos = e => {
+      const r = this.canvas.getBoundingClientRect();
+      const p = e.touches ? e.touches[0] : e;
+      return { x: p.clientX - r.left, y: p.clientY - r.top };
+    };
+    const start = e => {
+      e.preventDefault();
+      this.drawing = true;
+      this.current = [pos(e)];
+      this.strokes.push(this.current);
+      const hint = document.getElementById('sketchCanvasHint');
+      if (hint) hint.style.opacity = '0';
+    };
+    const move = e => {
+      if (!this.drawing) return;
+      e.preventDefault();
+      this.current.push(pos(e));
+      this.redraw();
+    };
+    const end = () => { this.drawing = false; this.current = null; };
+
+    this.canvas.addEventListener('pointerdown', start);
+    this.canvas.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', end);
+    this.canvas.addEventListener('pointerleave', end);
+
+    document.getElementById('sketchClear').addEventListener('click', () => this.clear());
+    document.getElementById('sketchUndo').addEventListener('click', () => { this.strokes.pop(); this.redraw(); });
+    window.addEventListener('resize', () => { this.resize(); this.redraw(); });
+  },
+
+  resize() {
+    if (!this.canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
+    if (!w || !h) return;
+    this.canvas.width = w * dpr;
+    this.canvas.height = h * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  },
+
+  clear() {
+    this.strokes = [];
+    this.redraw();
+    const hint = document.getElementById('sketchCanvasHint');
+    if (hint) hint.style.opacity = '1';
+  },
+
+  redraw() {
+    if (!this.ctx) return;
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
+    this.ctx.clearRect(0, 0, w, h);
+    this.ctx.strokeStyle = '#64d2ff';
+    this.ctx.lineWidth = 2.2;
+    this.ctx.lineCap = 'round';
+    this.ctx.lineJoin = 'round';
+    this.strokes.forEach(s => {
+      if (s.length < 2) {
+        if (s.length === 1) { this.ctx.beginPath(); this.ctx.arc(s[0].x, s[0].y, 1.2, 0, 6.29); this.ctx.fillStyle = '#64d2ff'; this.ctx.fill(); }
+        return;
+      }
+      this.ctx.beginPath();
+      this.ctx.moveTo(s[0].x, s[0].y);
+      s.slice(1).forEach(p => this.ctx.lineTo(p.x, p.y));
+      this.ctx.stroke();
+    });
+  },
+};
+
+function renderSketch(item) {
+  const el = document.getElementById('mode-sketch');
+  el.classList.remove('hidden');
+
+  document.getElementById('sketchCategory').textContent = itemTopicName(item);
+  document.getElementById('sketchPoints').textContent = item.points || '';
+  document.getElementById('sketchPrompt').innerHTML = formatCardText(item.prompt);
+
+  const hintBtn = document.getElementById('sketchHint');
+  const hintTxt = document.getElementById('sketchHintText');
+  hintTxt.classList.add('hidden');
+  hintTxt.textContent = item.hint || '';
+  hintBtn.style.display = item.hint ? '' : 'none';
+
+  document.getElementById('sketchSolution').classList.add('hidden');
+  document.getElementById('sketchRate').classList.add('hidden');
+  document.getElementById('sketchReveal').classList.remove('hidden');
+
+  document.getElementById('sketchSolution').innerHTML = `
+    ${item.svg || ''}
+    <div class="sk-check-title">Das muss in der Skizze stehen</div>
+    <ul class="sk-check">${(item.checklist || []).map(c => `<li>${formatCardText(c)}</li>`).join('')}</ul>
+  `;
+
+  Sketchpad.init();
+  // Das Canvas ist erst nach dem Einblenden vermessbar.
+  requestAnimationFrame(() => { Sketchpad.resize(); Sketchpad.clear(); });
+}
+
+document.getElementById('sketchHint').addEventListener('click', () => {
+  document.getElementById('sketchHintText').classList.remove('hidden');
+});
+document.getElementById('sketchReveal').addEventListener('click', () => {
+  document.getElementById('sketchSolution').classList.remove('hidden');
+  document.getElementById('sketchRate').classList.remove('hidden');
+  document.getElementById('sketchReveal').classList.add('hidden');
+});
+document.getElementById('sketchRate').addEventListener('click', e => {
+  const btn = e.target.closest('.sr-btn');
+  if (!btn) return;
+  const val = parseInt(btn.dataset.val);
+  const item = State.sessionItems[State.sessionIndex];
+  const correct = val >= 1;
+  Store.markResult(item.id, correct);
+  SM2.review(item.id, val === 0 ? 0 : val === 1 ? 2 : 4);
+  Game.addXP(val === 2 ? 12 : val === 1 ? 6 : 2);
+  if (correct) State.sessionCorrect++;
+  State.sessionIndex++;
+  renderStudyItem();
+});
+
+// ── Calc Mode (Rechen-Trainer) ───────────────────────────────────────────────
+/**
+ * Jede Aufgabe wird mit frisch gewürfelten Zahlen gestellt — man kann das
+ * Ergebnis nicht auswendig lernen, sondern muss den Rechenweg wirklich können.
+ */
+let calcCurrentVars = null;
+
+function rollCalcVars(item) {
+  const v = {};
+  (item.vars || []).forEach(d => {
+    const steps = Math.max(0, Math.round((d.max - d.min) / d.step));
+    const raw = d.min + Math.floor(Math.random() * (steps + 1)) * d.step;
+    // Fließkomma-Artefakte vermeiden (0.1 + 0.2 …)
+    const decimals = (String(d.step).split('.')[1] || '').length;
+    v[d.k] = parseFloat(raw.toFixed(decimals));
+  });
+  return v;
+}
+
+function renderCalc(item) {
+  const el = document.getElementById('mode-calc');
+  el.classList.remove('hidden');
+
+  calcCurrentVars = rollCalcVars(item);
+  const v = calcCurrentVars;
+
+  document.getElementById('calcCategory').textContent = itemTopicName(item);
+  document.getElementById('calcPoints').textContent = item.points || '';
+  document.getElementById('calcTitle').textContent = item.title || 'Rechenaufgabe';
+
+  document.getElementById('calcGiven').innerHTML = (item.vars || []).map(d =>
+    `<div class="ca-given-row"><span class="gl">${escapeHtml(d.label)}</span><span class="gv">${fmtN(v[d.k], (String(d.step).split('.')[1] || '').length)} ${escapeHtml(d.unit === '–' ? '' : (d.unit || ''))}</span></div>`
+  ).join('');
+
+  document.getElementById('calcQuestion').innerHTML = formatCardText(item.ask(v));
+  document.getElementById('calcUnit').textContent = item.unit || '';
+
+  const input = document.getElementById('calcInput');
+  input.value = '';
+  input.disabled = false;
+
+  const fTxt = document.getElementById('calcFormulaText');
+  fTxt.classList.add('hidden');
+  fTxt.innerHTML = formatCardText(item.formula || '');
+
+  document.getElementById('calcFeedback').classList.add('hidden');
+  document.getElementById('calcSteps').classList.add('hidden');
+  document.getElementById('calcNext').classList.add('hidden');
+  document.getElementById('calcCheck').classList.remove('hidden');
+}
+
+function checkCalc() {
+  const item = State.sessionItems[State.sessionIndex];
+  const v = calcCurrentVars;
+  const expected = item.solve(v);
+  const raw = document.getElementById('calcInput').value.trim().replace(/\s/g, '').replace(',', '.');
+  const given = parseFloat(raw);
+
+  const tol = item.tol || 0.03;
+  const ok = isFinite(given) && Math.abs(given - expected) <= Math.max(Math.abs(expected) * tol, 1e-9);
+
+  const fb = document.getElementById('calcFeedback');
+  fb.className = 'ca-feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok
+    ? `✓ Richtig! Erwartet: <strong>${fmtN(expected, item.dec)} ${escapeHtml(item.unit || '')}</strong>${isFinite(given) ? ` · deine Antwort: ${fmtN(given, item.dec)}` : ''}`
+    : `✗ Nicht getroffen. Richtig wäre <strong>${fmtN(expected, item.dec)} ${escapeHtml(item.unit || '')}</strong> (Toleranz ±${Math.round(tol * 100)} %). Geh den Rechenweg unten durch.`;
+  fb.classList.remove('hidden');
+
+  const stepsEl = document.getElementById('calcSteps');
+  stepsEl.innerHTML = `<ol>${item.steps(v).map(s => `<li>${formatCardText(s)}</li>`).join('')}</ol>`;
+  stepsEl.classList.remove('hidden');
+
+  document.getElementById('calcInput').disabled = true;
+  document.getElementById('calcCheck').classList.add('hidden');
+  document.getElementById('calcNext').classList.remove('hidden');
+
+  Store.markResult(item.id, ok);
+  QuizSRS.record(item.id, ok);
+  Game.addXP(ok ? 14 : 3);
+  if (ok) State.sessionCorrect++;
+}
+
+document.getElementById('calcCheck').addEventListener('click', checkCalc);
+document.getElementById('calcInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkCalc(); });
+document.getElementById('calcFormula').addEventListener('click', () => {
+  document.getElementById('calcFormulaText').classList.remove('hidden');
+});
+document.getElementById('calcNext').addEventListener('click', () => {
+  State.sessionIndex++;
+  renderStudyItem();
+});
+
 // ── Session Complete ─────────────────────────────────────────────────────────
 function showSessionComplete() {
   const total = State.sessionItems.length;
   const correct = State.sessionCorrect;
   const pct = total > 0 ? Math.round((correct/total)*100) : 0;
-  const isGraded = State.activeMode !== 'guided' && State.activeMode !== 'open';
+  const isGraded = !['guided', 'open', 'sketch'].includes(State.activeMode);
   const wasExam = State.examMode;
   if (wasExam) stopExamTimer();
 
@@ -4308,6 +5960,416 @@ function renderStats() {
   });
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Lernplan — lernwissenschaftlich aufgebauter Countdown zur Klausur
+// ═══════════════════════════════════════════════════════════════════════════
+/**
+ * Der Plan folgt vier gut belegten Befunden der Lernforschung:
+ *  1. Testing Effect (Roediger & Karpicke): Abrufen schlägt Wiederlesen. Jede
+ *     Encoding-Einheit wird noch am selben Tag von einem Abruf gefolgt.
+ *  2. Spacing Effect (Cepeda et al.): Wiederholungen werden über Tage verteilt —
+ *     das übernimmt der SM-2-Algorithmus der Karteikarten und der Quiz-SRS.
+ *  3. Interleaving (Rohrer & Taylor): ab Phase 2 werden Themen bewusst gemischt,
+ *     weil die Klausur ebenfalls springt und man Aufgabentypen unterscheiden muss.
+ *  4. Desirable Difficulties (Bjork): erst zeichnen/rechnen, dann die Lösung
+ *     aufdecken — der Generierungsversuch macht die Rückmeldung wirksam.
+ */
+const Plan = {
+  KEY: 'rst_plan_v1',
+  DEFAULT_MODULE: 'rennsport',
+
+  load() {
+    try {
+      const d = JSON.parse(localStorage.getItem(this.KEY) || '{}');
+      return { examDate: d.examDate || '', minutes: d.minutes || 90, done: d.done || {}, moduleId: d.moduleId || this.DEFAULT_MODULE };
+    } catch { return { examDate: '', minutes: 90, done: {}, moduleId: this.DEFAULT_MODULE }; }
+  },
+  save(d) { try { localStorage.setItem(this.KEY, JSON.stringify(d)); } catch {} },
+
+  daysLeft(examDate) {
+    if (!examDate) return null;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const exam = new Date(examDate + 'T00:00:00');
+    return Math.round((exam - today) / 86400000);
+  },
+
+  /** Aufteilung der verfügbaren Tage auf die drei Phasen. */
+  splitPhases(days) {
+    if (days <= 1) return [1, 0, 0];
+    if (days === 2) return [1, 0, 1];
+    if (days === 3) return [1, 1, 1];
+    let a = Math.max(1, Math.round(days * 0.4));
+    let c = Math.max(1, Math.round(days * 0.25));
+    let b = days - a - c;
+    if (b < 1) { b = 1; a = days - b - c; }
+    return [a, b, c];
+  },
+
+  build(module, days, minutes) {
+    const topics = module.topics.slice().sort((a, b) => (b.examWeight || 0) - (a.examWeight || 0));
+    let [nA, nB, nC] = this.splitPhases(days);
+    // Nie mehr Aufbautage als Themen — sonst bliebe ein Tag ohne Stoff.
+    if (nA > topics.length) { nB += nA - topics.length; nA = topics.length; }
+    const plan = [];
+    let dayNo = 0;
+
+    const has = (t, mode) => getTopicItemIds(t, mode).length > 0;
+
+    // ── Phase 1 · Aufbau: neues Thema sofort abrufen ──────────────────────
+    // Gleichmäßig aufteilen, damit kein Aufbautag leer ausgeht.
+    const remaining = topics.slice();
+    const chunks = [];
+    for (let i = 0; i < nA; i++) chunks.push(remaining.splice(0, Math.ceil(remaining.length / (nA - i))));
+
+    for (let i = 0; i < nA; i++) {
+      dayNo++;
+      const chunk = chunks[i];
+      const tasks = [];
+      if (i === 0) tasks.push({ mode: 'basics', label: 'Formelsammlung & Begriffe einmal komplett überfliegen', meta: 'Orientierung — du musst nichts behalten, nur wissen, was es gibt', min: 10 });
+      chunk.forEach(t => {
+        if (has(t, 'guided')) tasks.push({ mode: 'guided', topicId: t.id, label: `Lernpfad: ${t.name}`, meta: `${t.icon} Encoding · ~${t.examWeight} % der Klausur`, min: 12 });
+        if (has(t, 'quiz')) tasks.push({ mode: 'quiz', topicId: t.id, label: `Sofort-Abruf: Quiz ${t.name}`, meta: 'Testing Effect — direkt nach dem Lesen abrufen, nicht erst morgen', min: 8 });
+        if (has(t, 'flashcard')) tasks.push({ mode: 'flashcard', topicId: t.id, label: `Karteikarten anlegen: ${t.name}`, meta: 'startet die SM-2-Wiederholungskette', min: 8 });
+      });
+      if (i > 0) tasks.unshift({ mode: 'flashcard', label: 'Warm-up: fällige Karten aus den Vortagen', meta: 'Spacing — 5 Minuten, bevor Neues dazukommt', min: 6, mixed: true });
+      plan.push({ day: dayNo, phase: 0, title: `Aufbau ${i + 1}/${nA}`, sub: chunk.map(t => t.name).join(' · '), tasks });
+    }
+
+    // ── Phase 2 · Verankern: interleaved, alle Aufgabenformate ────────────
+    const rotations = [
+      { mode: 'sketch', label: 'Skizzen-Trainer (gemischt)', meta: 'Zeichenaufgaben sind rund ein Fünftel der Klausurpunkte' },
+      { mode: 'calc', label: 'Rechen-Trainer (gemischt)', meta: 'jedes Mal neue Zahlen — der Rechenweg muss sitzen' },
+      { mode: 'open', label: 'Offene Fragen frei formulieren', meta: 'Antwort erst aufschreiben, dann Musterlösung' },
+      { mode: 'fillblank', label: 'Lückentext (gemischt)', meta: 'schneller Abruf von Fachbegriffen' },
+    ];
+    for (let i = 0; i < nB; i++) {
+      dayNo++;
+      const g1 = topics[(i * 3) % topics.length];
+      const g2 = topics[(i * 3 + 1) % topics.length];
+      const g3 = topics[(i * 3 + 2) % topics.length];
+      const rot = rotations[i % rotations.length];
+      const rot2 = rotations[(i + 2) % rotations.length];
+      plan.push({
+        day: dayNo, phase: 1, title: `Verankern ${i + 1}/${nB}`,
+        sub: `Interleaving: ${g1.name} × ${g2.name} × ${g3.name}`,
+        tasks: [
+          { mode: 'flashcard', label: 'Alle fälligen Karteikarten', meta: 'Spacing — der SM-2-Algorithmus entscheidet, was heute dran ist', min: 15, mixed: true },
+          { mode: 'quiz', label: `Gemischtes Quiz: ${g1.name}, ${g2.name}, ${g3.name}`, meta: 'Interleaving — Themen bewusst durchmischen statt blocken', min: 15, mixed: true, topicIds: [g1.id, g2.id, g3.id] },
+          { mode: rot.mode, label: rot.label, meta: rot.meta, min: 20, mixed: true },
+          { mode: rot2.mode, label: rot2.label, meta: rot2.meta, min: 15, mixed: true },
+          { mode: 'basics', label: 'Blurting: Formelsammlung zuklappen und aus dem Kopf aufschreiben', meta: 'Free Recall — erst danach nachschlagen und Lücken markieren', min: 10 },
+        ],
+      });
+    }
+
+    // ── Phase 3 · Prüfungsreife: Simulation unter Zeitdruck ───────────────
+    for (let i = 0; i < nC; i++) {
+      dayNo++;
+      const last = i === nC - 1;
+      plan.push({
+        day: dayNo, phase: 2, title: last ? 'Tag vor der Klausur' : `Prüfungsreife ${i + 1}/${nC}`,
+        sub: last ? 'Nur noch abrufen, nichts Neues mehr anfangen' : 'Klausurbedingungen simulieren',
+        tasks: last ? [
+          { mode: 'exam', label: 'Eine letzte Klausur-Simulation', meta: 'Vertrauen aufbauen, nicht mehr optimieren', min: 20 },
+          { mode: 'flashcard', label: 'Fällige Karten leeren', meta: 'die letzte Wiederholung liegt idealerweise am Vortag', min: 15, mixed: true },
+          { mode: 'basics', label: 'Zahlen & Formeln ein letztes Mal durchgehen', meta: 'g-Werte, c-Werte, Aero-Effizienzen, F1-Kennzahlen', min: 15 },
+          { mode: 'sketch', label: 'Alle Skizzen einmal aus dem Kopf', meta: 'Kammscher Kreis, Ideallinie, Pacejka, Zugkraft, Push-/Pullrod', min: 20, mixed: true },
+        ] : [
+          { mode: 'exam', label: 'Klausur-Simulation mit Countdown', meta: '20 Fragen, Note am Ende — unter Zeitdruck üben', min: 20 },
+          { mode: 'quiz', label: 'Schwachstellen: falsch beantwortete Fragen', meta: 'der Quiz-SRS legt sie automatisch nach vorn', min: 15, mixed: true },
+          { mode: 'open', label: 'Offene Altklausurfragen im Zeitlimit', meta: 'stichwortartig wie in der Klausur, mit Punkteverteilung', min: 20, mixed: true },
+          { mode: 'sketch', label: 'Skizzen aus dem Kopf', meta: 'zuerst zeichnen, dann Checkliste abhaken', min: 15, mixed: true },
+          { mode: 'calc', label: 'Rechenaufgaben ohne Formelblatt', meta: 'Formeln müssen aus dem Gedächtnis kommen', min: 15, mixed: true },
+        ],
+      });
+    }
+
+    // Tagesbudget respektieren: was nicht mehr reinpasst, wird als optional markiert.
+    plan.forEach(d => {
+      let acc = 0;
+      d.tasks.forEach(t => { acc += t.min; t.optional = acc > minutes; });
+      d.total = acc;
+    });
+    return plan;
+  },
+};
+
+const PLAN_PHASES = [
+  { name: 'Aufbau', color: '#0a84ff', desc: 'Jedes Thema einmal verstehen — und noch am selben Tag abrufen.' },
+  { name: 'Verankern', color: '#bf5af2', desc: 'Gemischte Abrufsessions über alle Themen und Aufgabenformate.' },
+  { name: 'Prüfungsreife', color: '#30d158', desc: 'Simulation unter Zeitdruck, gezielt Schwachstellen schließen.' },
+];
+
+const PLAN_METHODS = [
+  { icon: '🔁', name: 'Retrieval Practice (Testing Effect)', text: 'Aktives Abrufen verankert Wissen deutlich stärker als erneutes Lesen. Deshalb folgt in Phase 1 auf jeden Lernpfad sofort ein Quiz zum selben Thema.' },
+  { icon: '📆', name: 'Spacing Effect', text: 'Wiederholungen werden über Tage verteilt statt gebündelt. Karteikarten laufen über SM-2, Quizfragen über einen eigenen Fehler-SRS — beide melden sich von selbst, wenn etwas fällig ist.' },
+  { icon: '🔀', name: 'Interleaving', text: 'Ab Phase 2 werden Themen bewusst gemischt. Das fühlt sich schwerer an und ist genau deshalb wirksamer — die Klausur springt ebenfalls zwischen Reifen, Aero, Antrieb und Reglement.' },
+  { icon: '✍️', name: 'Generation Effect', text: 'Im Skizzen- und Rechen-Trainer zeichnest bzw. rechnest du erst selbst und deckst danach Musterlösung und Bewertungs-Checkliste auf. Der Versuch vorher macht die Rückmeldung wirksam.' },
+  { icon: '🗣️', name: 'Elaboration & Blurting', text: 'Bei offenen Fragen formulierst du frei aus dem Kopf, bei „Blurting" schreibst du die Formelsammlung aus dem Gedächtnis auf. Beides deckt Scheinwissen auf, das beim Lesen unsichtbar bleibt.' },
+  { icon: '⏱️', name: 'Prüfungsnahes Üben', text: 'Die Klausur-Simulation läuft mit Countdown und Notenspiegel. Wer unter Zeitdruck geübt hat, verliert im Ernstfall weniger Punkte durch Tempo-Fehler.' },
+];
+
+function renderPlan() {
+  const el = document.getElementById('planContent');
+  const st = Plan.load();
+  const module = MODULES.find(m => m.id === st.moduleId) || MODULES.find(m => !m.locked);
+  const left = Plan.daysLeft(st.examDate);
+
+  const setupHtml = `
+    <div class="plan-card">
+      <h3>Deine Klausur</h3>
+      <div class="plan-setup-row">
+        <div class="plan-field">
+          <label for="planExamDate">Klausurtermin</label>
+          <input type="date" id="planExamDate" value="${escapeHtml(st.examDate)}"/>
+        </div>
+        <div class="plan-field">
+          <label for="planMinutes">Zeit pro Tag</label>
+          <select id="planMinutes">
+            ${[45, 60, 90, 120, 180].map(m => `<option value="${m}" ${m === st.minutes ? 'selected' : ''}>${m} Minuten</option>`).join('')}
+          </select>
+        </div>
+        <div class="plan-field">
+          <label for="planModule">Modul</label>
+          <select id="planModule">
+            ${MODULES.filter(m => !m.locked).map(m => `<option value="${m.id}" ${m.id === st.moduleId ? 'selected' : ''}>${m.icon} ${escapeHtml(m.name)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>`;
+
+  if (left === null || left < 0) {
+    el.innerHTML = setupHtml + `
+      <div class="plan-card">
+        <div class="plan-hero">
+          <div style="font-size:38px;">🗓️</div>
+          <div class="plan-hero-txt">Trag oben deinen Klausurtermin ein — daraus baue ich einen Countdown-Plan,
+            der jedes Thema abdeckt und die Wiederholungen wissenschaftlich sinnvoll verteilt.</div>
+        </div>
+      </div>` + renderPlanMethods();
+    wirePlanSetup();
+    return;
+  }
+
+  const days = Math.max(1, Math.min(left, 30));
+  const plan = Plan.build(module, days, st.minutes);
+  const [nA, nB, nC] = Plan.splitPhases(days);
+
+  const allTaskKeys = plan.flatMap(d => d.tasks.map((t, i) => `d${d.day}_t${i}`));
+  const doneCount = allTaskKeys.filter(k => st.done[k]).length;
+  const pct = allTaskKeys.length ? Math.round((doneCount / allTaskKeys.length) * 100) : 0;
+
+  // Der aktuelle Tag ist der erste, der noch nicht komplett abgehakt ist.
+  let todayNo = plan.length;
+  for (const d of plan) {
+    const keys = d.tasks.map((t, i) => `d${d.day}_t${i}`);
+    if (!keys.every(k => st.done[k])) { todayNo = d.day; break; }
+  }
+
+  const daysHtml = plan.map(d => {
+    const ph = PLAN_PHASES[d.phase];
+    const keys = d.tasks.map((t, i) => `d${d.day}_t${i}`);
+    const dn = keys.filter(k => st.done[k]).length;
+    const allDone = dn === keys.length;
+    const isToday = d.day === todayNo;
+    const dateLabel = (() => {
+      const dt = new Date(); dt.setHours(0, 0, 0, 0);
+      dt.setDate(dt.getDate() + (d.day - 1));
+      return dt.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+    })();
+
+    return `
+      <div class="plan-day ${isToday ? 'today open' : ''} ${allDone ? 'done' : ''}" data-day="${d.day}">
+        <div class="plan-day-head">
+          <div class="pd-badge" style="background:${ph.color}22;color:${ph.color};border:1px solid ${ph.color}55;">
+            <div>T${d.day}</div>
+          </div>
+          <div class="pd-title">
+            <div class="pd-name">${escapeHtml(d.title)}${allDone ? ' ✓' : ''}</div>
+            <div class="pd-sub">${dateLabel} · ${escapeHtml(d.sub)} · ~${d.total} min</div>
+          </div>
+          <div class="pd-count">${dn}/${keys.length}</div>
+          <div class="pd-chev">›</div>
+        </div>
+        <div class="plan-day-body">
+          ${d.tasks.map((t, i) => {
+            const key = `d${d.day}_t${i}`;
+            const isDone = !!st.done[key];
+            return `
+              <div class="plan-task ${isDone ? 'done' : ''}">
+                <div class="pt-check ${isDone ? 'checked' : ''}" data-key="${key}">✓</div>
+                <div class="pt-body">
+                  <div class="pt-label">${escapeHtml(t.label)}${t.optional ? ' <span style="color:var(--text-faint);font-size:11px;">(optional)</span>' : ''}</div>
+                  <div class="pt-meta">${escapeHtml(t.meta)} · ~${t.min} min</div>
+                </div>
+                <button class="pt-go" data-day="${d.day}" data-task="${i}">Los ›</button>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = setupHtml + `
+    <div class="plan-card">
+      <div class="plan-hero">
+        <div class="plan-hero-num">${left}</div>
+        <div class="plan-hero-txt">
+          <strong style="color:var(--text)">${left === 1 ? 'Tag' : 'Tage'} bis zur Klausur</strong><br>
+          ${module.icon} ${escapeHtml(module.name)} · ${st.minutes} min/Tag · ${plan.length}-Tage-Plan${left > 30 ? ' (die letzten 30 Tage zählen)' : ''}
+        </div>
+      </div>
+      <div class="plan-phase-bar">
+        <div class="plan-phase-seg" style="flex:${nA};background:${PLAN_PHASES[0].color}"></div>
+        ${nB > 0 ? `<div class="plan-phase-seg" style="flex:${nB};background:${PLAN_PHASES[1].color}"></div>` : ''}
+        ${nC > 0 ? `<div class="plan-phase-seg" style="flex:${nC};background:${PLAN_PHASES[2].color}"></div>` : ''}
+      </div>
+      <div class="plan-legend">
+        ${PLAN_PHASES.map((p, i) => ((i === 0 ? nA : i === 1 ? nB : nC) > 0
+          ? `<span><span class="plan-dot" style="background:${p.color}"></span>${p.name} (${i === 0 ? nA : i === 1 ? nB : nC} ${(i === 0 ? nA : i === 1 ? nB : nC) === 1 ? 'Tag' : 'Tage'})</span>` : '')).join('')}
+      </div>
+      <div class="xp-bar-track" style="margin-top:14px;"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+      <div class="xp-bar-label"><span>${doneCount} / ${allTaskKeys.length} Einheiten erledigt</span><span>${pct}%</span></div>
+    </div>
+
+    <div class="plan-card">
+      <h3>Dein Countdown</h3>
+      ${daysHtml}
+    </div>
+
+    ${renderPlanMethods()}
+
+    <div class="plan-card">
+      <h3>Plan zurücksetzen</h3>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">Setzt nur die Häkchen zurück, nicht deinen Lernfortschritt.</p>
+      <button class="btn-secondary" id="btnPlanReset" style="width:100%">Häkchen zurücksetzen</button>
+    </div>`;
+
+  wirePlanSetup();
+
+  el.querySelectorAll('.plan-day-head').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+  });
+  el.querySelectorAll('.pt-check').forEach(c => {
+    c.addEventListener('click', e => {
+      e.stopPropagation();
+      const s = Plan.load();
+      const k = c.dataset.key;
+      if (s.done[k]) delete s.done[k]; else s.done[k] = true;
+      Plan.save(s);
+      renderPlan();
+    });
+  });
+  el.querySelectorAll('.pt-go').forEach(b => {
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      const d = plan.find(x => x.day === parseInt(b.dataset.day));
+      if (!d) return;
+      startPlanTask(module, d.tasks[parseInt(b.dataset.task)]);
+    });
+  });
+  const rst = document.getElementById('btnPlanReset');
+  if (rst) rst.addEventListener('click', () => {
+    const s = Plan.load(); s.done = {}; Plan.save(s); renderPlan();
+  });
+}
+
+function renderPlanMethods() {
+  return `
+    <div class="plan-card">
+      <h3>Warum der Plan so aussieht</h3>
+      ${PLAN_METHODS.map(m => `
+        <div class="plan-method">
+          <div class="pm-icon">${m.icon}</div>
+          <div>
+            <div class="pm-name">${escapeHtml(m.name)}</div>
+            <div class="pm-text">${escapeHtml(m.text)}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function wirePlanSetup() {
+  const dateEl = document.getElementById('planExamDate');
+  const minEl = document.getElementById('planMinutes');
+  const modEl = document.getElementById('planModule');
+  if (dateEl) dateEl.addEventListener('change', () => { const s = Plan.load(); s.examDate = dateEl.value; Plan.save(s); renderPlan(); });
+  if (minEl) minEl.addEventListener('change', () => { const s = Plan.load(); s.minutes = parseInt(minEl.value); Plan.save(s); renderPlan(); });
+  if (modEl) modEl.addEventListener('change', () => { const s = Plan.load(); s.moduleId = modEl.value; s.done = {}; Plan.save(s); renderPlan(); });
+}
+
+/** Startet die zu einer Plan-Aufgabe passende Session. */
+function startPlanTask(module, task) {
+  if (!task) return;
+  State.activeModule = module;
+
+  if (task.mode === 'exam') { startExamSession(module); return; }
+
+  if (task.mode === 'basics') {
+    State.activeTopic = null;
+    State.activeMode = 'basics';
+    document.getElementById('topicTitle').textContent = module.name;
+    renderModePills();
+    renderTopicList();
+    showScreen('topics');
+    return;
+  }
+
+  if (task.topicId) {
+    const t = DATA.getTopic(task.topicId);
+    if (!t) return;
+    State.activeTopic = t;
+    State.activeMode = task.mode;
+    startStudySession();
+    return;
+  }
+
+  startMixedSession(module, task.mode, task.topicIds);
+}
+
+/**
+ * Themenübergreifende Session — das Herzstück des Interleavings.
+ * Sammelt alle Items eines Modus über die gewählten Themen und sortiert sie
+ * nach Dringlichkeit (SM-2 bzw. Quiz-SRS), statt sie thematisch zu blocken.
+ */
+const MIXED_SESSION_SIZE = 20;
+
+function startMixedSession(module, mode, topicIds) {
+  const topics = (module.topics || []).filter(t => !topicIds || topicIds.includes(t.id));
+  let ids = topics.flatMap(t => getTopicItemIds(t, mode));
+  if (ids.length === 0) {
+    alert('Für diesen Modus gibt es in diesem Modul noch keine Inhalte.');
+    return;
+  }
+
+  if (mode === 'flashcard' || mode === 'sketch') {
+    ids = SM2.sortForStudy(ids);
+  } else if (mode === 'quiz' || mode === 'calc') {
+    ids = QuizSRS.buildSession(ids);
+    if (!ids.length) ids = shuffleArray(topics.flatMap(t => getTopicItemIds(t, mode)));
+  } else {
+    ids = shuffleArray(ids);
+  }
+
+  const items = ids.slice(0, MIXED_SESSION_SIZE).map(id => DATA.getItem(id)).filter(Boolean);
+  if (items.length === 0) return;
+
+  State.activeModule = module;
+  State.activeTopic = null;
+  State.activeMode = mode;
+  State.examMode = false;
+  stopExamTimer();
+  State.sessionItems = items;
+  State.sessionIndex = 0;
+  State.sessionCorrect = 0;
+  State.cardFlipped = false;
+  State.combo = 0;
+  State.bestCombo = 0;
+
+  Store.updateStreak();
+  showScreen('study');
+  renderStudyItem();
+}
+
 // ── Navigation Wiring ────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -4321,6 +6383,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 document.getElementById('btnBackHome').addEventListener('click', () => showScreen('home'));
 document.getElementById('btnBackTopics').addEventListener('click', () => { stopExamTimer(); State.examMode = false; showScreen('topics'); });
 document.getElementById('btnBackStats').addEventListener('click', () => showScreen('home'));
+document.getElementById('btnBackPlan').addEventListener('click', () => showScreen('home'));
 document.getElementById('btnEndSession').addEventListener('click', () => { stopExamTimer(); State.examMode = false; showScreen('topics'); });
 
 document.getElementById('btnQuickStudy').addEventListener('click', () => {
