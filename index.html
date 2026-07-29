@@ -573,6 +573,26 @@ body::before {
 .basics-item .formula-vars { margin-top: 8px; }
 .basics-item .bi-text .rt p { margin-bottom: 0.5em; }
 
+/* ─── Altklausuren-Archiv ────────────────────────────────────────────────── */
+.examq-item { padding: 13px 0; }
+.examq-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 7px; }
+.examq-src {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
+  color: var(--text-faint); background: rgba(255,255,255,0.05); border: 1px solid var(--hairline);
+  border-radius: 999px; padding: 3px 9px;
+}
+.examq-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+  color: var(--purple); background: rgba(191,90,242,0.14); border: 1px solid rgba(191,90,242,0.3);
+  border-radius: 999px; padding: 3px 9px;
+}
+.examq-q { font-size: 14.5px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+.examq-fig {
+  margin: 8px 0; padding: 8px; background: rgba(0,0,0,0.22); border-radius: 12px;
+}
+.examq-fig .sk-svg { background: transparent; padding: 0; }
+.examq-item .bi-text .formula-block { font-size: 15px; padding: 10px 12px; margin: 7px 0; line-height: 1.75; }
+
 .topic-item-empty { opacity: 0.4; cursor: default; }
 .topic-item-empty:active { transform: none; }
 .ti-deck-link { display: inline-block; margin-top: 9px; font-size: 11.5px; font-weight: 600; color: var(--cyan); text-decoration: none; }
@@ -3071,7 +3091,7 @@ const MODULES = [
         ],
         open: [
           { id: 'op_rst8_1', points: '4 Pkt.', question: 'Skizziere/beschreibe die Reifenperformance über die Runden mit allen Phasen.', answer: '• Anwärmphase (1–n Runden) bis zum Temperaturfenster (1).\n• Peak Performance (Quali-Niveau), danach Abfall auf stabiles Niveau (1).\n• Stabiles Verhalten → geringer Abbau (konstanter kleiner Verlust) (1).\n• Starker Abbau (Boxenstopp!) → Reifen komplett am Ende (kaum Grip) (1).' },
-          { id: 'op_rst8_2', points: '5 Pkt.', question: 'Rechenaufgabe: Ein Boxenstopp kostet 25 s. Frische Reifen sind 0,8 s/Runde schneller. Nach wie vielen Runden hat sich der Stopp amortisiert? Was ändert sich unter Safety Car (Zeitverlust nur 12 s)?', answer: '• Break-even: Der einmalige Zeitverlust muss durch den Rundenvorteil aufgeholt werden.\n$$N >= \\frac{t_{Verlust}}{Δt_{Runde}}$$\n• Normalfall (2):\n$$N >= \\frac{25 s}{0,8 s} = 31,25$$\nAlso ab Runde 32 nach dem Stopp ist man in Summe schneller.\n• Unter Safety Car (2):\n$$N >= \\frac{12 s}{0,8 s} = 15$$\nAmortisation schon nach 15 Runden.\n• Folgerung: Unter SC/VSC ist der Stopp deutlich „billiger“, weil das ganze Feld langsam fährt — das ist das bevorzugte Stopp-Fenster (1).' },
+          { id: 'op_rst8_2', points: '5 Pkt.', question: 'Rechenaufgabe: Ein Boxenstopp kostet 25 s. Frische Reifen sind 0,8 s/Runde schneller. Nach wie vielen Runden hat sich der Stopp amortisiert? Was ändert sich unter Safety Car (Zeitverlust nur 12 s)?', answer: '• Break-even: Der einmalige Zeitverlust muss durch den Rundenvorteil aufgeholt werden.\n$$N >= \\frac{t_Verlust}{Δt_Runde}$$\n• Normalfall (2):\n$$N >= \\frac{25 s}{0,8 s} = 31,25$$\nAlso ab Runde 32 nach dem Stopp ist man in Summe schneller.\n• Unter Safety Car (2):\n$$N >= \\frac{12 s}{0,8 s} = 15$$\nAmortisation schon nach 15 Runden.\n• Folgerung: Unter SC/VSC ist der Stopp deutlich „billiger“, weil das ganze Feld langsam fährt — das ist das bevorzugte Stopp-Fenster (1).' },
           { id: 'op_rst8_3', points: '4 Pkt.', question: 'Erkläre Undercut und Overcut und nenne je eine Situation, in der sie funktionieren.', answer: '• Undercut: früher stoppen, auf frischen Reifen schnelle Runden fahren; funktioniert, wenn frische Reifen sofort Zeit bringen und freie Strecke da ist (2).\n• Overcut: später stoppen; funktioniert, wenn der Gegner nach dem Stopp im Verkehr steckt oder seine Reifen lange zum Anwärmen brauchen (2).' },
         ],
       },
@@ -3446,6 +3466,190 @@ const RST_BASICS = [
       { term: 'KPI / Lap Stats', text: '• **KPI** — Herunterbrechen der Performance auf wenige Metriken; wichtigster KPI ist die **Rundenzeit**\n• **Lap Stats** — Minimum, Maximum, Mittelwert und Integral wichtiger Parameter je Runde zur Fahrzeugüberwachung' },
       { term: 'Global vs. Local Planning', text: '• **Global** — statische Umgebung, offline, einmalige Berechnung der schnellsten Trajektorie um die ganze Strecke (Laufzeit 5 – 10 min)\n• **Local** — dynamische Umgebung, online in Echtzeit, sichere Trajektorie vom Ego-Fahrzeug bis zum Planungshorizont' },
       { term: 'GripMap / Tube MPC', text: '• **GripMap** — Karte lokaler Reibwert-Skalierungen zur Schätzung des verfügbaren Beschleunigungspotenzials\n• **Tube MPC** — robuster Regler mit Punktmassenmodell und Aktordynamik, 100 Hz, hält Constraints trotz Störungen ein' },
+    ],
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Altklausuren-Archiv — jede Frage aus den Gedächtnisprotokollen (WS16/17/18,
+// WS24/25) und dem Fragenkatalog, dedupliziert und kurz beantwortet.
+// Rechenaufgaben zeigen den Lösungsweg, Zeichenaufgaben das fertige Diagramm
+// (wiederverwendet aus dem Skizzen-Trainer über figFrom).
+// ═══════════════════════════════════════════════════════════════════════════
+const RST_EXAM_ARCHIVE = [
+  {
+    icon: '🏛️', group: 'Reglement, Behörde & Hersteller',
+    items: [
+      { q: 'Nenne die Aufgaben der Motorsportbehörde.', src: 'WS16 · WS17 · WS18 · Fragenkatalog',
+        a: 'Reglements erstellen & durchsetzen · Sicherheit gewährleisten · Homologation (Fahrzeuge & Strecken) · Überwachung des Wettbewerbs · Ausschreibung von (Welt-)Meisterschaften.' },
+      { q: 'Welche Organisation darf Weltmeisterschaften ausschreiben?', src: 'Fragenkatalog',
+        a: 'Nur die **FIA** — der internationale Dachverband aller nationalen Automobilclubs.' },
+      { q: 'Wie wird das Reglement unterteilt?', src: 'WS24/25 · Fragenkatalog',
+        a: '• **Homologation Regulations** — Rahmen für den Bau\n• **Technisches Reglement** — Konfiguration, um starten zu dürfen\n• **Sportliches Reglement** — Spielregeln (Strafen, Boxenstopps, Flaggen)' },
+      { q: 'Nenne die 3 Ziele des Reglements.', src: 'WS24/25',
+        a: '**Fairer Wettbewerb** · **Sicherheit** · **Kostenkontrolle** (Budget Cap, Einheitsteile, Testlimits).' },
+      { q: '2 verschiedene Autoarten den Motorsport-Kategorien zuordnen (Formel und Prototyp).', src: 'WS24/25',
+        a: '**Formel** = offene, freistehende Räder, Monoposto (z.B. F1). **Prototyp** = geschlossen, Zweisitzer (z.B. LMDh, LMP2/3).' },
+      { q: 'Nenne 3 Vorteile/Nachteile für einen Hersteller, am Motorsport teilzunehmen.', src: 'WS24/25',
+        a: '**Pro:** Marketing/Markenimage · Technologietransfer & Innovations-Testfeld · Relevanz für Zukunftsthemen (E-Mobilität, autonomes Fahren).\n**Contra:** hohe Kosten · Reputationsrisiko · direkte Bauteilübernahme selten (zu unterschiedliche Anforderungen).' },
+      { q: 'Aus welchen Elementen wird das Activation Framework zusammengestellt?', src: 'WS16 · Fragenkatalog',
+        a: '⚠️ Dieser Begriff kommt in **keinem** der elf aktuellen Foliensätze vor — er stammt aus einer inzwischen ersetzten Vorlesungseinheit. Keine verlässliche Antwort möglich; bei Bedarf in der Vorlesung nachfragen.' },
+    ],
+  },
+  {
+    icon: '🛞', group: 'Reifen',
+    items: [
+      { q: 'Welche Haftungsmechanismen hat der Reifen? Welche Anteile gehen jeweils in die Gesamthaftung ein?', src: 'WS17 · WS24/25 · Fragenkatalog',
+        a: '$F_R = F_Adhäsion + F_Hysterese$. **Adhäsion** dominiert bei kleinen Gleitgeschwindigkeiten auf trockener Bahn (Trennfilm wie Wasser schaltet sie ab). **Hysterese** dominiert bei hohen Gleitgeschwindigkeiten und rauer/nasser Fahrbahn.' },
+      { q: 'Zeichnen Sie die Abweichung der Pacejka Magic Formula von der realen Haftung.', src: 'WS16 · Fragenkatalog', pts: 'Zeichnen',
+        a: 'Pacejka: höhere Anfangssteigung, Optimum bei kleinerem Schräglaufwinkel, unrealistisch hohes Maximum — weil die Messprozedur den Reifen nicht auf Temperatur hält und die Prüfstandsfahrbahn nicht realistisch ist.',
+        figFrom: 'sk_rst3_1' },
+      { q: 'Wie verändern sich E-Modul und Hysterese über Temperatur bzw. Frequenz?', src: 'WS18 · Fragenkatalog', pts: 'Zeichnen',
+        a: 'E-Modul fällt monoton mit steigender Temperatur. Die Hysterese hat ihr **Maximum bei der Glasübergangstemperatur** — dort liegt der optimale Arbeitsbereich. Über der Frequenz spiegelbildlich: hohe Frequenz wirkt wie niedrige Temperatur.',
+        figFrom: 'sk_rst3_3' },
+      { q: 'Warum bedeutet doppelte Radlast nicht auch doppelte Querbeschleunigung?', src: 'WS24/25',
+        a: 'Radlastdegressivität: $µ_y$ **sinkt** mit steigender Radlast $F_z$ (Aufstandsfläche wird länger, mehr Walkarbeit/Wärme). $F_y = µ_y(F_z) · F_z$ wächst deshalb unterproportional.' },
+      { q: 'Welche Arten der Reifenmodellierung gibt es? Nenne Beispiele.', src: 'WS24/25',
+        a: '**Empirisch**: Pacejka Magic Formula, TameTire (kurze Rechenzeit, wenig Parametrierung, keine Thermik). **Physikalisch**: BRIT, F-Tire (hoher Aufwand, hohe Detailtreue, bildet Thermik ab).' },
+      { q: 'Nenne 2 Beispiele für Reifenprüfstände.', src: 'WS24/25',
+        a: '**Innentrommel** (echter Belag, Bewässerung möglich) · **Außentrommel** (Stahltrommel, abweichende Eigenschaften) · **Flachband** (reale Krümmung, auch nass) · **Mess-Anhänger** (auf echter Strecke, schlechtere Qualität). Zwei davon nennen.' },
+    ],
+  },
+  {
+    icon: '💨', group: 'Aerodynamik & Fahrdynamik F1',
+    items: [
+      { q: 'Berechne den Abtriebsbeiwert, damit ein Fahrzeug bei 200 km/h an der Decke fahren kann.', src: 'WS17 · WS18 · WS24/25', pts: 'Rechnung',
+        a: 'Bedingung: $F_z >= m*g$. Mit $m=800 kg$, $A=1,5 m^2$, $ρ=1,2 kg/m^3$:\n$$v = 200/3,6 = 55,6 m/s$$\n$$c_z = \\frac{2*m*g}{ρ*A*v^2} = \\frac{2*800*9,81}{1,2*1,5*55,6^2} ~= 2,82$$' },
+      { q: 'Berechne die Antriebsleistung, damit ein Fahrzeug 200 km/h halten kann (mit gegebenen Verlusten).', src: 'WS17 · WS18 · WS24/25', pts: 'Rechnung',
+        a: 'Mit $c_w=1,0$, $A=1,5 m^2$, $ρ=1,2 kg/m^3$, $η=0,9$:\n$$v = 200/3,6 = 55,6 m/s$$\n$$F_w = c_w*A*\\frac{ρ}{2}*v^2 = 1,0*1,5*0,6*55,6^2 ~= 2778 N$$\n$$P = \\frac{F_w*v}{η} = \\frac{2778*55,6}{0,9} ~= 171,5 kW$$' },
+      { q: 'Nenne die 3 Hauptabtriebserzeuger im Rennfahrzeug.', src: 'WS16 · Fragenkatalog',
+        a: '**Frontflügel** (Flügelprofil + Ground Effect) · **Unterboden mit Diffusor** (Venturi-Prinzip, größter Abtriebsanteil) · **Heckflügel** (umgedrehtes Flugzeugprofil).' },
+      { q: 'Nenne die Aerodynamikbauteile eines F1-Fahrzeugs und sortiere sie nach höchstem Abtrieb bzw. Widerstand.', src: 'WS18',
+        a: 'Bauteile: Frontflügel, Unterboden/Diffusor, Heckflügel, Bodywork, Bremsbelüftung, Radaufhängung.\n**Nach Abtrieb:** Unterboden > Frontflügel > Heckflügel.\n**Nach Widerstand:** freistehende Räder größter Anteil, dann Heckflügel > Frontflügel > Unterboden.' },
+      { q: 'Ordne die Aero-Elemente nach der höchsten Aero-Effizienz ($A_eff = c_z/c_x$).', src: 'Fragenkatalog',
+        a: '**Unterboden + Diffusor** (8–10) > **Frontflügel** (4–6) > **Heckflügel** (2–2,4).' },
+      { q: 'Wie lauten die 3 Grundgleichungen der Aerodynamik? / 3 Erhaltungsgleichungen der Navier-Stokes-Gleichung.', src: 'WS24/25 · Fragenkatalog',
+        a: '**Massenerhaltung** (Kontinuitätsgleichung) · **Impulserhaltung** · **Energieerhaltung**.' },
+      { q: 'Streckenabschnitt anhand eines Geschwindigkeitsverlaufs kennzeichnen.', src: 'WS16 · WS17 · WS18 · WS24/25', pts: 'Zeichnen',
+        a: 'Plateau = Gerade ($v_max$) · steiler Abfall = Bremsen (Beginn = Bremspunkt) · Knick zu flacherem Abfall = Einlenkpunkt · Minimum = Scheitelpunkt/Apex ($v_min$) · Wiederanstieg = Beschleunigen.',
+        figFrom: 'sk_rst6_3' },
+      { q: 'Kammscher Kreis: Warum untersteuert ein Fahrzeug in engen Kurven / am Kurveneingang, warum übersteuert es am Kurvenausgang?', src: 'WS16 · WS17 · WS18 · Fragenkatalog', pts: 'Zeichnen',
+        a: '$\\sqrt{F_x^2+F_y^2} ≤ µ·F_z$ — Längs- und Querkraft teilen sich ein Kraftpotenzial. Beim harten Anbremsen geht fast alles in $F_x$, für $F_y$ bleibt zu wenig übrig → VA schiebt = **Untersteuern**. Am Ausgang geht alles in Antrieb der HA → Heck bricht aus = **Übersteuern**.',
+        figFrom: 'sk_rst11_1' },
+      { q: 'Kammscher Kreis für die Durchfahrt einer Schikane zeichnen.', src: 'WS24/25', pts: 'Zeichnen',
+        a: 'Mehrere Betriebspunkte auf/im Kreis: Bremsen unten → Einlenken links → max. $a_y$ links → Umsetzen durch den Nullpunkt → max. $a_y$ rechts → Beschleunigen oben. Der Fahrer bleibt möglichst immer auf dem Kreisrand.',
+        figFrom: 'sk_rst11_2' },
+      { q: 'Was ist Bouncing (Porpoising)? Wie entsteht es?', src: 'WS17 · WS18 · Fragenkatalog', pts: 'Zeichnen',
+        a: 'Selbsterregte, aerodynamisch getriebene Aufbauschwingung: hohe $v$ → viel Abtrieb → Bodenabstand zu klein → Strömung reißt ab (Stall) → Abtrieb bricht ein → Feder drückt Aufbau hoch → Strömung legt wieder an → von vorn.',
+        figFrom: 'sk_rst6_2' },
+      { q: 'Gegeben: abnehmende Abtriebskraft über zunehmendem Bodenabstand — Vorder- oder Hinterachse? Begründen.', src: 'WS17 · Fragenkatalog', pts: 'Zeichnen',
+        a: '**VA**: steiler Abfall über kleinem Bereich (0–50 mm) — Frontflügel arbeitet dicht am Boden im Ground Effect. **HA**: Abfall über größeren Bereich (0–120 mm), dafür größerer Gesamthub — der Diffusor.',
+        figFrom: 'sk_rst6_1' },
+      { q: 'Wie verändern sich Vertikaldynamik und Radlast bei steigender Geschwindigkeit bei LMP-, Touren- und Serienfahrzeug? / Verläufe von Achslast und Querbeschleunigung LMP ↔ Tourenwagen zuordnen.', src: 'WS16 · WS17 · WS18 · WS24/25 · Fragenkatalog', pts: 'Zeichnen',
+        a: '**LMP**: Achslast/$a_y$ steigen quadratisch mit $v$ (Abtrieb ∝ $v^2$). **Tourenwagen**: nahezu flach (kaum Abtrieb). **Serie**: am flachsten. Reihenfolge: F1 > Sportprototyp > Tourenwagen > Serie.',
+        figFrom: 'sk_rst11_3' },
+      { q: 'Was passiert mit der Aero-Effizienz auf hoch gelegenen Rennstrecken (z.B. Mexiko-Stadt)?', src: 'WS24/25',
+        a: 'Die Aero-**Effizienz $A_eff=c_z/c_x$ bleibt gleich** — beide Kräfte skalieren mit der (geringeren) Luftdichte $ρ$. Die **absoluten Kräfte** (Abtrieb UND Widerstand) sinken beide, dadurch höhere Topspeeds, aber weniger Kurvengrip.' },
+      { q: 'Effektive Zugkrafthysterese einzeichnen mit optimalen Schaltpunkten sowie theoretischer und effektiver Höchstgeschwindigkeit.', src: 'WS24/25', pts: 'Zeichnen',
+        a: 'Gangkurven + Einhüllende (effektive Zugkraft) + Zugkrafthyperbel $F=P/v$ + Fahrwiderstandskurve. **Schaltpunkte** = Schnittpunkte benachbarter Gänge. $v_max,eff$ = Schnittpunkt Zugkraft/Fahrwiderstand, $v_max,theor$ = wenn der höchste Gang bei Nenndrehzahl läge.',
+        figFrom: 'sk_rst13_2' },
+      { q: 'In einem Diagramm mit 4 Kurven Effizienz und Verlustleistung zu 2 Energiespeichermethoden zuordnen.', src: 'WS24/25',
+        a: 'Der **Supercap** hält den Wirkungsgrad auch bei hohen Strömen, weil seine Innenwiderstandsverluste geringer sind. Die **Batterie** verliert bei hohem Strom stärker ($P_V ∝ I^2·R_i$) — ihre Effizienzkurve fällt deutlicher ab, die Verlustleistungskurve steigt steiler.' },
+    ],
+  },
+  {
+    icon: '🌀', group: 'CFD & Simulation',
+    items: [
+      { q: 'Welche Meshe gibt es? Nenne je einen Vorteil.', src: 'WS24/25',
+        a: '**Tet**: automatisch vernetzbar, komplexe Geometrie. **Hex**: höchste Genauigkeit pro Zelle. **Poly**: wenige Zellen bei guter Genauigkeit, schnelle Konvergenz.' },
+      { q: 'Vorteile/Nachteile von CFD im Vergleich zum Windkanal.', src: 'WS24/25',
+        a: '**CFD-Vorteile:** kein Prototyp nötig, beliebig skalierbar/parallelisierbar, automatisierbar, gefahrlos.\n**CFD-Nachteile:** Diskretisierungs-/Modellfehler, Randbedingungen fraglich.\n**Windkanal-Vorteile:** „echte" Strömung, keine Modellfehler.\n**Windkanal-Nachteile:** nur lokale Messung, Skalierung nötig, Prototyp erforderlich, teuer.' },
+      { q: 'Was wird im Fahrzeug simuliert, abgesehen von der externen Aerodynamik?', src: 'WS24/25',
+        a: 'In-Cylinder/Combustion · Bremsen-/Elektronikkühlung · Batterie (Kühlung, Thermal Runaway) · Splash/Spray (Schmierung, Regenreifen) · Akustik.' },
+      { q: 'Welche Art von Simulation nutzt man für die erste Auslegung des Fahrzeugs?', src: 'WS24/25',
+        a: '**RANS** — schnell genug für Design-Studien und viele Varianten, reicht für die Konzeptphase aus.' },
+    ],
+  },
+  {
+    icon: '⚡', group: 'Antrieb & Energie',
+    items: [
+      { q: 'Welche Hauptanforderungen werden an den Antrieb gestellt?', src: 'WS16 · WS17 · Fragenkatalog',
+        a: 'Hohe Leistung/-dichte bei minimalem Gewicht · hoher Wirkungsgrad · hohe Dauerleistung · geringe Trägheit · Zuverlässigkeit · Reglementkonformität · Bauraum/Package.' },
+      { q: 'Welche Vor-/Nachteile haben die verschiedenen Energiespeichermedien?', src: 'WS16 · Fragenkatalog',
+        a: '**Batterie**: hohe Energiedichte, Standard. **Superkondensator**: sehr hohe Leistungsdichte, aber sehr wenig Energie speicherbar. **Schwungrad**: hohe Leistungsdichte, mechanisch, aber Bauraum/Kreiselmomente.' },
+    ],
+  },
+  {
+    icon: '🤖', group: 'Autonomer Motorsport & Datentechnik',
+    items: [
+      { q: 'Nenne und beschreibe 2 Gruppen der Softwarearchitektur eines autonomen Rennfahrzeugs.', src: 'WS24/25',
+        a: 'Von 6 Gruppen z.B.: **Planning** — plant die (sichere/schnellste) Trajektorie, global offline und local online in Echtzeit. **Control** — Tube MPC, setzt die Trajektorie mit 100 Hz robust in Aktorbefehle um.' },
+      { q: 'Local und Global Planning: Begriffe zuordnen.', src: 'WS24/25',
+        a: '**Global**: statische Umgebung, offline, einmalig, **schnellste** Trajektorie um die ganze Strecke. **Local**: dynamische Umgebung, online, Echtzeit-Neuberechnung, **sichere** Trajektorie bis zum Planungshorizont.' },
+      { q: 'Key Performance Indicator (KPI) beschreiben und 2 Beispiele nennen.', src: 'WS24/25',
+        a: 'Herunterbrechen der Fahrzeugperformance auf wenige Metriken; wichtigster KPI ist die **Rundenzeit**. Weitere Beispiele: Spritverbrauch pro Runde, Bremsdistanz, EOS-Geschwindigkeit.' },
+      { q: 'Signal händisch digitalisieren mit 2 Hz und 3 Bit.', src: 'WS24/25', pts: 'Rechnung', figFrom: 'sk_rst9_1',
+        a: 'Abtastintervall $Δt = 1/2 Hz = 0,5 s$. Auflösung $2^3 = 8$ Quantisierungsstufen. Bei jedem Abtastzeitpunkt den Analogwert auf die nächste Stufe runden → Treppenkurve zeichnen. Datenrate $R = f*n = 2*3 = 6 bit/s$.' },
+      { q: 'Welche Eigenschaften/Effekte sorgen für Reibung bei einem Reifen?', src: 'WS24/25',
+        a: 'Siehe „Haftungsmechanismen" oben: **Adhäsion** (molekulare Anziehung, trocken/langsam) + **Hysterese** (viskoelastische Rauigkeitseffekte, schnell/nass).' },
+    ],
+  },
+  {
+    icon: '🆚', group: 'Rennfahrzeug vs. Straßenfahrzeug & Fahrwerk',
+    items: [
+      { q: 'Nenne 3 Entwicklungsziele von Straßen- und Rennfahrzeugen mit ihrer jeweiligen Ausprägung. / Welche Hauptunterschiede gibt es zwischen Renn- und Straßenfahrzeug?', src: 'WS17 · Fragenkatalog',
+        a: '**Sicherheit**: Serie hoch (NCAP) — Rennen reglementbedingt. **Komfort**: Serie hoch — Rennen niedrig. **Design**: Serie wichtig — Rennen unwichtig (form follows function). **Lebensdauer**: Serie 10–15 J. — Rennen 1–3 J. **Kosten**: Serie wichtig — Rennen eher unwichtig. **Produktion**: Serie hohe Stückzahl — Rennen Einzelstücke.' },
+      { q: 'Welche Baugruppen hat ein Rennfahrzeug? / Baugruppen an einem F1-Fahrzeug benennen.', src: 'WS17 · Fragenkatalog',
+        a: 'Cockpit · Rahmen · Motor · Antriebsstrang · Kraftstoffsystem · Fahrwerk · Lenkung · Räder/Reifen · Bremsanlage · Außenhaut · Elektrik/Hilfssysteme. Gleiche Baugruppen wie ein Serienfahrzeug, aber eingeschränktes Teilespektrum.' },
+      { q: 'Wie unterscheiden sich die Quer- und Längsbeschleunigungswerte unterschiedlicher Rennserien?', src: 'Fragenkatalog',
+        a: 'F1: 2g/5g/4g (beschl./brems./quer) · Sportprototyp: 1,5/4/3,5 · Tourenwagen: 1/3/2,5 · Rallye: 1,3/1,8/1,7 · Serie: 0,8/1,2/1. Reihenfolge: Verzögern > Quer > Beschleunigen.' },
+      { q: 'Push- und Pullrod zeichnen und jeweils den Vorteil benennen.', src: 'WS16 · WS17 · Fragenkatalog', pts: 'Zeichnen',
+        a: '**Pushrod** (Druckstrebe, unten→oben, Feder oben): + Zugänglichkeit, Bauraum unten frei. **Pullrod** (Zugstrebe, oben→unten, Feder tief): + tieferer Schwerpunkt, saubere obere Aero. Konzeptwahl wird primär durch die Aerodynamik bestimmt.',
+        figFrom: 'sk_rst12_1' },
+      { q: 'Warum wird der Bremssattel an dieser Stelle positioniert?', src: 'Fragenkatalog',
+        a: 'Möglichst tief → niedriger Schwerpunkt der ungefederten Masse · liegt im Windschatten des Rades, stört Unterboden-Anströmung nicht · kurze Wege zur Bremsbelüftung · kleines Trägheitsmoment um die Lenkachse.' },
+      { q: 'Welche Vorteile bringt eine CFRC-/Carbon-Bremse?', src: 'Fragenkatalog',
+        a: 'Sehr geringe Masse (ungefedert + rotierend) · temperaturbeständig bis ~1000 °C · Reibwert **steigt** mit Temperatur, kein Fading · hohe spezifische Bremsleistung. Nachteil: kalt kaum Bremswirkung.' },
+      { q: 'Wie unterscheiden sich Aluminium- und CFK-Crashbox?', src: 'Fragenkatalog',
+        a: '**Alu**: plastische Verformung (Faltenbeulen), gutmütige Kennlinie, günstig, schwerer. **CFK**: progressives Zerfasern am Trigger, Vielfaches an Energieaufnahme pro Masse → leichter, aber teuer, sprödes Versagen, nicht reparierbar.' },
+      { q: 'Nenne 3 zerstörungsfreie Prüfverfahren für CFK-Bauteile.', src: 'WS18 · Fragenkatalog',
+        a: '**Ultraschall (C-Scan)** — Delaminationen/Poren · **Röntgen/CT** — 3D-Fehlstellen, Faserorientierung · **Thermografie** — schnelle flächige Prüfung. (Auch gültig: Shearografie, Klopfprüfung.)' },
+      { q: 'Um welchen Faktor ist die Fahrwerksfedersteifigkeit eines F1 höher als die eines Serienfahrzeugs?', src: 'WS18 · Fragenkatalog', pts: 'Rechnung',
+        a: 'Rund **Faktor 10**. Aufbaueigenfrequenz PKW ≈ 1–1,5 Hz, F1 ≈ 3–5 Hz. Da $f ∝ \\sqrt{c}$, macht Faktor ~3 bei der Frequenz Faktor ~10 bei der Steifigkeit.' },
+      { q: 'Welche Besonderheit hat die Rallye-Achse wegen des Reglements?', src: 'WS18 · Fragenkatalog',
+        a: 'Das **Serien-Achskonzept muss beibehalten werden** (z.B. McPherson bleibt McPherson, Anlenkpunkte nur begrenzt verschiebbar) — optimiert wird nur innerhalb dieses Konzepts (Federwege, Anlenkpunkte).' },
+      { q: 'Nenne die Hauptanforderungen an ein Rallye-Basisfahrzeug.', src: 'WS16',
+        a: 'Serienfahrzeug mit Straßenzulassung (Homologation) · kompakt und leicht · Allradantriebskonzept · robuste, versteifbare Karosserie · Bauraum für große Federwege · günstige Motorlage/Package.' },
+      { q: 'Gesucht: neutrales Fahrverhalten bei Untersteuern am Kurveneingang langsamer Kurven sowie Übersteuern bei schnellen Kurven. Was wird angepasst?', src: 'WS18 · Fragenkatalog',
+        a: '**Langsame Kurven = mechanischer Grip** → VA weicher (Federn/Stabi), Rollmomentenverteilung nach hinten, mehr Frontsturz. **Schnelle Kurven = Aero-Grip** → Aerobalance nach hinten (Heckflügelwinkel ↑ oder Frontflügel ↓).' },
+      { q: 'Welche Setupmöglichkeiten hat man? Wie beeinflussen diese den Reifen?', src: 'Fragenkatalog',
+        a: '**Reifendruck** ↑: kleinerer Contact Patch, mehr Energieeintrag. **Sturz** (neg.) ↑: mehr Querkraft außen, weniger innen und längs. **Federn/Stabis/Rollmomentenverteilung**: Radlastverteilung → Balance über Radlastdegressivität. **Ride Height/Flügel**: Aerobalance.' },
+    ],
+  },
+  {
+    icon: '🏁', group: 'Ideallinie, Rundenzeitsimulation & Strategie',
+    items: [
+      { q: 'Nennen Sie die Punkte der Ideallinie.', src: 'Fragenkatalog',
+        a: '**Bremspunkt** (Ende Vollgas) → **Einlenkpunkt** (Bremskraft → Querkraft) → **Scheitelpunkt/Apex** ($v_min$, max. $a_y$) → **Ausgangspunkt/Track-out** (Beschleunigen).' },
+      { q: 'Wie sieht die Ideallinie einer 180°-Kurve aus? / Zeichnen Sie die Ideallinie in einer 180°-Kurve.', src: 'WS17 · Fragenkatalog', pts: 'Zeichnen',
+        a: 'Außen – innen – außen mit **spätem** Scheitelpunkt (late apex): opfert Eingangsgeschwindigkeit für früheres Vollgas und mehr Speed auf der folgenden Geraden.',
+        figFrom: 'sk_rst13_1' },
+      { q: 'Welche Aspekte werden zur Ideallinienfindung herangezogen?', src: 'WS16 · Fragenkatalog',
+        a: 'Streckengeometrie/Track Limits · Priorität der Kurve (führt sie auf die längste Gerade?) · Fahrzeugcharakteristik (Grip/Abtrieb/Leistung) · Kompromiss kürzeste Linie ↔ größter Radius · Streckenbelag · Reifen/Energie · Witterung · Rennsituation.' },
+      { q: 'Erläutern Sie die 2 Varianten des SSLS-Solvers, zeichnen Sie die charakteristischen Verläufe, entscheiden Sie sich und begründen Sie.', src: 'WS16 · WS17 · WS18 · Fragenkatalog', pts: 'Zeichnen',
+        a: '**Quasistationär**: Apex-$v$ aus g-g-Diagramm, dann Vor-/Rückwärtsintegration; eckiges Profil. Schnell, robust, ideal für Erstauslegung. **Transient**: Zeitintegration des Fahrzeugmodells; verrundetes Profil. Realistisch (Regelsysteme, Lastwechsel), aber rechenintensiv. **Entscheidung**: quasistationär für die erste Auslegung/Variantenvergleiche — die relativen Deltas stimmen.',
+        figFrom: 'sk_rst13_3' },
+      { q: 'Wie berechnet man den Zeitverlust bei einem Boxenstopp? (Rechnung zu Rundenzeiten/Zeitverlust)', src: 'WS16 · Fragenkatalog', pts: 'Rechnung',
+        a: '$t_Verlust$ = Standzeit + langsamere Pitlane-Durchfahrt. Break-even:\n$$N >= \\frac{t_Verlust}{Δt_Runde}$$\nBeispiel: $t_{Verlust}=24 s$, $Δt=0,8 s$/Runde → $N >= 30$ Runden. Unter Safety Car ist $t_Verlust$ kleiner → Stopp „billiger".' },
+    ],
+  },
+  {
+    icon: '📦', group: 'Packaging',
+    items: [
+      { q: 'Welche 4 Grundkonzepte gibt es in der Packaging-Auslegung?', src: 'WS24/25',
+        a: '1. **Aerodynamik hat oberste Priorität** bei der Anordnung. 2. **Mechanisches Grundkonzept**: schwere Teile im Schwerpunkt, gewichtsveränderliche Teile (Tank) im Schwerpunkt. 3. **Vereinfachungen**: Bauteile eliminieren/als Strukturteil nutzen. 4. **Gesamtkonzept**: thermische Zonen bewusst trennen.' },
+      { q: 'Nenne Komponenten eines Fahrzeugs (Packaging-Beispiel).', src: 'WS24/25',
+        a: 'Motor · Getriebe · Differential · Tank · Batterie · Turbo · Kupplung · Hydraulik — im modernen F1-Package auf minimalem Volumen um den Fahrer herum angeordnet.' },
     ],
   },
 ];
@@ -3965,7 +4169,7 @@ const RST_CALC = {
         `Jede Runde mit frischen Reifen bringt $Δt = ${fmtN(v.dt, 1)}$ s zurück.`,
         `Break-even-Bedingung: $N · Δt ≥ t_{Verlust}$ → $N ≥ ${v.tp} / ${fmtN(v.dt, 1)} = ${fmtN(v.tp / v.dt, 2)}$`,
         `Aufgerundet: $N = ${Math.ceil(v.tp / v.dt)}$ Runden`,
-        `Wichtige Randbedingungen: Unter Safety Car / VSC ist $t_{Verlust}$ deutlich KLEINER, weil alle langsamer fahren → der Stopp wird „billiger“.`,
+        `Wichtige Randbedingungen: Unter Safety Car / VSC ist $t_Verlust$ deutlich KLEINER, weil alle langsamer fahren → der Stopp wird „billiger“.`,
         `In der Praxis kommen dazu: Verkehr nach dem Stopp, Positionsverlust (Track Position), Pflichtstopps und die Reifendegradation des Gegners.`,
       ],
     },
@@ -5044,7 +5248,7 @@ const RST_GUIDED = {
         ask: 'Um welchen Faktor unterscheidet sich die Federsteifigkeit?',
         steps: [
           'Zusammenhang zwischen Frequenz und Steifigkeit:\n$$f = \\frac{1}{2π} \\sqrt{\\frac{c}{m}}  ⇒  c = m * (2π f)^2$$',
-          'Bei gleicher Masse kürzt sich alles außer dem Frequenzquadrat:\n$$\\frac{c_{F1}}{c_{PKW}} = (\\frac{f_{F1}}{f_{PKW}})^2$$',
+          'Bei gleicher Masse kürzt sich alles außer dem Frequenzquadrat:\n$$\\frac{c_F1}{c_PKW} = (\\frac{f_F1}{f_PKW})^2$$',
           'Frequenzverhältnis:\n$$\\frac{3,8}{1,2} = 3,17$$',
           'Steifigkeitsverhältnis:\n$$3,17^2 = 10,0$$',
           'Merke: Die Steifigkeit geht **quadratisch** in die Frequenz ein — deshalb wird aus Faktor 3 bei der Frequenz Faktor 10 bei der Feder.',
@@ -5093,7 +5297,7 @@ const RST_GUIDED = {
       example: '🔑 Wenn die Aufgabe ein fertiges Diagramm vorgibt: erst die fünf Punkte markieren, dann beschriften. Die Reihenfolge ist immer dieselbe.' },
 
     { id: 'g_rst13_6', badge: 'Längsdynamik', title: 'Das Zugkraftdiagramm',
-      body: 'WS24/25: „Effektive Zugkrafthysterese einzeichnen mit optimalen Schaltpunkten und theoretischer max. Geschwindigkeit und effektiver max. Geschwindigkeit."\n\n## Die Zugkraft am Rad\n$$F_Z = \\frac{M_{Mot} * i_G * i_A * η}{r_{dyn}}$$\nÜber der Geschwindigkeit ergibt sich für **jeden Gang** eine eigene Zugkraftkurve. Die **Einhüllende** aller Gänge ist die **effektive Zugkraft**.\n\n## Die Zugkrafthyperbel\n$$F_Z = \\frac{P}{v}$$\nDas wäre der Idealverlauf bei dauerhaft maximaler Motorleistung — also ein stufenloses Getriebe.\n> Die **Fläche zwischen Hyperbel und Einhüllender** ist die „verschenkte" Zugkraft. Je mehr Gänge, desto besser schmiegt sich die Einhüllende an und desto kleiner wird diese Fläche.\n\n## Die optimalen Schaltpunkte\n> Sie liegen genau in den **Schnittpunkten benachbarter Gangkurven**. Dort wird die Zugkraft im nächsthöheren Gang erstmals größer als im aktuellen.\n\nFrüher schalten kostet Zugkraft, später schalten ebenfalls.\n\n## Die zwei Höchstgeschwindigkeiten\n• **Theoretische $v_{max}$** — Schnittpunkt der Zugkraftkurve des höchsten Gangs mit der Fahrwiderstandskurve, **wenn dieser Schnittpunkt genau bei Nenndrehzahl läge** (Auslegung „auf $v_{max}$")\n• **Effektive $v_{max}$** — der tatsächlich erreichte Schnittpunkt von effektiver Zugkraft und Fahrwiderstand\n\n## Die Fahrwiderstandskurve\n$$F_{ges} = F_{Luft} + F_{Roll} + F_{Steig} + F_{Beschl}$$\n> Achtung beim Rennwagen: $F_{Roll} = f_R * F_{z,ges}$ enthält den **Abtrieb** — der Rollwiderstand ist hier **keine Konstante**, sondern wächst mit $v^2$ mit.\n\nIm Rennsport werden die Übersetzungen streckenspezifisch abgestimmt: passende Übersetzungen für jede Kurvenkombination und jede Gerade.',
+      body: 'WS24/25: „Effektive Zugkrafthysterese einzeichnen mit optimalen Schaltpunkten und theoretischer max. Geschwindigkeit und effektiver max. Geschwindigkeit."\n\n## Die Zugkraft am Rad\n$$F_Z = \\frac{M_Mot * i_G * i_A * η}{r_dyn}$$\nÜber der Geschwindigkeit ergibt sich für **jeden Gang** eine eigene Zugkraftkurve. Die **Einhüllende** aller Gänge ist die **effektive Zugkraft**.\n\n## Die Zugkrafthyperbel\n$$F_Z = \\frac{P}{v}$$\nDas wäre der Idealverlauf bei dauerhaft maximaler Motorleistung — also ein stufenloses Getriebe.\n> Die **Fläche zwischen Hyperbel und Einhüllender** ist die „verschenkte" Zugkraft. Je mehr Gänge, desto besser schmiegt sich die Einhüllende an und desto kleiner wird diese Fläche.\n\n## Die optimalen Schaltpunkte\n> Sie liegen genau in den **Schnittpunkten benachbarter Gangkurven**. Dort wird die Zugkraft im nächsthöheren Gang erstmals größer als im aktuellen.\n\nFrüher schalten kostet Zugkraft, später schalten ebenfalls.\n\n## Die zwei Höchstgeschwindigkeiten\n• **Theoretische $v_{max}$** — Schnittpunkt der Zugkraftkurve des höchsten Gangs mit der Fahrwiderstandskurve, **wenn dieser Schnittpunkt genau bei Nenndrehzahl läge** (Auslegung „auf $v_{max}$")\n• **Effektive $v_{max}$** — der tatsächlich erreichte Schnittpunkt von effektiver Zugkraft und Fahrwiderstand\n\n## Die Fahrwiderstandskurve\n$$F_{ges} = F_{Luft} + F_{Roll} + F_{Steig} + F_{Beschl}$$\n> Achtung beim Rennwagen: $F_{Roll} = f_R * F_{z,ges}$ enthält den **Abtrieb** — der Rollwiderstand ist hier **keine Konstante**, sondern wächst mit $v^2$ mit.\n\nIm Rennsport werden die Übersetzungen streckenspezifisch abgestimmt: passende Übersetzungen für jede Kurvenkombination und jede Gerade.',
       figFrom: 'sk_rst13_2',
       caption: 'Gangkurven, Hyperbel (gelb gestrichelt), Fahrwiderstand (rot), Schaltpunkte (grün) und beide v_max.',
       example: '🔑 Die häufigste Verwechslung: Schaltpunkte sind die Schnittpunkte der GÄNGE untereinander — nicht die Schnittpunkte mit dem Fahrwiderstand.' },
@@ -5289,6 +5493,12 @@ const RST_EXTRA = {
   });
 
   mod.basics = RST_BASICS;
+
+  // Altklausuren-Archiv: Diagramme ebenfalls aus dem Skizzen-Trainer auflösen.
+  RST_EXAM_ARCHIVE.forEach(g => g.items.forEach(it => {
+    if (it.figFrom && sketchById[it.figFrom]) it.svg = sketchById[it.figFrom].svg;
+  }));
+  mod.examArchive = RST_EXAM_ARCHIVE;
 })();
 
 // ── Flat lookup helpers ──────────────────────────────────────────────────────
@@ -5752,7 +5962,7 @@ const Store = {
 
 // ── Cross-module helpers ─────────────────────────────────────────────────────
 const MODE_TYPES = ['guided', 'flashcard', 'quiz', 'fillblank', 'sketch', 'calc', 'open'];
-const MODE_LABELS = { guided: 'Lernpfad', flashcard: 'Karteikarten', quiz: 'Quiz', fillblank: 'Lückentext', sketch: '✏️ Skizzen', calc: '🧮 Rechnen', open: 'Offene Fragen', basics: '📌 Basics' };
+const MODE_LABELS = { guided: 'Lernpfad', flashcard: 'Karteikarten', quiz: 'Quiz', fillblank: 'Lückentext', sketch: '✏️ Skizzen', calc: '🧮 Rechnen', open: 'Offene Fragen', basics: '📌 Basics', examarchive: '🗂️ Altklausuren' };
 
 function getTopicItemIds(topic, type) {
   if (type) return (topic[type === 'flashcard' ? 'flashcards' : type] || []).map(c => c.id);
@@ -6120,6 +6330,73 @@ function renderBasicsList(el, module) {
   if (prevQuery) { input.value = prevQuery; applyFilter(); }
 }
 
+// ── Altklausuren-Archiv ──────────────────────────────────────────────────────
+/**
+ * Zeigt jede aus den Gedächtnisprotokollen bekannte Klausurfrage mit kurzer
+ * Antwort — Rechenweg bei Rechnungen, fertiges Diagramm bei Zeichenaufgaben.
+ * Reine Nachschlageliste wie Basics: durchsuchbar, kein SRS, kein Fortschritt.
+ */
+function renderExamArchiveList(el, module) {
+  const groups = module.examArchive || [];
+  const total = groups.reduce((s, g) => s + g.items.length, 0);
+  const prevQuery = el.querySelector('#examSearch') ? el.querySelector('#examSearch').value : '';
+
+  const groupsHtml = groups.map((g, gi) => `
+    <div class="basics-group" data-group="${gi}">
+      <div class="basics-group-head">
+        <span class="bgh-icon">${g.icon || '•'}</span>
+        <span class="bgh-title">${esc(g.group)}</span>
+        <span class="bgh-count">${g.items.length}</span>
+      </div>
+      ${g.items.map(it => `
+        <div class="basics-item examq-item" data-search="${esc((it.q + ' ' + it.a + ' ' + (it.src||'')).toLowerCase())}">
+          <div class="examq-meta">
+            <span class="examq-src">${esc(it.src)}</span>
+            ${it.pts ? `<span class="examq-tag">${it.pts === 'Zeichnen' ? '✏️' : it.pts === 'Rechnung' ? '🧮' : ''} ${esc(it.pts)}</span>` : ''}
+          </div>
+          <div class="bi-term examq-q">${esc(it.q)}</div>
+          ${it.svg ? `<div class="examq-fig">${it.svg}</div>` : ''}
+          <div class="bi-text">${formatCardText(it.a)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="basics-intro">
+      <div class="basics-intro-top">
+        <div class="basics-intro-copy">
+          <div class="basics-intro-title">🗂️ Altklausuren-Archiv</div>
+          <div class="basics-intro-sub">${total} Fragen aus WS16, WS17, WS18, WS24/25 und dem Fragenkatalog — kurz beantwortet, mit Rechenweg bzw. Diagramm.</div>
+        </div>
+      </div>
+      <input type="search" class="basics-search" id="examSearch" placeholder="Suchen… z.B. Kammscher Kreis, Bouncing, Zeitverlust" autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div class="basics-empty hidden" id="examEmpty">Keine Frage gefunden.</div>
+    </div>
+    ${groupsHtml}
+  `;
+
+  const input = el.querySelector('#examSearch');
+  const empty = el.querySelector('#examEmpty');
+  function applyFilter() {
+    const q = input.value.trim().toLowerCase();
+    let hits = 0;
+    el.querySelectorAll('.examq-item').forEach(item => {
+      const hit = !q || item.dataset.search.indexOf(q) !== -1;
+      item.classList.toggle('hidden', !hit);
+      if (hit) hits++;
+    });
+    el.querySelectorAll('.basics-group').forEach(g => {
+      const shown = g.querySelectorAll('.examq-item:not(.hidden)').length;
+      g.classList.toggle('hidden', shown === 0);
+      g.querySelector('.bgh-count').textContent = shown;
+    });
+    empty.classList.toggle('hidden', hits > 0);
+  }
+  input.addEventListener('input', applyFilter);
+  if (prevQuery) { input.value = prevQuery; applyFilter(); }
+}
+
 /** Minimal HTML escaping — basics text is authored data, but keep it safe anyway. */
 function esc(s) {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -6131,6 +6408,7 @@ function renderTopicList() {
   const module = State.activeModule || MODULES[0];
 
   if (State.activeMode === 'basics') { renderBasicsList(el, module); return; }
+  if (State.activeMode === 'examarchive') { renderExamArchiveList(el, module); return; }
 
   const topics = module.topics;
   const mode = State.activeMode;
@@ -6194,8 +6472,10 @@ function renderModePills() {
   const el = document.getElementById('modePills');
   const module = State.activeModule || MODULES[0];
   const available = MODE_TYPES.filter(t => moduleHasMode(module, t));
-  // The reference sheet lives on the module, not on the topics — append it manually.
+  // The reference sheet and the exam archive live on the module, not on the
+  // topics — append them manually.
   if ((module.basics || []).length > 0) available.push('basics');
+  if ((module.examArchive || []).length > 0) available.push('examarchive');
 
   if (!available.includes(State.activeMode)) {
     State.activeMode = available[0] || 'quiz';
@@ -7568,7 +7848,16 @@ function escapeHtml(s) {
 function fmtMathInner(expr) {
   let s = expr;
 
-  // 1) Operatoren und Symbole (auch in bereits escapter Form)
+  // 1) Brüche zuerst — auch verschachtelt, z.B. \sqrt{\frac{c}{m}}. Läuft die
+  //    Bruch-Ersetzung vor Wurzel/Operatoren, sind innere Klammern bereits durch
+  //    klammerfreies HTML ersetzt, wenn die äußere Regel (z.B. \sqrt{…}) greift.
+  //    Eine Ebene Verschachtelung wird dadurch zuverlässig aufgelöst.
+  for (let i = 0; i < 2; i++) {
+    s = s.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g,
+      (m, a, b) => `<span class="frac"><span class="frac-n">${a.trim()}</span><span class="frac-d">${b.trim()}</span></span>`);
+  }
+
+  // 2) Wurzel, Überpunkt und sonstige Operatoren/Symbole
   s = s
     .replace(/&lt;=|<=/g, '≤')
     .replace(/&gt;=|>=/g, '≥')
@@ -7578,20 +7867,18 @@ function fmtMathInner(expr) {
     .replace(/!=/g, '≠')
     .replace(/~=/g, '≈')
     .replace(/\+\/-/g, '±')
-    .replace(/\bsqrt\s*\(/g, '√(')
+    .replace(/\\sqrt\{([^{}]*)\}/g, '√($1)')      // LaTeX-Schreibweise \sqrt{x} (auch verschachtelt, s.o.)
+    .replace(/\bsqrt\s*\(/g, '√(')                  // Klartext-Schreibweise sqrt(x)
+    .replace(/\\ddot\{([^{}]*)\}/g, '$1\u0307')  // \ddot{z} → z mit Überpunkt (Beschleunigung)
     .replace(/\bint\b/g, '∫')
     .replace(/\bsum\b/g, 'Σ')
     .replace(/\bdegC\b/g, '°C')
     .replace(/\bDelta\b/g, 'Δ')
     .replace(/\*/g, '·');
 
-  // 2) Luft um Relationszeichen — vor dem Einfügen von HTML, damit keine
+  // 3) Luft um Relationszeichen — vor evtl. weiterem HTML, damit keine
   //    Attribute wie class="frac" auseinandergerissen werden.
   s = s.replace(/\s*([=≤≥≠≈⇒→↔])\s*/g, ' $1 ');
-
-  // 3) Brüche (auch verschachtelt in einer Ebene)
-  s = s.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g,
-    (m, a, b) => `<span class="frac"><span class="frac-n">${a.trim()}</span><span class="frac-d">${b.trim()}</span></span>`);
 
   // 4) Indizes und Exponenten
   const SUBCH = "A-Za-z0-9äöüÄÖÜßαβγδεζηθκλμνξπρστφχψωΔΣ,'";
